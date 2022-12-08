@@ -1,4 +1,4 @@
-const numBtns = document.querySelectorAll('.digit');
+const Btns = document.querySelectorAll('button');
 const display = document.querySelector('#display');
 let currentNum =[];
 
@@ -35,4 +35,4 @@ function storeDisplayNum(e) {
   display.textContent = currentNum.join('');
 }
 
-numBtns.forEach(() => addEventListener('click', storeDisplayNum));
+Btns.forEach(() => addEventListener('click', storeDisplayNum));
