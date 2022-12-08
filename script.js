@@ -2,7 +2,10 @@ const numBtns = document.querySelectorAll('.digit');
 const operatorBtns = document.querySelectorAll('.operator');
 const display = document.querySelector('#display');
 let currentNum =[];
+let previousOperator;
+let currentOperator;
 let num1;
+let num2;
 
 function add(num1, num2) {
   return num1 + num2;
@@ -21,29 +24,40 @@ function divide(num1, num2) {
 }
 
 function operate(currentOp, num1, num2) {
-  if (currentOp === add) {
+  if (currentOp === 'add') {
     return add(num1, num2);
-  } else if (currentOp === subtract) {
+  } else if (currentOp === 'subtract') {
     return subtract(num1, num2);
-  } else if (currentOp === multiply) {
+  } else if (currentOp === 'multiply') {
     return multiply(num1, num2);
-  } else if (currentOp === divide) {
+  } else if (currentOp === 'divide') {
     return divide(num1, num2);
   }
 }
 
 function storeDisplayNum(e) {
   currentNum.push(e.target.dataset.num);
+  if (!currentOperator) {
+    num1 = +(currentNum.join(''));;
+  } else {
+    num2 = +(currentNum.join(''));
+  }
   display.textContent = currentNum.join('');
-  num1 = currentNum.join('');
 }
 
 function runOperator(e) {
-  if (num1) {
+    currentNum = [];
     currentOperator = e.target.dataset.key;
-    console.log(currentOperator);
+    if (previousOperator && num2) {
+      const solution = operate(previousOperator, num1, num2)
+      currentOperator = e.target.dataset.key;
+      num1 = solution;
+      num2 = '';
+    }
+    previousOperator = currentOperator;
   }
-}
+
+
 
 numBtns.forEach((btn) => btn.addEventListener('click', storeDisplayNum));
 operatorBtns.forEach((btn) => btn.addEventListener('click', runOperator));
