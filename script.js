@@ -38,7 +38,7 @@ function storeDisplayNum(e) {
   num1 = currentNum.join('');
 }
 
-function storeOp(e) {
+function runOperator(e) {
   if (num1) {
     currentOperator = e.target.dataset.key;
     console.log(currentOperator);
@@ -46,4 +46,4 @@ function storeOp(e) {
 }
 
 numBtns.forEach((btn) => btn.addEventListener('click', storeDisplayNum));
-operatorBtns.forEach((btn) => btn.addEventListener('click', storeOp));
+operatorBtns.forEach((btn) => btn.addEventListener('click', runOperator));
