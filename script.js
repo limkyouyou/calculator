@@ -1,3 +1,7 @@
+const numBtns = document.querySelectorAll('.digit');
+const display = document.querySelector('#display');
+let currentNum =[];
+
 function add(num1, num2) {
   return num1 + num2;
 }
@@ -26,3 +30,9 @@ function operate(currentOp, num1, num2) {
   }
 }
 
+function storeDisplayNum(e) {
+  currentNum.push(e.target.dataset.num);
+  display.textContent = currentNum.join('');
+}
+
+numBtns.forEach(() => addEventListener('click', storeDisplayNum));
