@@ -53,6 +53,7 @@ function runOperator(e) {
       currentOperator = e.target.dataset.key;
       num1 = solution;
       num2 = '';
+      display.textContent = num1;
     }
     previousOperator = currentOperator;
   }
