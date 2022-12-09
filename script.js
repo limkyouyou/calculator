@@ -31,7 +31,7 @@ function operate(currentOp, num1, num2) {
     return subtract(num1, num2);
   } else if (currentOp === 'multiply') {
     return multiply(num1, num2);
-  } else if (currentOp === 'divide') {
+  } else if (currentOp === 'divide' && num2 !== '0') {
     return divide(num1, num2);
   }
 }
@@ -55,6 +55,10 @@ function runOperator(e) {
       num1 = solution;
       num2 = '';
       display.textContent = +(num1.toFixed(1));
+    } else if (previousOperator === 'divide' && num2 === 0) {
+      alert('This is non sequitur.. ERROR.. ERROR.. Self-destruction mode initiated.. 5.. 4.. 3.. 2.. 1..');
+      alert('BOOM!');
+      return num2 = '';
     }
     previousOperator = currentOperator;
   }
