@@ -49,16 +49,16 @@ function storeDisplayNum(e) {
 function runOperator(e) {
     currentNum = [];
     currentOperator = e.target.dataset.key;
-    if (previousOperator && num2) {
+    if (previousOperator === 'divide' && num2 === 0) {
+      alert('This is non sequitur.. ERROR.. ERROR.. Self-destruction mode initiated.. 5.. 4.. 3.. 2.. 1..');
+      alert('BOOM!');
+      return num2 = '';
+    } else if (previousOperator && num2) {
       const solution = operate(previousOperator, num1, num2)
       currentOperator = e.target.dataset.key;
       num1 = solution;
       num2 = '';
       display.textContent = +(num1.toFixed(1));
-    } else if (previousOperator === 'divide' && num2 === 0) {
-      alert('This is non sequitur.. ERROR.. ERROR.. Self-destruction mode initiated.. 5.. 4.. 3.. 2.. 1..');
-      alert('BOOM!');
-      return num2 = '';
     }
     previousOperator = currentOperator;
   }
