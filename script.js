@@ -2,6 +2,8 @@ const numBtns = document.querySelectorAll('.digit');
 const operatorBtns = document.querySelectorAll('.operator');
 const display = document.querySelector('#display');
 const clearBtn = document.querySelector('#clear');
+const backBtn = document.querySelector('#back');
+
 let currentNum =[];
 let previousOperator;
 let currentOperator;
@@ -76,6 +78,17 @@ function clear() {
   }
 }
 
+function backspace() {
+  currentNum.splice(-1,1);
+  if (!num2) {
+    num1 = +(currentNum.join(''));
+  } else {
+    num2 = +(currentNum.join(''));
+  }
+  display.textContent = currentNum.join('');
+}
+
 numBtns.forEach((btn) => btn.addEventListener('click', storeDisplayNum));
 operatorBtns.forEach((btn) => btn.addEventListener('click', runOperator));
 clearBtn.addEventListener('click', clear);
+backBtn.addEventListener('click', backspace);
