@@ -1,7 +1,6 @@
 
 const operatorBtns = document.querySelectorAll('.operator');
 const display = document.querySelector('#display');
-const clearBtn = document.querySelector('#clear');
 const backBtn = document.querySelector('#back');
 
 const events = ['click', 'keydown'];
@@ -137,16 +136,19 @@ function clickItem(e) {
   const numClick = document.querySelector(`button[data-num="${e.target.dataset.num}"]`);
   const opClick = document.querySelector(`button[data-op="${e.target.dataset.op}"]`);
   const assignClick = document.querySelector(`button[data-assigncode="${e.target.dataset.assigncode}"]`)
+  const backClick = document.querySelector(`button[data-backcode="${e.keyCode}"]`)
   if (numClick) {
     storeDisplayNum(numClick);
   } else if (opClick) {
     runOperator(opClick);
   } else if (assignClick) {
     runOperator(assignClick);
+  } else if (backClick) {
+    clear();
   }
 }
 
-clearBtn.addEventListener('click', clear);
+
 backBtn.addEventListener('click', backspace);
 window.addEventListener('click', clickItem);
 window.addEventListener('keydown', whichItem);
