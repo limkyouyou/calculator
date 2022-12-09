@@ -1,7 +1,7 @@
 const numBtns = document.querySelectorAll('.digit');
 const operatorBtns = document.querySelectorAll('.operator');
 const display = document.querySelector('#display');
-const equalsBtn = document.querySelector('.assign');
+const equalsBtn = document.querySelector('#assign');
 let currentNum =[];
 let previousOperator;
 let currentOperator;
