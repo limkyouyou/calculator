@@ -87,10 +87,12 @@ function clear() {
 }
 
 function backspace() {
-  currentNum.splice(-1,1);
   if (!num2) {
+    currentNum = num1.toString().split('');
+    currentNum.splice(-1,1);
     num1 = +(currentNum.join(''));
   } else {
+    currentNum.splice(-1,1);
     num2 = +(currentNum.join(''));
   }
   display.textContent = currentNum.join('');
