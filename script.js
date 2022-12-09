@@ -1,7 +1,6 @@
 const numBtns = document.querySelectorAll('.digit');
 const operatorBtns = document.querySelectorAll('.operator');
 const display = document.querySelector('#display');
-const equalsBtn = document.querySelector('#assign');
 const clearBtn = document.querySelector('#clear');
 let currentNum =[];
 let previousOperator;
@@ -75,5 +74,4 @@ function clear() {
 
 numBtns.forEach((btn) => btn.addEventListener('click', storeDisplayNum));
 operatorBtns.forEach((btn) => btn.addEventListener('click', runOperator));
-equalsBtn.addEventListener('click', runOperator);
 clearBtn.addEventListener('click', clear);
