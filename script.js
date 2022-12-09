@@ -1,6 +1,7 @@
 const numBtns = document.querySelectorAll('.digit');
 const operatorBtns = document.querySelectorAll('.operator');
 const display = document.querySelector('#display');
+const equalsBtn = document.querySelector('.assign');
 let currentNum =[];
 let previousOperator;
 let currentOperator;
@@ -38,7 +39,7 @@ function operate(currentOp, num1, num2) {
 function storeDisplayNum(e) {
   currentNum.push(e.target.dataset.num);
   if (!currentOperator) {
-    num1 = +(currentNum.join(''));;
+    num1 = +(currentNum.join(''));
   } else {
     num2 = +(currentNum.join(''));
   }
@@ -62,3 +63,4 @@ function runOperator(e) {
 
 numBtns.forEach((btn) => btn.addEventListener('click', storeDisplayNum));
 operatorBtns.forEach((btn) => btn.addEventListener('click', runOperator));
+equalsBtn.addEventListener('click', runOperator);
