@@ -1,9 +1,10 @@
-const numBtns = document.querySelectorAll('.digit');
+
 const operatorBtns = document.querySelectorAll('.operator');
 const display = document.querySelector('#display');
 const clearBtn = document.querySelector('#clear');
 const backBtn = document.querySelector('#back');
 
+const events = ['click', 'keydown'];
 let currentNum =[];
 let previousOperator;
 let currentOperator;
@@ -38,8 +39,8 @@ function operate(currentOp, num1, num2) {
   }
 }
 
-function storeDisplayNum(e) {
-  currentNum.push(e.target.dataset.num);
+function storeDisplayNum(selected) {
+  currentNum.push(selected.dataset.num);
   if (!currentOperator) {
     num1 = +(currentNum.join(''));
   } else {
@@ -50,14 +51,13 @@ function storeDisplayNum(e) {
 
 function runOperator(e) {
     currentNum = [];
-    currentOperator = e.target.dataset.key;
+    currentOperator = e.target.dataset.op;
     if (previousOperator === 'divide' && num2 === 0) {
       alert('This is non sequitur.. ERROR.. ERROR.. Self-destruction mode initiated.. 5.. 4.. 3.. 2.. 1..');
       alert('BOOM!');
       return num2 = '';
     } else if (previousOperator && num2) {
       const solution = operate(previousOperator, num1, num2)
-      currentOperator = e.target.dataset.key;
       num1 = solution;
       num2 = '';
       display.textContent = +(num1.toFixed(1));
@@ -88,7 +88,18 @@ function backspace() {
   display.textContent = currentNum.join('');
 }
 
-numBtns.forEach((btn) => btn.addEventListener('click', storeDisplayNum));
+function whichItem(e) {
+  const numClick = document.querySelector(`button[data-num="${e.target.dataset.num}"]`)
+  const numKey = document.querySelector(`button[data-num-key="${e.keyCode}"]`)
+  if (numKey) {
+    storeDisplayNum(numKey);
+  } else if (numClick) {
+    storeDisplayNum(numClick);
+  }
+  console.log(e.keyCode);
+}
+
 operatorBtns.forEach((btn) => btn.addEventListener('click', runOperator));
 clearBtn.addEventListener('click', clear);
 backBtn.addEventListener('click', backspace);
+events.forEach((action) => window.addEventListener(action, whichItem));
