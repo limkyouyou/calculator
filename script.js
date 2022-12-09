@@ -49,9 +49,9 @@ function storeDisplayNum(selected) {
   display.textContent = currentNum.join('');
 }
 
-function runOperator(e) {
+function runOperator(selected) {
     currentNum = [];
-    currentOperator = e.target.dataset.op;
+    currentOperator = selected.dataset.op;
     if (previousOperator === 'divide' && num2 === 0) {
       alert('This is non sequitur.. ERROR.. ERROR.. Self-destruction mode initiated.. 5.. 4.. 3.. 2.. 1..');
       alert('BOOM!');
@@ -89,17 +89,44 @@ function backspace() {
 }
 
 function whichItem(e) {
-  const numClick = document.querySelector(`button[data-num="${e.target.dataset.num}"]`)
-  const numKey = document.querySelector(`button[data-num-key="${e.keyCode}"]`)
-  if (numKey) {
-    storeDisplayNum(numKey);
-  } else if (numClick) {
-    storeDisplayNum(numClick);
+  if (e.shiftKey) {
+    withShiftKey(e);
+  } else if (!e.shiftKey) {
+    noShiftKey(e);
   }
-  console.log(e.keyCode);
 }
 
-operatorBtns.forEach((btn) => btn.addEventListener('click', runOperator));
+function withShiftKey(e) {
+  const opKey = document.querySelector(`button[data-opcode="${e.keyCode}"]`);
+  if (opKey){
+    runOperator(opKey)
+  }
+}
+
+function noShiftKey(e) {
+  const numKey = document.querySelector(`button[data-numcode="${e.keyCode}"]`);
+  const opKey = document.querySelector(`button[data-opcode="${e.keyCode}"]`);
+  const assignKey = document.querySelector(`button[data-assigncode="${e.keyCode}"]`)
+  if (numKey) {
+    storeDisplayNum(numKey);
+  } else if (opKey && assignKey) {
+    runOperator(assignKey);
+  } else if (opKey) {
+    runOperator(opKey);
+  } 
+}
+
+function clickItem(e) {
+  const numClick = document.querySelector(`button[data-num="${e.target.dataset.num}"]`);
+  const opClick = document.querySelector(`button[data-op="${e.target.dataset.op}"]`);
+  if (numClick) {
+    storeDisplayNum(numClick);
+  } else if (opClick) {
+    runOperator(opClick);
+  }
+}
+
 clearBtn.addEventListener('click', clear);
 backBtn.addEventListener('click', backspace);
-events.forEach((action) => window.addEventListener(action, whichItem));
+window.addEventListener('click', clickItem);
+window.addEventListener('keydown', whichItem);
