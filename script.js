@@ -117,9 +117,9 @@ function noShiftKey(e) {
   const assignKey = document.querySelector(`button[data-assigncode="${e.keyCode}"]`)
   if (numKey) {
     storeDisplayNum(numKey);
-  } else if (opKey && assignKey) {
+  } else if (assignKey) {
     runOperator(assignKey);
-  } else if (opKey && !assignKey) {
+  } else if (opKey) {
     runOperator(opKey);
   } 
 }
