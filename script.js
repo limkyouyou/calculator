@@ -63,6 +63,8 @@ function runOperator(selected) {
       display.textContent = +(num1.toFixed(1));
     }
     previousOperator = currentOperator;
+    console.log(num1)
+    console.log(num2)
   }
 
 function clear() {
@@ -111,7 +113,7 @@ function noShiftKey(e) {
     storeDisplayNum(numKey);
   } else if (opKey && assignKey) {
     runOperator(assignKey);
-  } else if (opKey) {
+  } else if (opKey && !assignKey) {
     runOperator(opKey);
   } 
 }
@@ -119,10 +121,13 @@ function noShiftKey(e) {
 function clickItem(e) {
   const numClick = document.querySelector(`button[data-num="${e.target.dataset.num}"]`);
   const opClick = document.querySelector(`button[data-op="${e.target.dataset.op}"]`);
+  const assignClick = document.querySelector(`button[data-assigncode="${e.target.dataset.assigncode}"]`)
   if (numClick) {
     storeDisplayNum(numClick);
   } else if (opClick) {
     runOperator(opClick);
+  } else if (assignClick) {
+    runOperator(assignClick);
   }
 }
 
