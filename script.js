@@ -47,24 +47,30 @@ function storeDisplayNum(selected) {
     num2 = +(currentNum.join(''));
   }
   display.textContent = currentNum.join('');
+  console.log(`btn num1: ${num1}`)
+  console.log(`btn num2: ${num2}`)
 }
 
 function runOperator(selected) {
-    currentNum = [];
     currentOperator = selected.dataset.op;
     if (previousOperator === 'divide' && num2 === 0) {
+      currentNum = [];
       alert('This is non sequitur.. ERROR.. ERROR.. Self-destruction mode initiated.. 5.. 4.. 3.. 2.. 1..');
       alert('BOOM!');
       return num2 = '';
     } else if (previousOperator && num2) {
+      currentNum = [];
       const solution = operate(previousOperator, num1, num2)
       num1 = solution;
       num2 = '';
       display.textContent = +(num1.toFixed(1));
+    } else if (currentOperator) {
+      currentNum = [];
     }
     previousOperator = currentOperator;
-    console.log(num1)
-    console.log(num2)
+    console.log(currentOperator)
+    console.log(`op num1: ${num1}`)
+    console.log(`op num2: ${num2}`)
   }
 
 function clear() {
