@@ -1,7 +1,7 @@
 
 const operatorBtns = document.querySelectorAll('.operator');
 const display = document.querySelector('#display');
-const backBtn = document.querySelector('#back');
+
 
 const events = ['click', 'keydown'];
 let currentNum =[];
@@ -46,8 +46,6 @@ function storeDisplayNum(selected) {
     num2 = +(currentNum.join(''));
   }
   display.textContent = currentNum.join('');
-  console.log(`btn num1: ${num1}`)
-  console.log(`btn num2: ${num2}`)
 }
 
 function runOperator(selected) {
@@ -67,9 +65,6 @@ function runOperator(selected) {
       currentNum = [];
     }
     previousOperator = currentOperator;
-    console.log(currentOperator)
-    console.log(`op num1: ${num1}`)
-    console.log(`op num2: ${num2}`)
   }
 
 function clear() {
@@ -103,7 +98,6 @@ function whichItem(e) {
   } else if (!e.shiftKey) {
     noShiftKey(e);
   }
-  console.log(e.keyCode);
 }
 
 function withShiftKey(e) {
@@ -136,7 +130,7 @@ function clickItem(e) {
   const numClick = document.querySelector(`button[data-num="${e.target.dataset.num}"]`);
   const opClick = document.querySelector(`button[data-op="${e.target.dataset.op}"]`);
   const assignClick = document.querySelector(`button[data-assigncode="${e.target.dataset.assigncode}"]`)
-  const backClick = document.querySelector(`button[data-backcode="${e.keyCode}"]`)
+  const backClick = document.querySelector(`button[data-backcode="${e.target.dataset.backcode}"]`)
   if (numClick) {
     storeDisplayNum(numClick);
   } else if (opClick) {
@@ -144,11 +138,11 @@ function clickItem(e) {
   } else if (assignClick) {
     runOperator(assignClick);
   } else if (backClick) {
-    clear();
+    backspace();
   }
 }
 
 
-backBtn.addEventListener('click', backspace);
-window.addEventListener('click', clickItem);
+
+window.addEventListener('mousedown', clickItem);
 window.addEventListener('keydown', whichItem);
