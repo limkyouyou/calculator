@@ -102,6 +102,7 @@ function whichItem(e) {
   } else if (!e.shiftKey) {
     noShiftKey(e);
   }
+  console.log(e.keyCode);
 }
 
 function withShiftKey(e) {
@@ -116,6 +117,7 @@ function noShiftKey(e) {
   const opKey = document.querySelector(`button[data-opcode="${e.keyCode}"]`);
   const assignKey = document.querySelector(`button[data-assigncode="${e.keyCode}"]`)
   const enterKey = document.querySelector(`button[data-entercode="${e.keyCode}"]`)
+  const backspaceKey = document.querySelector(`button[data-backcode="${e.keyCode}"]`)
   if (numKey) {
     storeDisplayNum(numKey);
   } else if (assignKey) {
@@ -124,7 +126,9 @@ function noShiftKey(e) {
     runOperator(enterKey);
   } else if (opKey) {
     runOperator(opKey);
-  } 
+  } else if (backspaceKey) {
+    backspace();
+  }
 }
 
 function clickItem(e) {
