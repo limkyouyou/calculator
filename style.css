@@ -59,7 +59,21 @@
 
 button {
   font-size: 2.5vh;
-  background-color: #363636;
   color: #e7e6e6;
   border: none;
+}
+
+.digit {
+  background-color: #494848;
+}
+
+
+#clear,
+#back,
+.operator {
+  background-color: #363636;
+}
+
+.operate {
+  background-color: #00564d;
 }
