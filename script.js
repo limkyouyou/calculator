@@ -3,7 +3,6 @@ const operatorBtns = document.querySelectorAll('.operator');
 const display = document.querySelector('#display');
 
 
-const events = ['click', 'keydown'];
 let currentNum =[];
 let previousOperator;
 let currentOperator;
@@ -61,7 +60,7 @@ function runOperator(selected) {
       num1 = solution;
       num2 = '';
       display.textContent = +(num1.toFixed(1));
-    } else if (currentOperator) {
+    } else if (currentOperator) { // when current operator exists, empty currentNum for a new set of number
       currentNum = [];
     }
     previousOperator = currentOperator;
@@ -95,16 +94,14 @@ function backspace() {
 function whichItem(e) {
   if (e.shiftKey) {
     withShiftKey(e);
-  } else if (!e.shiftKey) {
+  } else {
     noShiftKey(e);
   }
 }
 
 function withShiftKey(e) {
   const opKey = document.querySelector(`button[data-opcode="${e.keyCode}"]`);
-  if (opKey){
-    runOperator(opKey)
-  }
+  runOperator(opKey)
 }
 
 function noShiftKey(e) {
