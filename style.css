@@ -89,7 +89,7 @@ button {
   background-color: #363636;
 }
 
-.operator:active,
+.operator,
 .digit:active {
   background-color: #262626;
 }
@@ -112,8 +112,4 @@ button {
 
 .operate:hover {
   background-color: #00443d;
-}
-
-.operate:active {
-  background-color: #003832;
 }
