@@ -1,5 +1,4 @@
 
-const operatorBtns = document.querySelectorAll('.operator');
 const display = document.querySelector('#display');
 
 
@@ -56,7 +55,7 @@ function runOperator(selected) {
       return num2 = '';
     } else if (previousOperator && num2) {
       currentNum = [];
-      const solution = operate(previousOperator, num1, num2)
+      const solution = operate(previousOperator, num1, num2);
       num1 = solution;
       num2 = '';
       display.textContent = +(num1.toFixed(1));
@@ -67,7 +66,7 @@ function runOperator(selected) {
   }
 
 function clear() {
-  confirm("Clear all data?")
+  confirm("Clear all data?");
   if (confirm) {
     currentNum = [];
     num1 = '';
@@ -107,9 +106,9 @@ function withShiftKey(e) {
 function noShiftKey(e) {
   const numKey = document.querySelector(`button[data-numcode="${e.keyCode}"]`);
   const opKey = document.querySelector(`button[data-opcode="${e.keyCode}"]`);
-  const assignKey = document.querySelector(`button[data-assigncode="${e.keyCode}"]`)
-  const enterKey = document.querySelector(`button[data-entercode="${e.keyCode}"]`)
-  const backspaceKey = document.querySelector(`button[data-backcode="${e.keyCode}"]`)
+  const assignKey = document.querySelector(`button[data-assigncode="${e.keyCode}"]`);
+  const enterKey = document.querySelector(`button[data-entercode="${e.keyCode}"]`);
+  const backspaceKey = document.querySelector(`button[data-backcode="${e.keyCode}"]`);
   if (numKey) {
     storeDisplayNum(numKey);
   } else if (assignKey) {
@@ -126,8 +125,9 @@ function noShiftKey(e) {
 function clickItem(e) {
   const numClick = document.querySelector(`button[data-num="${e.target.dataset.num}"]`);
   const opClick = document.querySelector(`button[data-op="${e.target.dataset.op}"]`);
-  const assignClick = document.querySelector(`button[data-assigncode="${e.target.dataset.assigncode}"]`)
-  const backClick = document.querySelector(`button[data-backcode="${e.target.dataset.backcode}"]`)
+  const assignClick = document.querySelector(`button[data-assigncode="${e.target.dataset.assigncode}"]`);
+  const backClick = document.querySelector(`button[data-backcode="${e.target.dataset.backcode}"]`);
+  const clearClick = document.querySelector(`button[data-escapecode="${e.target.dataset.escapecode}"]`);
   if (numClick) {
     storeDisplayNum(numClick);
   } else if (opClick) {
@@ -136,6 +136,8 @@ function clickItem(e) {
     runOperator(assignClick);
   } else if (backClick) {
     backspace();
+  } else if (clearClick) {
+    clear();
   }
 }
 
