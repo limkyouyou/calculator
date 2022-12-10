@@ -49,8 +49,12 @@
   flex: 1;
   display: grid;
   grid-template-areas: 'clearArea clearArea backArea backArea';
+  grid-auto-columns: 1fr; /* even coloumn size */
   grid-gap: 2px;
   border: 1px solid blue;
   margin: 8px;
 }
 
+button {
+  font-size: 3vh;
+}
