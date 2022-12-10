@@ -85,13 +85,35 @@ button {
   background-color: #494848;
 }
 
+.digit:hover {
+  background-color: #363636;
+}
 
-#clear,
-#back,
+.operator:active,
+.digit:active {
+  background-color: #262626;
+}
+
 .operator {
   background-color: #363636;
 }
 
+.operator:hover {
+  background-color: #494848;
+}
+
+.operator:active {
+  background-color: #262626;
+}
+
 .operate {
   background-color: #00564d;
+}
+
+.operate:hover {
+  background-color: #00443d;
+}
+
+.operate:active {
+  background-color: #003832;
 }
