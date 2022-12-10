@@ -35,7 +35,9 @@
   font-size: 9vh;
   height: 90px;
   border: 1px solid red;
-  direction: rtl;
+  direction: rtl; /* text right to left */
+  overflow: hidden;
+  text-overflow: clip;
 }
 
 #clear {
