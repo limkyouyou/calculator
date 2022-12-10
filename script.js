@@ -52,7 +52,7 @@ function runOperator(selected) {
       currentNum = [];
       alert('This is non sequitur.. ERROR.. ERROR.. Self-destruction mode initiated.. 5.. 4.. 3.. 2.. 1..');
       alert('BOOM!');
-      return num2 = '';
+      clear();
     } else if (previousOperator && num2) {
       currentNum = [];
       const solution = operate(previousOperator, num1, num2);
@@ -65,9 +65,14 @@ function runOperator(selected) {
     previousOperator = currentOperator;
   }
 
-function clear() {
+function confirmClear() {
   confirm("Clear all data?");
   if (confirm) {
+    clear();
+  }
+}
+
+function clear() {
     currentNum = [];
     num1 = '';
     num2 = '';
@@ -75,7 +80,6 @@ function clear() {
     previousOperator = '';
     display.textContent = '';
     alert("Data cleared");
-  }
 }
 
 function backspace() {
@@ -137,7 +141,7 @@ function clickItem(e) {
   } else if (backClick) {
     backspace();
   } else if (clearClick) {
-    clear();
+    confirmClear();
   }
 }
 
