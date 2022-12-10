@@ -66,8 +66,9 @@ function runOperator(selected) {
   }
 
 function confirmClear() {
-  confirm("Clear all data?");
-  if (confirm) {
+  const askClear = confirm("Clear all data?");
+  console.log(askClear)
+  if (askClear) {
     clear();
   }
 }
