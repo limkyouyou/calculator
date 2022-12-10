@@ -116,7 +116,7 @@ function noShiftKey(e) {
     runOperator(assignKey);
   } else if (enterKey) {
     runOperator(enterKey);
-  } else if (opKey) {
+  } else if (opKey) { // when = is pressed, + is not acknowledged becasue assignkey is executed before
     runOperator(opKey);
   } else if (backspaceKey) {
     backspace();

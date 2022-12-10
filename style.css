@@ -1,0 +1,50 @@
+* {
+  box-sizing: border-box;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  width: 460px;
+  height: 560px;
+  border: 1px solid black;
+}
+
+#display-container {
+  display: flex;
+  height: 100px;
+  border: 1px solid blue;
+  margin-top: 30px;
+  margin-left: 8px;
+  margin-right: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#display {
+  flex: 1;  
+  align-self: center;
+  font-size: 80px;
+  border: 1px solid red;
+  
+}
+
+#clear {
+  grid-area: clearArea;
+}
+
+#back {
+  grid-area: backArea;
+}
+
+#buttons-container {
+  flex: 1;
+  display: grid;
+  grid-template-areas: 'clearArea clearArea backArea backArea';
+  grid-gap: 5px;
+  border: 1px solid blue;
+  margin: 8px;
+}
+
