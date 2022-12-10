@@ -32,10 +32,10 @@
 #display {
   flex: 1;  
   align-self: center;
-  font-size: 80px;
+  font-size: 9vh;
   height: 90px;
   border: 1px solid red;
-  
+
 }
 
 #clear {
