@@ -104,7 +104,7 @@ function whichItem(e) {
 }
 
 function withShiftKey(e) {
-  const opKey = document.querySelector(`button[data-opcode="${e.keyCode}"]`);
+  const opKey = document.querySelector(`span[data-opcode="${e.keyCode}"]`);
   runOperator(opKey)
 }
 
