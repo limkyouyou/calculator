@@ -75,41 +75,68 @@
 }
 
 button {
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.btn {
+  all: initial;
+  display: flex;
+}
+
+.btn-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 2.5vh;
   color: #e7e6e6;
   border: none;
   border-radius: 7px;
 }
 
-.digit {
+.btn:focus,
+.btn-content:focus {
+  outline: none;
+}
+
+.btn:focus > .btn-content {
+  box-shadow: 0 0 2px 2px white;
+}
+
+.digit > .btn-content {
   background-color: #494848;
 }
 
-.digit:hover {
+.digit:hover > .btn-content {
   background-color: #363636;
 }
 
-.operator,
-.digit:active {
+.digit:active > .btn-content {
   background-color: #262626;
 }
 
-.operator {
+.operator > .btn-content {
   background-color: #363636;
 }
 
-.operator:hover {
+.operator:hover > .btn-content {
   background-color: #494848;
 }
 
-.operator:active {
+.operator:active > .btn-content {
   background-color: #262626;
 }
 
-.operate {
+.operate > .btn-content {
   background-color: #00564d;
 }
 
-.operate:hover {
+.operate:hover > .btn-content {
   background-color: #00443d;
+}
+
+.operate:active > .btn-content {
+  background-color: #002c28;
 }

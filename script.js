@@ -109,11 +109,11 @@ function withShiftKey(e) {
 }
 
 function noShiftKey(e) {
-  const numKey = document.querySelector(`button[data-numcode="${e.keyCode}"]`);
-  const opKey = document.querySelector(`button[data-opcode="${e.keyCode}"]`);
-  const assignKey = document.querySelector(`button[data-assigncode="${e.keyCode}"]`);
-  const enterKey = document.querySelector(`button[data-entercode="${e.keyCode}"]`);
-  const backspaceKey = document.querySelector(`button[data-backcode="${e.keyCode}"]`);
+  const numKey = document.querySelector(`span[data-numcode="${e.keyCode}"]`);
+  const opKey = document.querySelector(`span[data-opcode="${e.keyCode}"]`);
+  const assignKey = document.querySelector(`span[data-assigncode="${e.keyCode}"]`);
+  const enterKey = document.querySelector(`span[data-entercode="${e.keyCode}"]`);
+  const backspaceKey = document.querySelector(`span[data-backcode="${e.keyCode}"]`);
   if (numKey) {
     storeDisplayNum(numKey);
   } else if (assignKey) {
@@ -128,11 +128,11 @@ function noShiftKey(e) {
 }
 
 function clickItem(e) {
-  const numClick = document.querySelector(`button[data-num="${e.target.dataset.num}"]`);
-  const opClick = document.querySelector(`button[data-op="${e.target.dataset.op}"]`);
-  const assignClick = document.querySelector(`button[data-assigncode="${e.target.dataset.assigncode}"]`);
-  const backClick = document.querySelector(`button[data-backcode="${e.target.dataset.backcode}"]`);
-  const clearClick = document.querySelector(`button[data-escapecode="${e.target.dataset.escapecode}"]`);
+  const numClick = document.querySelector(`span[data-num="${e.target.dataset.num}"]`);
+  const opClick = document.querySelector(`span[data-op="${e.target.dataset.op}"]`);
+  const assignClick = document.querySelector(`span[data-assigncode="${e.target.dataset.assigncode}"]`);
+  const backClick = document.querySelector(`span[data-backcode="${e.target.dataset.backcode}"]`);
+  const clearClick = document.querySelector(`span[data-escapecode="${e.target.dataset.escapecode}"]`);
   if (numClick) {
     storeDisplayNum(numClick);
   } else if (opClick) {
@@ -148,5 +148,5 @@ function clickItem(e) {
 
 
 
-window.addEventListener('mousedown', clickItem);
+window.addEventListener('click', clickItem);
 window.addEventListener('keydown', whichItem);
