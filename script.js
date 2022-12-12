@@ -118,15 +118,14 @@ function noShiftKey(e) {
   if (numKey) {
     storeDisplayNum(numKey);
   } else if (assignKey) {
-    runOperator(assignKey);
+    runOperator(assignKey); // when +/= key is pressed, assignkey(=) parameter is used first 
   } else if (enterKey) {
     runOperator(enterKey); 
     if (activeEl.getAttribute('class') === 'digit btn') {
       const childSpan = activeEl.firstElementChild;
       storeDisplayNum(childSpan);
     }
-    
-  } else if (opKey) { // when = is pressed, + is not acknowledged becasue assignkey is executed before
+  } else if (opKey) { 
     runOperator(opKey);
   } else if (backspaceKey) {
     backspace();
