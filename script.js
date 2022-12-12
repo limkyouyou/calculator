@@ -114,12 +114,18 @@ function noShiftKey(e) {
   const assignKey = document.querySelector(`span[data-assigncode="${e.keyCode}"]`);
   const enterKey = document.querySelector(`span[data-entercode="${e.keyCode}"]`);
   const backspaceKey = document.querySelector(`span[data-backcode="${e.keyCode}"]`);
+  const activeEl = document.activeElement;
   if (numKey) {
     storeDisplayNum(numKey);
   } else if (assignKey) {
     runOperator(assignKey);
   } else if (enterKey) {
-    runOperator(enterKey);
+    runOperator(enterKey); 
+    if (activeEl.getAttribute('class') === 'digit btn') {
+      const childSpan = activeEl.firstElementChild;
+      storeDisplayNum(childSpan);
+    }
+    
   } else if (opKey) { // when = is pressed, + is not acknowledged becasue assignkey is executed before
     runOperator(opKey);
   } else if (backspaceKey) {
