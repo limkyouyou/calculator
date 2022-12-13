@@ -117,7 +117,7 @@ function noShiftKey(e) {
     isDecimalPoint = true;
     storeDisplayNum(symbolKey.dataset.symbol);
   } else if (assignKey) {
-    runOperator(assignKey); // when +/= key is pressed, assignkey(=) parameter is used first 
+    runOperator(); // when +/= key is pressed, assignkey(=) parameter is used first 
   } else if (enterKey) {
     enterKeySwitch(activeEl);
   } else if (opKey) { 
