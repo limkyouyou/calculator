@@ -128,12 +128,12 @@ function noShiftKey(e) {
 }
 
 function enterKeySwitch(activeEl) {
-      if (!activeEl) {
+      if (!activeEl) { // When there is no focus run enterkey as operate
       runOperator(enterKey); 
-    } else if (activeEl.getAttribute('class') === 'digit btn') {
+    } else if (activeEl.getAttribute('class') === 'digit btn') { // when a digit is focused, run enterkey as clicking the focused button
       const childSpan = activeEl.firstElementChild;
       storeDisplayNum(childSpan);
-    } else if (activeEl.getAttribute('class') === 'operator btn' || activeEl.getAttribute('class') === 'operate btn') {
+    } else if (activeEl.getAttribute('class') === 'operator btn' || activeEl.getAttribute('class') === 'operate btn') { // when a operator/operate is focused, run enterkey as clicking the focused button
       const childSpan = activeEl.firstElementChild;
       runOperator(childSpan);
     } 
