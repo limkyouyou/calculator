@@ -79,7 +79,7 @@ function clear() {
 }
 
 function backspace() {
-  isIncludeDecimal(currentNum);
+  isIncludeDecimal(currentNum); // if decimal point is the deletion target , assign isDecimalPoint false
   if (!num2) {
     currentNum = num1.toString().split('');
     currentNum.splice(-1,1);
