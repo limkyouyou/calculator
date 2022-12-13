@@ -39,13 +39,21 @@ function operate(currentOp, num1, num2) {
 }
 
 function storeDisplayNum(selected) {
-  currentNum.push(selected);
+ isFirstZero(currentNum, selected)
   if (!currentOperator) {
     num1 = currentNum.join('');
   } else {
     num2 = currentNum.join('');
   }
   display.textContent = currentNum.join('');
+}
+
+function isFirstZero(array, num) {
+  if (array[0] === undefined && num === '0') {
+    return;
+  } else {
+    currentNum.push(num);
+  }
 }
 
 function runOperator(selected) {
