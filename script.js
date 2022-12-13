@@ -129,7 +129,7 @@ function noShiftKey(e) {
 
 function enterKeySwitch(activeEl) {
       if (!activeEl) { // When there is no focus run enterkey as operate
-      runOperator(enterKey); 
+      runOperator(); 
     } else if (activeEl.getAttribute('class') === 'digit btn') { // when a digit is focused, run enterkey as clicking the focused button
       const childSpan = activeEl.firstElementChild;
       storeDisplayNum(childSpan.dataset.num);
@@ -154,7 +154,7 @@ function clickItem(e) {
   } else if (opClick) {
     runOperator(opClick.dataset.op);
   } else if (assignClick) {
-    runOperator(assignClick.dataset.op);
+    runOperator();
   } else if (backClick) {
     backspace();
   } else if (clearClick) {
