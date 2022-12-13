@@ -145,7 +145,7 @@ function enterKeySwitch(activeEl) {
       clear();
     } else if (activeEl.getAttribute('class') === 'back btn') {
       backspace();
-    } else {
+    } else { // when no activeEL, execute runOperator with no parameter
       runOperator();
     }
 }
