@@ -31,7 +31,7 @@ function operate(currentOp, num1, num2) {
     return add(num1, num2);
   } else if (currentOp === '−') {
     return subtract(num1, num2);
-  } else if (currentOp === 'x') {
+  } else if (currentOp === '×') {
     return multiply(num1, num2);
   } else if (currentOp === '÷' && num2 !== '0') {
     return divide(num1, num2);
