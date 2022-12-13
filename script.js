@@ -67,7 +67,6 @@ function runOperator(selected) {
 
 function confirmClear() {
   const askClear = confirm("Clear all data?");
-  console.log(askClear)
   if (askClear) {
     clear();
   }
@@ -120,16 +119,24 @@ function noShiftKey(e) {
   } else if (assignKey) {
     runOperator(assignKey); // when +/= key is pressed, assignkey(=) parameter is used first 
   } else if (enterKey) {
-    runOperator(enterKey); 
-    if (activeEl.getAttribute('class') === 'digit btn') {
-      const childSpan = activeEl.firstElementChild;
-      storeDisplayNum(childSpan);
-    }
+    enterKeySwitch(activeEl);
   } else if (opKey) { 
     runOperator(opKey);
   } else if (backspaceKey) {
     backspace();
   }
+}
+
+function enterKeySwitch(activeEl) {
+      if (!activeEl) {
+      runOperator(enterKey); 
+    } else if (activeEl.getAttribute('class') === 'digit btn') {
+      const childSpan = activeEl.firstElementChild;
+      storeDisplayNum(childSpan);
+    } else if (activeEl.getAttribute('class') === 'operator btn' || activeEl.getAttribute('class') === 'operate btn') {
+      const childSpan = activeEl.firstElementChild;
+      runOperator(childSpan);
+    } 
 }
 
 function clickItem(e) {
