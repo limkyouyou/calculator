@@ -103,15 +103,18 @@ button {
   box-shadow: 0 0 2px 2px white;
 }
 
-.digit > .btn-content {
+.digit > .btn-content,
+.symbol > .btn-content {
   background-color: #494848;
 }
 
-.digit:hover > .btn-content {
+.digit:hover > .btn-content,
+.symbol:hover > .btn-content {
   background-color: #363636;
 }
 
-.digit:active > .btn-content {
+.digit:active > .btn-content,
+.symbol:active > .btn-content {
   background-color: #262626;
 }
 
