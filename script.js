@@ -49,8 +49,9 @@ function storeDisplayNum(selected) {
 }
 
 function isFirstZero(array, num) {
-  if (array[0] === undefined && num === '0') {
-    return;
+  if (array[0] === '0') {
+    currentNum.splice(0, 1);
+    currentNum.push(num);
   } else {
     currentNum.push(num);
   }
@@ -58,7 +59,7 @@ function isFirstZero(array, num) {
 
 function runOperator(selected) {
     currentOperator = selected;
-    if (previousOperator === '÷' && num2 === 0) {
+    if (previousOperator === '÷' && num2 === '0') {
       currentNum = [];
       alert('This is non sequitur.. ERROR.. ERROR.. Clearing all data...');
       clear();
