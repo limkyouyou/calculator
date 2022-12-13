@@ -60,8 +60,7 @@ function runOperator(selected) {
     currentOperator = selected;
     if (previousOperator === '÷' && num2 === 0) {
       currentNum = [];
-      alert('This is non sequitur.. ERROR.. ERROR.. Self-destruction mode initiated.. 5.. 4.. 3.. 2.. 1..');
-      alert('BOOM!');
+      alert('This is non sequitur.. ERROR.. ERROR.. Clearing all data...');
       clear();
     } else if (previousOperator && num2) {
       DecimalPoint = false;
