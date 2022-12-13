@@ -107,7 +107,9 @@ function whichItem(e) {
 
 function withShiftKey(e) {
   const opKey = document.querySelector(`span[data-opcode="${e.keyCode}"]`);
-  runOperator(opKey.dataset.op)
+  if (opKey) { // run function when opKey exists as to avoid error by running function with null parameter
+    runOperator(opKey.dataset.op);
+  }
 }
 
 function noShiftKey(e) {
