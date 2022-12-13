@@ -66,6 +66,7 @@ function runOperator(selected) {
     } else if (currentOperator) { // when current operator exists, empty currentNum for a new set of number
       isDecimalPoint = false;
       currentNum = [];
+      operationDisplay.textContent = `${num1} ${currentOperator}`
     }
     previousOperator = currentOperator;
   }
