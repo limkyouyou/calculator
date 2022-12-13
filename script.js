@@ -59,6 +59,7 @@ function runOperator(selected) {
       currentNum = [];
       const solution = operate(previousOperator, num1, num2);
       num1 = (+(solution.toFixed(1))).toString(); // make it have one decimal point, when tenths is 0, it is omitted, then turn into a string to work with backspace function
+      isNaN(num1);
       num2 = '';
       display.textContent = num1;
     } else if (currentOperator) { // when current operator exists, empty currentNum for a new set of number
@@ -67,6 +68,12 @@ function runOperator(selected) {
     }
     previousOperator = currentOperator;
   }
+
+function isNaN(solution) {
+  if (solution === 'NaN') {
+    clear();
+  }
+}
 
 function clear() {
     currentNum = [];
