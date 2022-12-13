@@ -48,7 +48,7 @@ function storeDisplayNum(selected) {
 }
 
 function runOperator(selected) {
-    currentOperator = selected.dataset.op;
+    currentOperator = selected;
     if (previousOperator === 'divide' && num2 === 0) {
       currentNum = [];
       alert('This is non sequitur.. ERROR.. ERROR.. Self-destruction mode initiated.. 5.. 4.. 3.. 2.. 1..');
@@ -121,7 +121,7 @@ function noShiftKey(e) {
   } else if (enterKey) {
     enterKeySwitch(activeEl);
   } else if (opKey) { 
-    runOperator(opKey);
+    runOperator(opKey.dataset.op);
   } else if (backspaceKey) {
     backspace();
   }
@@ -132,10 +132,10 @@ function enterKeySwitch(activeEl) {
       runOperator(enterKey); 
     } else if (activeEl.getAttribute('class') === 'digit btn') { // when a digit is focused, run enterkey as clicking the focused button
       const childSpan = activeEl.firstElementChild;
-      storeDisplayNum(childSpan);
+      storeDisplayNum(childSpan.dataset.num);
     } else if (activeEl.getAttribute('class') === 'operator btn' || activeEl.getAttribute('class') === 'operate btn') { // when a operator/operate is focused, run enterkey as clicking the focused button
       const childSpan = activeEl.firstElementChild;
-      runOperator(childSpan);
+      runOperator(childSpan.dataset.op);
     } 
 }
 
@@ -152,9 +152,9 @@ function clickItem(e) {
     isDecimalPoint = true;
     storeDisplayNum(symbolClick.dataset.symbol);
   } else if (opClick) {
-    runOperator(opClick);
+    runOperator(opClick.dataset.op);
   } else if (assignClick) {
-    runOperator(assignClick);
+    runOperator(assignClick.dataset.op);
   } else if (backClick) {
     backspace();
   } else if (clearClick) {
