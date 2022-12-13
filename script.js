@@ -7,6 +7,7 @@ let previousOperator;
 let currentOperator;
 let num1;
 let num2;
+let decimalPoint = false;
 
 function add(num1, num2) {
   return num1 + num2;
