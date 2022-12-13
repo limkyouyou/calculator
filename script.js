@@ -27,13 +27,13 @@ function divide(num1, num2) {
 }
 
 function operate(currentOp, num1, num2) {
-  if (currentOp === 'add') {
+  if (currentOp === '+') {
     return add(num1, num2);
-  } else if (currentOp === 'subtract') {
+  } else if (currentOp === '-') {
     return subtract(num1, num2);
-  } else if (currentOp === 'multiply') {
+  } else if (currentOp === 'x') {
     return multiply(num1, num2);
-  } else if (currentOp === 'divide' && num2 !== '0') {
+  } else if (currentOp === '÷' && num2 !== '0') {
     return divide(num1, num2);
   }
 }
@@ -50,7 +50,7 @@ function storeDisplayNum(selected) {
 
 function runOperator(selected) {
     currentOperator = selected;
-    if (previousOperator === 'divide' && num2 === 0) {
+    if (previousOperator === '÷' && num2 === 0) {
       currentNum = [];
       alert('This is non sequitur.. ERROR.. ERROR.. Self-destruction mode initiated.. 5.. 4.. 3.. 2.. 1..');
       alert('BOOM!');
@@ -189,7 +189,6 @@ function clickItem(e) {
     clear();
   }
 }
-
 
 
 window.addEventListener('click', clickItem);
