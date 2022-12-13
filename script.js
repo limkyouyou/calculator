@@ -100,7 +100,7 @@ function whichItem(e) {
 
 function withShiftKey(e) {
   const opKey = document.querySelector(`span[data-opcode="${e.keyCode}"]`);
-  runOperator(opKey)
+  runOperator(opKey.dataset.op)
 }
 
 function noShiftKey(e) {
