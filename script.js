@@ -79,6 +79,7 @@ function clear() {
 }
 
 function backspace() {
+  isIncludeDecimal(currentNum);
   if (!num2) {
     currentNum = num1.toString().split('');
     currentNum.splice(-1,1);
@@ -88,6 +89,12 @@ function backspace() {
     num2 = +(currentNum.join(''));
   }
   display.textContent = currentNum.join('');
+}
+
+function isIncludeDecimal(numArray) {
+  if (numArray[numArray.length - 1] === '.') {
+    isDecimalPoint = false;
+  }
 }
 
 function whichItem(e) {
