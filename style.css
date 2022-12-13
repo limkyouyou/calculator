@@ -37,19 +37,18 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  height: 14vh;
+  height: 13vh;
   margin-left: 8px;
   margin-right: 8px;
   padding-left: 5px;
   padding-right: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
 }
 
 #display-operation {
   flex: none;
-  color: white;
+  color: #e7e6e6;
   font-size: 3vh;
+  height: 3vh;
 }
 
 #display {
@@ -59,6 +58,7 @@
   overflow: hidden;
   text-overflow: clip;
   color: #e7e6e6;
+  padding-top: 5px;
 }
 
 #clear {

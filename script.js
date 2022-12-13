@@ -29,7 +29,7 @@ function divide(num1, num2) {
 function operate(currentOp, num1, num2) {
   if (currentOp === '+') {
     return add(num1, num2);
-  } else if (currentOp === '-') {
+  } else if (currentOp === '−') {
     return subtract(num1, num2);
   } else if (currentOp === 'x') {
     return multiply(num1, num2);
