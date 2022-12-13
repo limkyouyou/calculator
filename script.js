@@ -105,13 +105,17 @@ function withShiftKey(e) {
 
 function noShiftKey(e) {
   const numKey = document.querySelector(`span[data-numcode="${e.keyCode}"]`);
+  const symbolKey = document.querySelector(`span[data-symbolcode="${e.keyCode}"]`);
   const opKey = document.querySelector(`span[data-opcode="${e.keyCode}"]`);
   const assignKey = document.querySelector(`span[data-assigncode="${e.keyCode}"]`);
   const enterKey = document.querySelector(`span[data-entercode="${e.keyCode}"]`);
   const backspaceKey = document.querySelector(`span[data-backcode="${e.keyCode}"]`);
   const activeEl = document.activeElement; // when there is an active/focused element, assign it to a variable
   if (numKey) {
-    storeDisplayNum(numKey);
+    storeDisplayNum(numKey.dataset.num);
+  } else if (symbolKey && !isDecimalPoint) {
+    isDecimalPoint = true;
+    storeDisplayNum(symbolKey.dataset.symbol);
   } else if (assignKey) {
     runOperator(assignKey); // when +/= key is pressed, assignkey(=) parameter is used first 
   } else if (enterKey) {
