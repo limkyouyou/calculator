@@ -113,7 +113,7 @@ function noShiftKey(e) {
   const assignKey = document.querySelector(`span[data-assigncode="${e.keyCode}"]`);
   const enterKey = document.querySelector(`span[data-entercode="${e.keyCode}"]`);
   const backspaceKey = document.querySelector(`span[data-backcode="${e.keyCode}"]`);
-  const activeEl = document.activeElement;
+  const activeEl = document.activeElement; // when there is an active/focused element, assign it to a variable
   if (numKey) {
     storeDisplayNum(numKey);
   } else if (assignKey) {
