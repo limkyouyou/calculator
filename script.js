@@ -1,5 +1,6 @@
 
 const display = document.querySelector('#display');
+const operationDisplay = document.querySelector('#display-operation');
 
 
 let currentNum =[];
