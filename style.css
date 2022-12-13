@@ -35,8 +35,9 @@
 
 #display-container {
   display: flex;
-  justify-content: flex-end;
-  height: 100px;
+  flex-direction: column;
+  align-items: flex-end;
+  height: 14vh;
   margin-left: 8px;
   margin-right: 8px;
   padding-left: 5px;
@@ -45,11 +46,16 @@
   padding-bottom: 5px;
 }
 
+#display-operation {
+  flex: none;
+  color: white;
+  font-size: 3vh;
+}
+
 #display {
   flex: none;  
-  align-self: center;
   font-size: 9vh;
-  height: 90px;
+  line-height: 9vh;
   overflow: hidden;
   text-overflow: clip;
   color: #e7e6e6;
