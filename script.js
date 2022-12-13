@@ -8,7 +8,7 @@ let previousOperator;
 let currentOperator;
 let num1;
 let num2;
-let isDecimalPoint = false;
+let DecimalPoint = false;
 
 function add(num1, num2) {
   return +(num1) + +(num2);
@@ -64,7 +64,7 @@ function runOperator(selected) {
       alert('BOOM!');
       clear();
     } else if (previousOperator && num2) {
-      isDecimalPoint = false;
+      DecimalPoint = false;
       operationDisplay.textContent += ` ${num2} = `;
       currentNum = [];
       const solution = operate(previousOperator, num1, num2);
@@ -73,7 +73,7 @@ function runOperator(selected) {
       num2 = '';
       display.textContent = num1;
     } else if (currentOperator) { // when current operator exists, empty currentNum for a new set of number
-      isDecimalPoint = false;
+      DecimalPoint = false;
       operationDisplay.textContent = `${num1} ${currentOperator}`;
       currentNum = [];
     }
@@ -94,7 +94,7 @@ function clear() {
     previousOperator = '';
     display.textContent = '';
     operationDisplay.textContent = '';
-    isDecimalPoint = false;
+    DecimalPoint = false;
 }
 
 function backspace() {
@@ -112,11 +112,11 @@ function backspace() {
 
 function isIncludeDecimal(numArray) {
   if (numArray[numArray.length - 1] === '.') {
-    isDecimalPoint = false;
+    DecimalPoint = false;
   }
 }
 
-function whichItem(e) {
+function whichKey(e) {
   if (e.shiftKey) {
     withShiftKey(e);
   } else {
@@ -141,8 +141,8 @@ function noShiftKey(e) {
   const activeEl = document.activeElement; // when there is an active/focused element, assign it to a variable
   if (numKey) {
     storeDisplayNum(numKey.dataset.num);
-  } else if (symbolKey && !isDecimalPoint) {
-    isDecimalPoint = true;
+  } else if (symbolKey && !DecimalPoint) {
+    DecimalPoint = true;
     storeDisplayNum(symbolKey.dataset.symbol);
   } else if (assignKey) {
     runOperator(); // when +/= key is pressed, assignkey(=) parameter is used first 
@@ -160,7 +160,7 @@ function enterKeySwitch(activeEl) {
       const childSpan = activeEl.firstElementChild;
       storeDisplayNum(childSpan.dataset.num);
     } else if (activeEl.getAttribute('class') === 'symbol btn') {
-      isDecimalPoint = true;
+      DecimalPoint = true;
       const childSpan = activeEl.firstElementChild;
       storeDisplayNum(childSpan.dataset.symbol);
     } else if (
@@ -178,7 +178,7 @@ function enterKeySwitch(activeEl) {
     }
 }
 
-function clickItem(e) {
+function clickBtn(e) {
   const numClick = document.querySelector(`span[data-num="${e.target.dataset.num}"]`);
   const symbolClick = document.querySelector(`span[data-symbol="${e.target.dataset.symbol}"]`);
   const opClick = document.querySelector(`span[data-op="${e.target.dataset.op}"]`);
@@ -187,8 +187,8 @@ function clickItem(e) {
   const clearClick = document.querySelector(`span[data-escapecode="${e.target.dataset.escapecode}"]`);
   if (numClick) {
     storeDisplayNum(numClick.dataset.num);
-  } else if (symbolClick && isDecimalPoint === false) {
-    isDecimalPoint = true;
+  } else if (symbolClick && DecimalPoint === false) {
+    DecimalPoint = true;
     storeDisplayNum(symbolClick.dataset.symbol);
   } else if (opClick) {
     runOperator(opClick.dataset.op);
@@ -202,5 +202,5 @@ function clickItem(e) {
 }
 
 
-window.addEventListener('click', clickItem);
-window.addEventListener('keydown', whichItem);
+window.addEventListener('click', clickBtn);
+window.addEventListener('keydown', whichKey);
