@@ -65,13 +65,6 @@ function runOperator(selected) {
     previousOperator = currentOperator;
   }
 
-function confirmClear() {
-  const askClear = confirm("Clear all data?");
-  if (askClear) {
-    clear();
-  }
-}
-
 function clear() {
     currentNum = [];
     num1 = '';
@@ -79,7 +72,6 @@ function clear() {
     currentOperator = '';
     previousOperator = '';
     display.textContent = '';
-    alert("Data cleared");
 }
 
 function backspace() {
@@ -154,7 +146,7 @@ function clickItem(e) {
   } else if (backClick) {
     backspace();
   } else if (clearClick) {
-    confirmClear();
+    clear();
   }
 }
 
