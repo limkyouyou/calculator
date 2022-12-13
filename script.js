@@ -58,9 +58,9 @@ function runOperator(selected) {
       isDecimalPoint = false;
       currentNum = [];
       const solution = operate(previousOperator, num1, num2);
-      num1 = solution;
+      num1 = (+(solution.toFixed(1))).toString();
       num2 = '';
-      display.textContent = +(num1.toFixed(1));
+      display.textContent = num1;
     } else if (currentOperator) { // when current operator exists, empty currentNum for a new set of number
       isDecimalPoint = false;
       currentNum = [];
@@ -81,7 +81,6 @@ function clear() {
 function backspace() {
   isIncludeDecimal(currentNum); // if decimal point is the deletion target , assign isDecimalPoint false
   if (!num2) {
-    console.log(num1)
     currentNum = num1.split('');
     currentNum.splice(-1,1);
     num1 = currentNum.join('');
