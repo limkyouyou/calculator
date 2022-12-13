@@ -131,7 +131,10 @@ function enterKeySwitch(activeEl) {
     if (activeEl.getAttribute('class') === 'digit btn') { // when a digit is focused, run enterkey as clicking the focused button
       const childSpan = activeEl.firstElementChild;
       storeDisplayNum(childSpan.dataset.num);
-    } else if (activeEl.getAttribute('class') === 'operator btn' || activeEl.getAttribute('class') === 'operate btn') { // when a operator/operate is focused, run enterkey as clicking the focused button
+    } else if (
+      activeEl.getAttribute('class') === 'operator btn' ||
+      activeEl.getAttribute('class') === 'operate btn'
+      ) { // when a operator/operate is focused, run enterkey as clicking the focused button
       const childSpan = activeEl.firstElementChild;
       runOperator(childSpan.dataset.op);
     } else {
