@@ -7,7 +7,7 @@ let previousOperator;
 let currentOperator;
 let num1;
 let num2;
-let decimalPoint = false;
+let isDecimalPoint = false;
 
 function add(num1, num2) {
   return num1 + num2;
@@ -38,7 +38,7 @@ function operate(currentOp, num1, num2) {
 }
 
 function storeDisplayNum(selected) {
-  currentNum.push(selected.dataset.num);
+  currentNum.push(selected);
   if (!currentOperator) {
     num1 = +(currentNum.join(''));
   } else {
@@ -55,12 +55,14 @@ function runOperator(selected) {
       alert('BOOM!');
       clear();
     } else if (previousOperator && num2) {
+      isDecimalPoint = false;
       currentNum = [];
       const solution = operate(previousOperator, num1, num2);
       num1 = solution;
       num2 = '';
       display.textContent = +(num1.toFixed(1));
     } else if (currentOperator) { // when current operator exists, empty currentNum for a new set of number
+      isDecimalPoint = false;
       currentNum = [];
     }
     previousOperator = currentOperator;
@@ -73,6 +75,7 @@ function clear() {
     currentOperator = '';
     previousOperator = '';
     display.textContent = '';
+    isDecimalPoint = false;
 }
 
 function backspace() {
@@ -134,12 +137,16 @@ function enterKeySwitch(activeEl) {
 
 function clickItem(e) {
   const numClick = document.querySelector(`span[data-num="${e.target.dataset.num}"]`);
+  const symbolClick = document.querySelector(`span[data-symbol="${e.target.dataset.symbol}"]`);
   const opClick = document.querySelector(`span[data-op="${e.target.dataset.op}"]`);
   const assignClick = document.querySelector(`span[data-assigncode="${e.target.dataset.assigncode}"]`);
   const backClick = document.querySelector(`span[data-backcode="${e.target.dataset.backcode}"]`);
   const clearClick = document.querySelector(`span[data-escapecode="${e.target.dataset.escapecode}"]`);
   if (numClick) {
-    storeDisplayNum(numClick);
+    storeDisplayNum(numClick.dataset.num);
+  } else if (symbolClick && isDecimalPoint === false) {
+    isDecimalPoint = true;
+    storeDisplayNum(symbolClick.dataset.symbol);
   } else if (opClick) {
     runOperator(opClick);
   } else if (assignClick) {
