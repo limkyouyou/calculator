@@ -57,6 +57,7 @@ function runOperator(selected) {
       clear();
     } else if (previousOperator && num2) {
       isDecimalPoint = false;
+      operationDisplay.textContent += ` ${num2} = `;
       currentNum = [];
       const solution = operate(previousOperator, num1, num2);
       num1 = (+(solution.toFixed(1))).toString(); // make it have one decimal point, when tenths is 0, it is omitted, then turn into a string to work with backspace function
@@ -65,8 +66,8 @@ function runOperator(selected) {
       display.textContent = num1;
     } else if (currentOperator) { // when current operator exists, empty currentNum for a new set of number
       isDecimalPoint = false;
+      operationDisplay.textContent = `${num1} ${currentOperator}`;
       currentNum = [];
-      operationDisplay.textContent = `${num1} ${currentOperator}`
     }
     previousOperator = currentOperator;
   }
@@ -84,6 +85,7 @@ function clear() {
     currentOperator = '';
     previousOperator = '';
     display.textContent = '';
+    operationDisplay.textContent = '';
     isDecimalPoint = false;
 }
 
