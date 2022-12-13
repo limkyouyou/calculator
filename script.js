@@ -64,17 +64,17 @@ function runOperator(selected) {
       alert('This is non sequitur.. ERROR.. ERROR.. Clearing all data...');
       clear();
     } else if (previousOperator && num2) {
-      DecimalPoint = false;
-      operationDisplay.textContent += ` ${num2} = `;
-      currentNum = [];
       const solution = operate(previousOperator, num1, num2);
       num1 = (+(solution.toFixed(1))).toString(); // make it have one decimal point, when tenths is 0, it is omitted, then turn into a string to work with backspace function
       isNaN(num1);
-      num2 = '';
       display.textContent = num1;
-    } else if (currentOperator) { // when current operator exists, empty currentNum for a new set of number
+      operationDisplay.textContent += ` ${num2} = `;
       DecimalPoint = false;
+      currentNum = [];
+      num2 = '';
+    } else if (currentOperator) { // when current operator exists, empty currentNum for a new set of number
       operationDisplay.textContent = `${num1} ${currentOperator}`;
+      DecimalPoint = false;
       currentNum = [];
     }
     previousOperator = currentOperator;
