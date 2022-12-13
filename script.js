@@ -10,19 +10,19 @@ let num2;
 let isDecimalPoint = false;
 
 function add(num1, num2) {
-  return num1 + num2;
+  return +(num1) + +(num2);
 }
 
 function subtract(num1, num2) {
-  return num1 - num2;
+  return +(num1) - +(num2);
 }
 
 function multiply(num1, num2) {
-  return num1 * num2;
+  return +(num1) * +(num2);
 }
 
 function divide(num1, num2) {
-  return num1/num2;
+  return +(num1) / +(num2);
 }
 
 function operate(currentOp, num1, num2) {
@@ -40,9 +40,9 @@ function operate(currentOp, num1, num2) {
 function storeDisplayNum(selected) {
   currentNum.push(selected);
   if (!currentOperator) {
-    num1 = +(currentNum.join(''));
+    num1 = currentNum.join('');
   } else {
-    num2 = +(currentNum.join(''));
+    num2 = currentNum.join('');
   }
   display.textContent = currentNum.join('');
 }
@@ -81,12 +81,13 @@ function clear() {
 function backspace() {
   isIncludeDecimal(currentNum); // if decimal point is the deletion target , assign isDecimalPoint false
   if (!num2) {
-    currentNum = num1.toString().split('');
+    console.log(num1)
+    currentNum = num1.split('');
     currentNum.splice(-1,1);
-    num1 = +(currentNum.join(''));
+    num1 = currentNum.join('');
   } else {
     currentNum.splice(-1,1);
-    num2 = +(currentNum.join(''));
+    num2 = currentNum.join('');
   }
   display.textContent = currentNum.join('');
 }
