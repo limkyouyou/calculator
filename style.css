@@ -118,15 +118,21 @@ button {
   background-color: #262626;
 }
 
-.operator > .btn-content {
+.operator > .btn-content,
+.clear > .btn-content,
+.back > .btn-content {
   background-color: #363636;
 }
 
-.operator:hover > .btn-content {
+.operator:hover > .btn-content,
+.clear:hover > .btn-content,
+.back:hover > .btn-content {
   background-color: #494848;
 }
 
-.operator:active > .btn-content {
+.operator:active > .btn-content,
+.clear:active > .btn-content,
+.back:active > .btn-content {
   background-color: #262626;
 }
 

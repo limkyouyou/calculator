@@ -141,6 +141,10 @@ function enterKeySwitch(activeEl) {
       ) { // when a operator/operate is focused, run enterkey as clicking the focused button
       const childSpan = activeEl.firstElementChild;
       runOperator(childSpan.dataset.op);
+    } else if (activeEl.getAttribute('class') === 'clear btn') {
+      clear();
+    } else if (activeEl.getAttribute('class') === 'back btn') {
+      backspace();
     } else {
       runOperator();
     }
