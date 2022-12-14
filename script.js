@@ -39,16 +39,19 @@ function operate(currentOp, num1, num2) {
 }
 
 function storeDisplay(selected) {
- isFirstZero(currentNum, selected)
+ isFirstNumZero(currentNum, selected)
   if (!currentOperator) {
     num1 = currentNum.join('');
+  } else if (currentOperator && !num2) {
+    previousOperator = currentOperator;
+    num2 = currentNum.join('');
   } else {
     num2 = currentNum.join('');
   }
   display.textContent = currentNum.join('');
 }
 
-function isFirstZero(array, num) {
+function isFirstNumZero(array, num) {
   if (array[0] === '0') {
     currentNum.splice(0, 1);
     currentNum.push(num);
@@ -72,12 +75,12 @@ function runOperator(selected) {
       DecimalPoint = false;
       currentNum = [];
       num2 = '';
+      previousOperator = '';
     } else if (currentOperator) { // when current operator exists, empty currentNum for a new set of number
       operationDisplay.textContent = `${num1} ${currentOperator}`;
       DecimalPoint = false;
       currentNum = [];
     }
-    previousOperator = currentOperator;
   }
 
 function isNaN(solution) {
@@ -99,7 +102,7 @@ function clear() {
 
 function backspace() {
   isIncludeDecimal(currentNum); // if decimal point is the deletion target , assign isDecimalPoint false
-  if (!num2) {
+  if (!num2 && !previousOperator) {
     currentNum = num1.split('');
     currentNum.splice(-1,1);
     num1 = currentNum.join('');
