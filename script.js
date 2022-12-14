@@ -2,13 +2,14 @@
 const display = document.querySelector('#display');
 const operationDisplay = document.querySelector('#display-operation');
 
-
-let currentNum =[];
+let currentNum =['0'];
 let previousOperator;
 let currentOperator;
-let num1;
+let num1 = '0';
 let num2;
 let DecimalPoint = false;
+
+display.textContent = num1;
 
 function add(num1, num2) {
   return +(num1) + +(num2);
@@ -52,7 +53,7 @@ function storeDisplay(selected) {
 }
 
 function isFirstNumZero(array, num) {
-  if (array[0] === '0') {
+  if (array[0] === '0' && array.length === 1 && num !== '.') {
     currentNum.splice(0, 1);
     currentNum.push(num);
   } else {
@@ -91,12 +92,12 @@ function isNaN(solution) {
 }
 
 function clear() {
-    currentNum = [];
-    num1 = '';
+    currentNum = ['0'];
+    num1 = currentNum[0];
     num2 = '';
     currentOperator = '';
     previousOperator = '';
-    display.textContent = '';
+    display.textContent = num1;
     operationDisplay.textContent = '';
     DecimalPoint = false;
 }
