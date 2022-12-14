@@ -65,7 +65,12 @@ function runOperator(selected) {
       currentNum = [];
       alert('This is non sequitur.. ERROR.. ERROR.. Clearing all data...');
       clear();
-    } else if (previousOperator && num2) {
+    } else if (num1 && !num2) {
+      currentOperator = selected;
+      operationDisplay.textContent = `${num1} ${currentOperator}`;
+      DecimalPoint = false;
+      currentNum = [];
+    } else if (num1 && num2) {
       const solution = operate(previousOperator, num1, num2);
       num1 = (+(solution.toFixed(1))).toString(); // make it have one decimal point, when tenths is 0, it is omitted, then turn into a string to work with backspace function
       isNaN(num1);
@@ -76,11 +81,6 @@ function runOperator(selected) {
       num2 = '';
       previousOperator = '';
       currentOperator = '';
-    } else if (num1) {
-      currentOperator = selected;
-      operationDisplay.textContent = `${num1} ${currentOperator}`;
-      DecimalPoint = false;
-      currentNum = [];
     }
   }
 
