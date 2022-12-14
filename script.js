@@ -63,7 +63,7 @@ function isFirstNumZero(array, num) {
 function runOperator(selected) {
     if (previousOperator === '÷' && num2 === '0') {
       currentNum = [];
-      alert("Non sequitur. There's no logic in division by zero.. \nMust analyze...ana..l..y..ze...");
+      alert("Non sequitur. There's no logic in division by zero.. Must analyze...ana..l..y..ze...");
       clear();
     } else if (num1 && !num2) {
       currentOperator = selected;
