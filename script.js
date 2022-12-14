@@ -38,7 +38,7 @@ function operate(currentOp, num1, num2) {
   }
 }
 
-function storeDisplayNum(selected) {
+function storeDisplay(selected) {
  isFirstZero(currentNum, selected)
   if (!currentOperator) {
     num1 = currentNum.join('');
@@ -140,10 +140,10 @@ function noShiftKey(e) {
   const backspaceKey = document.querySelector(`span[data-backcode="${e.keyCode}"]`);
   const activeEl = document.activeElement; // when there is an active/focused element, assign it to a variable
   if (numKey) {
-    storeDisplayNum(numKey.dataset.num);
+    storeDisplay(numKey.dataset.num);
   } else if (symbolKey && !DecimalPoint) {
     DecimalPoint = true;
-    storeDisplayNum(symbolKey.dataset.symbol);
+    storeDisplay(symbolKey.dataset.symbol);
   } else if (assignKey) {
     runOperator(); // when +/= key is pressed, assignkey(=) parameter is used first 
   } else if (enterKey) {
@@ -158,11 +158,11 @@ function noShiftKey(e) {
 function enterKeySwitch(activeEl) {
     if (activeEl.getAttribute('class') === 'digit btn') { // when a digit is focused, run enterkey as clicking the focused button
       const childSpan = activeEl.firstElementChild;
-      storeDisplayNum(childSpan.dataset.num);
+      storeDisplay(childSpan.dataset.num);
     } else if (activeEl.getAttribute('class') === 'symbol btn') {
       DecimalPoint = true;
       const childSpan = activeEl.firstElementChild;
-      storeDisplayNum(childSpan.dataset.symbol);
+      storeDisplay(childSpan.dataset.symbol);
     } else if (
       activeEl.getAttribute('class') === 'operator btn' ||
       activeEl.getAttribute('class') === 'operate btn'
@@ -186,10 +186,10 @@ function clickBtn(e) {
   const backClick = document.querySelector(`span[data-backcode="${e.target.dataset.backcode}"]`);
   const clearClick = document.querySelector(`span[data-escapecode="${e.target.dataset.escapecode}"]`);
   if (numClick) {
-    storeDisplayNum(numClick.dataset.num);
+    storeDisplay(numClick.dataset.num);
   } else if (symbolClick && DecimalPoint === false) {
     DecimalPoint = true;
-    storeDisplayNum(symbolClick.dataset.symbol);
+    storeDisplay(symbolClick.dataset.symbol);
   } else if (opClick) {
     runOperator(opClick.dataset.op);
   } else if (assignClick) {
