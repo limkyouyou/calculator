@@ -8,30 +8,61 @@
   box-sizing: border-box;
 }
 
-#container {
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-  height: 630px;
-  background-color: #282828;
-  border-radius: 7px;
+body {
+  margin: 0;
 }
 
-#header-container {
+#web-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#calc-container {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+#calculator {
+  display: flex;
+  flex-direction: column;
+  min-width: 400px;
+  min-height: 600px;;
+  background-color: #282828;
+  border-radius: 7px;
+  padding: 2px;
+}
+
+#footer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2vh;
+  font-size: 2.7vh;
+}
+
+#footer-container {
+  display: flex;
+}
+
+#title-container {
   display: flex;
   align-items: center;
 }
 
 #image-container {
   padding-top: 12px;
-  padding-left: 25px;
-  padding-right: 18px;
+  padding-left: 20px;
+  padding-right: 10px;
   padding-bottom: 9px;
 }
 
-#header {
+#title {
   color: #e7e6e6;
-  font-size: 16px;
+  font-size: 2vh;
+  padding-bottom: 1px;
 }
 
 #display-container {
@@ -93,7 +124,6 @@ button {
   align-items: center;
   font-size: 2.5vh;
   color: #e7e6e6;
-  border: none;
   border-radius: 7px;
 }
 
@@ -103,7 +133,7 @@ button {
 }
 
 .btn:focus > .btn-content {
-  box-shadow: 0 0 2px 2px white;
+  box-shadow: 0 0 2px 2px #e7e6e6;
 }
 
 .digit > .btn-content,

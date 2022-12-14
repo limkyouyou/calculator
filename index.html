@@ -9,110 +9,121 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="container">
-    <div id="header-container">
-      <div id="image-container">
-        <img src="calculator.png" alt="Calculator logo" width="20px" height="20px">
+  <div id="web-container">
+    <div id="calc-container">
+      <div id="calculator">
+        <div id="title-container">
+          <div id="image-container">
+            <img src="calculator.png" alt="Calculator logo" width="20px" height="20px">
+          </div>
+          <h3 id="title">Calculator</h3>
+        </div>
+        <div id="display-container">
+          <div id="display-operation"></div>
+          <div id="display-border">
+            <div id="display"></div>
+          </div>
+        </div>
+        <div id="buttons-container">
+          <button id="clear" class="clear btn">
+            <span data-escapecode="27" class="btn-content" tabindex="-1">
+              C
+            </span>  
+          </button>
+          <button id="back" class="back btn">
+            <span data-backcode="8"class="btn-content" tabindex="-1">
+              &#8592;
+            </span>
+          </button>
+          <button class="digit btn">
+            <span data-numcode="55" data-num="7" class="btn-content" tabindex="-1">
+              7
+            </span>
+          </button>
+          <button class="digit btn">
+            <span data-numcode="56" data-num="8" class="btn-content" tabindex="-1">
+              8
+            </span>
+          </button>
+          <button class="digit btn">
+            <span data-numcode="57" data-num="9" class="btn-content" tabindex="-1">
+              9
+            </span>
+          </button>
+          <button class="operator btn">
+            <span data-opcode="191" data-op="÷" class="btn-content" tabindex="-1">
+              &divide;
+            </span>
+          </button>
+          <button class="digit btn">
+            <span data-numcode="52" data-num="4" class="btn-content" tabindex="-1">
+              4
+            </span>  
+          </button>
+          <button class="digit btn">
+            <span data-numcode="53" data-num="5" class="btn-content" tabindex="-1">
+              5
+            </span>
+          </button>
+          <button class="digit btn">
+            <span data-numcode="54" data-num="6" class="btn-content" tabindex="-1">
+              6
+            </span>  
+          </button>
+          <button class="operator btn">
+            <span data-opcode="56" data-op="×" class="btn-content" tabindex="-1">
+              x
+            </span>
+          </button>
+          <button class="digit btn">
+            <span data-numcode="49" data-num="1" class="btn-content" tabindex="-1">
+              1
+            </span>
+          </button>
+          <button class="digit btn">
+            <span data-numcode="50" data-num="2" class="btn-content" tabindex="-1">
+              2
+            </span>
+          </button>
+          <button class="digit btn">
+            <span data-numcode="51" data-num="3" class="btn-content" tabindex="-1">
+              3
+            </span>
+          </button>
+          <button class="operator btn">
+            <span data-opcode="189" data-op="−" class="btn-content" tabindex="-1">
+              −
+            </span>
+          </button>
+          <button class="symbol btn">
+            <span data-symbolcode="190" data-symbol="." class="btn-content" tabindex="-1">
+              .
+            </span>
+          </button>
+          <button class="digit btn">
+            <span data-numcode="48" data-num="0" class="btn-content" tabindex="-1">
+              0
+            </span>
+          </button>
+          <button class="operate btn">
+            <span data-assigncode="187" data-entercode="13" class="btn-content" tabindex="-1">
+              =
+            </span>
+          </button>
+          <button class="operator btn">
+            <span data-opcode="187" data-op="+" class="btn-content" tabindex="-1">
+              +
+            </span>
+          </button>
+        </div>
       </div>
-      <h3 id="header">Calculator</h3>
     </div>
-    <div id="display-container">
-      <div id="display-operation"></div>
-      <div id="display-border">
-        <div id="display"></div>
+    <div id="footer">
+      <div id="footer-container">
+        <div id="copyright">© 2022&nbsp;</div>
+        <img id="github-logo" src="github-mark.png" alt="github logo" width="24vw" height="24vh">
+        <div id="name">&nbsp;limkyouyou</div>
       </div>
-    </div>
-    <div id="buttons-container">
-      <button id="clear" class="clear btn">
-        <span data-escapecode="27" class="btn-content" tabindex="-1">
-          C
-        </span>  
-      </button>
-      <button id="back" class="back btn">
-        <span data-backcode="8"class="btn-content" tabindex="-1">
-          &#8592;
-        </span>
-      </button>
-      <button class="digit btn">
-        <span data-numcode="55" data-num="7" class="btn-content" tabindex="-1">
-          7
-        </span>
-      </button>
-      <button class="digit btn">
-        <span data-numcode="56" data-num="8" class="btn-content" tabindex="-1">
-          8
-        </span>
-      </button>
-      <button class="digit btn">
-        <span data-numcode="57" data-num="9" class="btn-content" tabindex="-1">
-          9
-        </span>
-      </button>
-      <button class="operator btn">
-        <span data-opcode="191" data-op="÷" class="btn-content" tabindex="-1">
-          &divide;
-        </span>
-      </button>
-      <button class="digit btn">
-        <span data-numcode="52" data-num="4" class="btn-content" tabindex="-1">
-          4
-        </span>  
-      </button>
-      <button class="digit btn">
-        <span data-numcode="53" data-num="5" class="btn-content" tabindex="-1">
-          5
-        </span>
-      </button>
-      <button class="digit btn">
-        <span data-numcode="54" data-num="6" class="btn-content" tabindex="-1">
-          6
-        </span>  
-      </button>
-      <button class="operator btn">
-        <span data-opcode="56" data-op="×" class="btn-content" tabindex="-1">
-          x
-        </span>
-      </button>
-      <button class="digit btn">
-        <span data-numcode="49" data-num="1" class="btn-content" tabindex="-1">
-          1
-        </span>
-      </button>
-      <button class="digit btn">
-        <span data-numcode="50" data-num="2" class="btn-content" tabindex="-1">
-          2
-        </span>
-      </button>
-      <button class="digit btn">
-        <span data-numcode="51" data-num="3" class="btn-content" tabindex="-1">
-          3
-        </span>
-      </button>
-      <button class="operator btn">
-        <span data-opcode="189" data-op="−" class="btn-content" tabindex="-1">
-          -
-        </span>
-      </button>
-      <button class="symbol btn">
-        <span data-symbolcode="190" data-symbol="." class="btn-content" tabindex="-1">
-          .
-        </span>
-      </button>
-      <button class="digit btn">
-        <span data-numcode="48" data-num="0" class="btn-content" tabindex="-1">
-          0
-        </span>
-      </button>
-      <button class="operate btn">
-        <span data-assigncode="187" data-entercode="13" class="btn-content" tabindex="-1">
-          =
-        </span>
-      </button>
-      <button class="operator btn">
-        <span data-opcode="187" data-op="+" class="btn-content" tabindex="-1">
-          +
-        </span>
-      </button>
     </div>
   </div>
 </body>
