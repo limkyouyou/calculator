@@ -61,7 +61,6 @@ function isFirstNumZero(array, num) {
 }
 
 function runOperator(selected) {
-    currentOperator = selected;
     if (previousOperator === '÷' && num2 === '0') {
       currentNum = [];
       alert('This is non sequitur.. ERROR.. ERROR.. Clearing all data...');
@@ -76,7 +75,9 @@ function runOperator(selected) {
       currentNum = [];
       num2 = '';
       previousOperator = '';
-    } else if (currentOperator) { // when current operator exists, empty currentNum for a new set of number
+      currentOperator = '';
+    } else if (num1) {
+      currentOperator = selected;
       operationDisplay.textContent = `${num1} ${currentOperator}`;
       DecimalPoint = false;
       currentNum = [];
