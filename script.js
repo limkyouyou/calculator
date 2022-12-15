@@ -5,7 +5,7 @@ const operationDisplay = document.querySelector('#display-operation');
 let currentNum =['0'];
 let previousOperator;
 let currentOperator;
-let num1 = '0';
+let num1 = currentNum[0];
 let num2;
 let DecimalPoint = false;
 
@@ -70,7 +70,7 @@ function isFirstNumZero(array, num) {
 function runOperator(selected) {
     if (previousOperator === '÷' && num2 === '0') {
       currentNum = [];
-      alert("Non sequitur. There's no logic to division by zero.. Must analyze...ana..l..y..ze...");
+      alert("Non sequitur. There's no logic to division by zero.. \nMust analyze...ana..l..y..ze...");
       clear();
     } else if (num1 && !num2 && selected) {
       currentOperator = selected;
@@ -78,14 +78,12 @@ function runOperator(selected) {
       DecimalPoint = false;
       currentNum = [];
     } else if (num1 && !num2 && !selected) {
-      currentOperator = selected;
       operationDisplay.textContent = `${num1} = `;
       DecimalPoint = false;
       currentNum = [];
     } else if (num2) {
       const solution = operate(previousOperator, num1, num2);
       num1 = (+(solution.toFixed(1))).toString(); // make it have one decimal point, when tenths is 0, it is omitted, then turn into a string to work with backspace function
-      isNaN(num1);
       display.textContent = num1;
       operationDisplay.textContent += ` ${num2} = `;
       DecimalPoint = false;
@@ -95,12 +93,6 @@ function runOperator(selected) {
       currentOperator = '';
     }
   }
-
-function isNaN(solution) {
-  if (solution === 'NaN') {
-    clear();
-  }
-}
 
 function clear() {
     currentNum = ['0'];
