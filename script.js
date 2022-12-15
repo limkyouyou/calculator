@@ -3,6 +3,34 @@ const display = document.querySelector('#display');
 const operationDisplay = document.querySelector('#display-operation');
 
 
+function add(num1, num2) {
+  return +(num1) + +(num2);
+}
+
+function subtract(num1, num2) {
+  return +(num1) - +(num2);
+}
+
+function multiply(num1, num2) {
+  return +(num1) * +(num2);
+}
+
+function divide(num1, num2) {
+  return +(num1) / +(num2);
+}
+
+function operate(currentOp, num1, num2) {
+  if (currentOp === '+') {
+    return add(num1, num2);
+  } else if (currentOp === '−') {
+    return subtract(num1, num2);
+  } else if (currentOp === '×') {
+    return multiply(num1, num2);
+  } else if (currentOp === '÷' && num2 !== '0') {
+    return divide(num1, num2);
+  }
+}
+
 
 function whichKey(e) {
   if (e.shiftKey) {
