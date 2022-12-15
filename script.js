@@ -70,11 +70,16 @@ function isFirstNumZero(array, num) {
 function runOperator(selected) {
     if (previousOperator === '÷' && num2 === '0') {
       currentNum = [];
-      alert("Non sequitur. There's no logic inconsole.log(array)vision by zero.. Must analyze...ana..l..y..ze...");
+      alert("Non sequitur. There's no logic to division by zero.. Must analyze...ana..l..y..ze...");
       clear();
-    } else if (num1 && !num2) {
+    } else if (num1 && !num2 && selected) {
       currentOperator = selected;
       operationDisplay.textContent = `${num1} ${currentOperator}`;
+      DecimalPoint = false;
+      currentNum = [];
+    } else if (num1 && !num2 && !selected) {
+      currentOperator = selected;
+      operationDisplay.textContent = `${num1} = `;
       DecimalPoint = false;
       currentNum = [];
     } else if (num2) {
