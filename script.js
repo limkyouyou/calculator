@@ -40,7 +40,7 @@ function operate(currentOp, num1, num2) {
 }
 
 function storeDisplay(selected) {
- isFirstNumZero(currentNum, selected)
+ currentNum = isFirstNumZero(currentNum, selected)
   if (!currentOperator) {
     num1 = currentNum.join('');
   } else if (currentOperator && !num2) {
@@ -54,17 +54,23 @@ function storeDisplay(selected) {
 
 function isFirstNumZero(array, num) {
   if (array[0] === '0' && array.length === 1 && num !== '.') {
-    currentNum.splice(0, 1);
-    currentNum.push(num);
+    array.splice(0, 1);
+    array.push(num);
+    return array;
+  } else if (array.length === 0 && num === '.') {
+    array = [0];
+    array.push(num);
+    return array;
   } else {
-    currentNum.push(num);
+    array.push(num);
+    return array;
   }
 }
 
 function runOperator(selected) {
     if (previousOperator === '÷' && num2 === '0') {
       currentNum = [];
-      alert("Non sequitur. There's no logic in division by zero.. Must analyze...ana..l..y..ze...");
+      alert("Non sequitur. There's no logic inconsole.log(array)vision by zero.. Must analyze...ana..l..y..ze...");
       clear();
     } else if (num1 && !num2) {
       currentOperator = selected;
