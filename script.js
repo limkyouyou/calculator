@@ -107,17 +107,20 @@ function clear() {
     DecimalPoint = false;
 }
 
-function backspace() {
-  isIncludeDecimal(currentNum); // if decimal point is the deletion target , assign isDecimalPoint false
-  if (!num2 && !previousOperator) {
-    currentNum = num1.split('');
-    currentNum.splice(-1,1);
-    num1 = currentNum.join('');
+function backspace(array, firstNum, secondNum, prevOp) {
+  isIncludeDecimal(array); // if decimal point is the deletion target , assign isDecimalPoint false
+  if (!secondNum && !prevOp) {
+    array = firstNum.split('');
+    array.splice(-1,1);
+    firstNum = array.join('');
+    num1 = firstNum
   } else {
-    currentNum.splice(-1,1);
-    num2 = currentNum.join('');
+    array.splice(-1,1);
+    secondNum = array.join('');
+    num2 = secondNum
   }
-  display.textContent = currentNum.join('');
+  currentNum = array
+  display.textContent = array.join('');
 }
 
 function isIncludeDecimal(numArray) {
@@ -161,7 +164,7 @@ function noShiftKey(e) {
   } else if (opKey) { 
     runOperator(opKey.dataset.op);
   } else if (backspaceKey) {
-    backspace();
+    backspace(currentNum, num1, num2, previousOperator);
   }
 }
 
@@ -182,7 +185,7 @@ function enterKeySwitch(activeEl) {
     } else if (activeEl.getAttribute('class') === 'clear btn') {
       clear();
     } else if (activeEl.getAttribute('class') === 'back btn') {
-      backspace();
+      backspace(currentNum, num1, num2, previousOperator);
     } else { // when no activeEL, execute runOperator with no parameter
       runOperator();
     }
