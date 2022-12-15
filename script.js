@@ -73,19 +73,20 @@ function runOperator(selected) {
       alert("Non sequitur. There's no logic to division by zero.. \nMust analyze...ana..l..y..ze...");
       clear();
     } else if (num1 && !num2 && selected) {
-      currentOperator = selected; // currentOperaotor = / num1 = 44
+      currentOperator = selected;
       operationDisplay.textContent = `${num1} ${currentOperator}`;
       DecimalPoint = false;
       currentNum = [];
     } else if (num1 && !num2 && !selected) {
       operationDisplay.textContent = `${num1} = `;
-      currentOperator = '';
+      currentOperator = ''; 
+      // if an operator is selected then operate was selected before selecting num2, currentOperator need to be emptied to avoid following digit becoming num2
       DecimalPoint = false;
       currentNum = [];
     } else if (num2) {
       operationDisplay.textContent = `${num1} ${previousOperator} ${num2} = `;
       const solution = operate(previousOperator, num1, num2);
-      num1 = (+(solution.toFixed(1))).toString(); // make it have one decimal point, when tenths is 0, it is omitted, then turn into a string to work with backspace function
+      num1 = (+(solution.toFixed(2))).toString(); // make it have one decimal point, when tenths is 0, it is omitted, then turn into a string to work with backspace function
       display.textContent = num1;
       DecimalPoint = false;
       currentNum = [];
