@@ -20,6 +20,7 @@ function divide(num1, num2) {
 }
 
 function operateLastObj() {
+  const tempOprtnRecord = database['operation record'];
   const operandOne = tempOprtnRecord[tempOprtnRecord.length - 1]['operandOne'];
   const operandTwo = tempOprtnRecord[tempOprtnRecord.length - 1]['operandTwo'];
   const operator = tempOprtnRecord[tempOprtnRecord.length - 1]['operator'];
@@ -39,73 +40,63 @@ function operateLastObj() {
 
 const database = { // 0.
   'active number': [],
+  'active operand one': '',
+  'active operand two': '',
   'active operator': '',
   'operation record': [],
 }
 
 
-function CreateOprtnObj(operandOne, operator) {
+function CreateOprtnObj(operandOne, operandTwo, operator) {
   this.operandOne = operandOne;
+  this.operandTwo = operandTwo;
   this.operator = operator;
 }
 
 
-
-
 function storeDigit(selected) { // 1. store selected number
-  const tempDigit = database['active number']
-  tempDigit.push(selected);
-  display.textContent = tempDigit.join('');
+  database['active number'].push(selected);
+  display.textContent = database['active number'].join('');
+  if (!database['active operator']) {
+    database['active operand one'] = database['active number'].join('');
+  } else if (database['active operator']) {
+    database['active operand two'] = database['active number'].join('');
+  }
 }
 
 function runOperation(selected) {
-  tempActiveNum = database['active number'].join('');
-  tempOprtnRecord = database['operation record'];
-  if (tempOprtnRecord.length === 0) { // 2. if operation record is empty 
-    database['operation record'].push(new CreateOprtnObj(tempActiveNum, selected)) // 3. create operation obj in operation record with active number and selected operator
-    database['active operator'] = selected; // 4. Save the selected operator to the active operator in database
-    
-    const tempOperandOne = tempOprtnRecord[tempOprtnRecord.length - 1].operandOne;
-    const tempOperator = tempOprtnRecord[tempOprtnRecord.length - 1].operator
-    operationDisplay.textContent = `${tempOperandOne} ${tempOperator}`
-  
-  } else if ('operandTwo' in tempOprtnRecord[tempOprtnRecord.length - 1] === false) { // 6. if the last item of operation record does not have operandTwo
-    tempOprtnRecord[tempOprtnRecord.length - 1]['operandTwo'] = tempActiveNum; // 7. assign active number to operandTwo in last operation record last item
-    
-    const tempOperandOne = tempOprtnRecord[tempOprtnRecord.length - 1].operandOne;
-    const tempOperator = tempOprtnRecord[tempOprtnRecord.length - 1].operator
-    const tempOperandTwo = tempOprtnRecord[tempOprtnRecord.length - 1].operandTwo;
-    operationDisplay.textContent = `${tempOperandOne} ${tempOperator} ${tempOperandTwo} =`
-    
-  } else if ('operandTwo' in tempOprtnRecord[tempOprtnRecord.length - 1] && selected) { // 9. if the last item of operation record have operandTwo and selected exist
-    const tempSolution = operateLastObj() // 10. get solution from the last operation record item
-
-    display.textContent = tempSolution;
-    const tempOperandOne = tempOprtnRecord[tempOprtnRecord.length - 1].operandOne;
-    const tempOperator = tempOprtnRecord[tempOprtnRecord.length - 1].operator
-    const tempOperandTwo = tempOprtnRecord[tempOprtnRecord.length - 1].operandTwo;
-    operationDisplay.textContent = `${tempOperandOne} ${tempOperator} ${tempOperandTwo} =`
-
-    database['operation record'].push(new CreateOprtnObj(tempSolution, selected)) // 11. Create new operation obj in operation record with the last solution as operandOne and selected operator
-    database['active operator'] = selected; // 12. save the selected operator to the active operator in databases
-    tempOprtnRecord[tempOprtnRecord.length - 1]['operandTwo'] = tempActiveNum; // 13. assign active number to operandTwo in the new last operation record's last item
-  } else if ('operandTwo' in tempOprtnRecord[tempOprtnRecord.length - 1] && !selected) { // 15. if the last item of operation record have operandTwo and selected does not exist
-    const tempSolution = operateLastObj() // 16. get solution from the last operation record item
-    const tempActiveOperator = database['active operator']
-    database['operation record'].push(new CreateOprtnObj(tempSolution, tempActiveOperator)); // 17. save as previous but create new oprtnObj with solution and active operator
-    tempOprtnRecord[tempOprtnRecord.length - 1]['operandTwo'] = tempActiveNum; // 18. assign active number to operandTwo in the new last operation record's last item
-
-    const tempOperandOne = tempOprtnRecord[tempOprtnRecord.length - 1].operandOne;
-    const tempOperator = tempOprtnRecord[tempOprtnRecord.length - 1].operator
-    const tempOperandTwo = tempOprtnRecord[tempOprtnRecord.length - 1].operandTwo;
-    operationDisplay.textContent = `${tempOperandOne} ${tempOperator} ${tempOperandTwo} =`
+  const activeOperandOne = database['active operand one'];
+  const activeOperandTwo = database['active operand two'];
+  if (activeOperandOne && !activeOperandTwo && selected) {
+    database['active operator'] = selected;
+    displayOperation(database['active operand one'], database['active operator']);
+  } else if (activeOperandTwo && selected) { 
+    const activeOperator = database['active operator'];
+    database['operation record'].push(new CreateOprtnObj(activeOperandOne, activeOperandTwo, activeOperator));
+    const tempSolution = operateLastObj();
+    database['active operand one'] = tempSolution;
+    database['active operand two'] = '';
+    database['active operator'] = selected;
+    displayOperation(database['active operand one'], database['active operator']);
+    display.textContent = tempSolution; // display active solution
+  } else if (activeOperandTwo && !selected) { 
+    const activeOperator = database['active operator'];
+    database['operation record'].push(new CreateOprtnObj(activeOperandOne, activeOperandTwo, activeOperator));
+    const tempSolution = operateLastObj();
+    database['active operand one'] = tempSolution;
+    database['active operand two'] = '';
+    database['active operator'] = '';
+    displayOperation(activeOperandOne, activeOperator, activeOperandTwo);
+    display.textContent = tempSolution; // display active solution
   }
-  database['active number'] = []; // 5, 8, 14. empty active number for next input
-
-  console.log(database['operation record']);
+  database['active number'] = [];
 }
 
-
+function displayOperation(num1, operator, num2) {
+  (!num2)
+  ? operationDisplay.textContent = `${num1} ${operator}`
+  : operationDisplay.textContent = `${num1} ${operator} ${num2} =`
+}
 
 
 function whichKey(e) {
