@@ -1,7 +1,17 @@
 
+const database = {
+  'active number': ['0'],
+  'active operand one': '',
+  'active operand two': '',
+  'active operator': '',
+  'operation record': [],
+  'decimal point': false,
+}
+
 const display = document.querySelector('#display');
 const operationDisplay = document.querySelector('#display-operation');
 
+display.textContent = database['active number'].join('');
 
 function add(num1, num2) {
   return (+(num1) + +(num2)).toString();
@@ -36,17 +46,6 @@ function operateLastObj() {
 }
 
 
-
-
-const database = { // 0.
-  'active number': [],
-  'active operand one': '',
-  'active operand two': '',
-  'active operator': '',
-  'operation record': [],
-}
-
-
 function CreateOprtnObj(operandOne, operandTwo, operator) {
   this.operandOne = operandOne;
   this.operandTwo = operandTwo;
@@ -54,13 +53,28 @@ function CreateOprtnObj(operandOne, operandTwo, operator) {
 }
 
 
-function storeDigit(selected) { // 1. store selected number
-  database['active number'].push(selected);
+function storeDigit(selected) {
+  database['active number'] = isFirstDigit(database['active number'], selected);
   display.textContent = database['active number'].join('');
   if (!database['active operator']) {
     database['active operand one'] = database['active number'].join('');
   } else if (database['active operator']) {
     database['active operand two'] = database['active number'].join('');
+  }
+}
+
+function isFirstDigit(array, num) {
+  if (array[0] === '0' && array.length === 1 && num !== '.') {
+    array.splice(0, 1);
+    array.push(num);
+    return array;
+  } else if (array.length === 0 && num === '.') {
+    array = [0];
+    array.push(num);
+    return array;
+  } else {
+    array.push(num);
+    return array;
   }
 }
 
@@ -70,6 +84,7 @@ function runOperation(selected) {
   if (activeOperandOne && !activeOperandTwo && selected) {
     database['active operator'] = selected;
     displayOperation(database['active operand one'], database['active operator']);
+    database['decimal point'] = false;
   } else if (activeOperandTwo && selected) { 
     const activeOperator = database['active operator'];
     database['operation record'].push(new CreateOprtnObj(activeOperandOne, activeOperandTwo, activeOperator));
@@ -77,6 +92,7 @@ function runOperation(selected) {
     database['active operand one'] = tempSolution;
     database['active operand two'] = '';
     database['active operator'] = selected;
+    database['decimal point'] = false;
     displayOperation(database['active operand one'], database['active operator']);
     display.textContent = tempSolution; // display active solution
   } else if (activeOperandTwo && !selected) { 
@@ -86,6 +102,7 @@ function runOperation(selected) {
     database['active operand one'] = tempSolution;
     database['active operand two'] = '';
     database['active operator'] = '';
+    database['decimal point'] = false;
     displayOperation(activeOperandOne, activeOperator, activeOperandTwo);
     display.textContent = tempSolution; // display active solution
   }
@@ -98,6 +115,38 @@ function displayOperation(num1, operator, num2) {
   : operationDisplay.textContent = `${num1} ${operator} ${num2} =`
 }
 
+function clear() {
+  database['active number'] = [0];
+  database['active operand one'] = database['active number'][0];
+  database['active operand two'] = '';
+  database['active operator'] = '';
+  database['operation record'] = [];
+  database['decimal point'] = false;
+  operationDisplay.textContent = '';
+  display.textContent = database['active number'].join('');
+}
+
+function backspace(array, firstNum, secondNum, activeOp) {
+  isIncludeDecimal(array); // if decimal point is the deletion target , assign isDecimalPoint false
+  if (!secondNum && !activeOp) {
+    array = firstNum.split('');
+    array.splice(-1,1);
+    firstNum = array.join('');
+    database['active operand one'] = firstNum
+  } else {
+    array.splice(-1,1);
+    secondNum = array.join('');
+    database['active operand two'] = secondNum
+  }
+  database['active number'] = array
+  display.textContent = array.join('');
+}
+
+function isIncludeDecimal(numArray) {
+  if (numArray[numArray.length - 1] === '.') {
+    database['decimal point'] = false;
+  }
+}
 
 function whichKey(e) {
   if (e.shiftKey) {
@@ -124,17 +173,17 @@ function noShiftKey(e) {
   const activeEl = document.activeElement; // when there is an active/focused element, assign it to a variable
   if (numKey) {
     storeDigit(numKey.dataset.num); //check
-  } else if (symbolKey && !DecimalPoint) {
-    DecimalPoint = true;
-    storeDisplay(symbolKey.dataset.symbol);
+  } else if (symbolKey && !database['decimal point']) {
+    database['decimal point'] = true;
+    storeDigit(symbolKey.dataset.symbol);
   } else if (assignKey) {
-    runOperation(); // when +/= key is pressed, assignkey(=) parameter is used first 
+    runOperation(); // when +/= key is pressed, assignkey(=) parameter is used first, check 
   } else if (enterKey) {
     enterKeySwitch(activeEl);
   } else if (opKey) { 
     runOperation(opKey.dataset.op); // check
   } else if (backspaceKey) {
-    backspace(currentNum, num1, num2, previousOperator);
+    backspace(database['active number'], database['active operand one'], database['active operand two'], database['active operator']);
   }
 }
 
@@ -143,21 +192,21 @@ function enterKeySwitch(activeEl) {
       const childSpan = activeEl.firstElementChild;
       storeDigit(childSpan.dataset.num);
     } else if (activeEl.getAttribute('class') === 'symbol btn') {
-      DecimalPoint = true;
+      database['decimal point'] = true;
       const childSpan = activeEl.firstElementChild;
-      storeDisplay(childSpan.dataset.symbol);
+      storeDigit(childSpan.dataset.symbol);
     } else if (
       activeEl.getAttribute('class') === 'operator btn' ||
       activeEl.getAttribute('class') === 'operate btn'
       ) { // when a operator/operate is focused, run enterkey as clicking the focused button
       const childSpan = activeEl.firstElementChild;
-      runOperation(childSpan.dataset.op);
+      runOperation(childSpan.dataset.op); // check
     } else if (activeEl.getAttribute('class') === 'clear btn') {
       clear();
     } else if (activeEl.getAttribute('class') === 'back btn') {
-      backspace(currentNum, num1, num2, previousOperator);
+      backspace(database['active number'], database['active operand one'], database['active operand two'], database['active operator']);
     } else { // when no activeEL, execute runOperator with no parameter
-      runOperation(); 
+      runOperation();  //check
     }
 }
 
@@ -170,15 +219,15 @@ function clickBtn(e) {
   const clearClick = document.querySelector(`span[data-escapecode="${e.target.dataset.escapecode}"]`);
   if (numClick) {
     storeDigit(numClick.dataset.num); // check
-  } else if (symbolClick && DecimalPoint === false) {
-    DecimalPoint = true;
-    storeDisplay(symbolClick.dataset.symbol);
+  } else if (symbolClick && database['decimal point'] === false) {
+    database['decimal point'] = true;
+    storeDigit(symbolClick.dataset.symbol);
   } else if (opClick) {
     runOperation(opClick.dataset.op); // check
   } else if (assignClick) {
-    runOperation();
+    runOperation(); //check
   } else if (backClick) {
-    backspace();
+    backspace(database['active number'], database['active operand one'], database['active operator']);
   } else if (clearClick) {
     clear();
   }
