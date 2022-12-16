@@ -56,7 +56,6 @@ function storeDigit(selected) { // 1. store selected number
   const tempDigit = database['active number']
   tempDigit.push(selected);
   display.textContent = tempDigit.join('');
-  console.log(database['active number'])
 }
 
 function runOperation(selected) {
