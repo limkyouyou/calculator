@@ -53,8 +53,9 @@ function CreateOprtnObj(operandOne, operator) {
 
 
 function storeDigit(selected) { // 1. store selected number
-  database['active number'].push(selected);
-
+  const tempDigit = database['active number']
+  tempDigit.push(selected);
+  display.textContent = tempDigit.join('');
   console.log(database['active number'])
 }
 
