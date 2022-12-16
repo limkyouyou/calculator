@@ -119,13 +119,20 @@ function displayOperation(num1, operator, num2) {
 }
 
 function clear() {
-  database['active number'] = [0];
+  database['active number'] = ['0'];
   database['active operand one'] = database['active number'][0];
   database['active operand two'] = '';
   database['active operator'] = '';
   database['operation record'] = [];
   database['decimal point'] = false;
   operationDisplay.textContent = '';
+  display.textContent = database['active number'].join('');
+}
+
+function clearEntry() {
+  database['active number'] = ['0'];
+  database['active operand two'] = '';
+  database['decimal point'] = false;
   display.textContent = database['active number'].join('');
 }
 
@@ -173,12 +180,12 @@ function noShiftKey(e) {
   const backspaceKey = document.querySelector(`span[data-backcode="${e.keyCode}"]`);
   const activeEl = document.activeElement; // when there is an active/focused element, assign it to a variable
   if (numKey) {
-    storeDigit(numKey.dataset.num); //check
+    storeDigit(numKey.dataset.num);
   } else if (symbolKey && !database['decimal point']) {
     database['decimal point'] = true;
     storeDigit(symbolKey.dataset.symbol);
   } else if (assignKey) {
-    runOperation(); // when +/= key is pressed, assignkey(=) parameter is used first, check 
+    runOperation(); // when +/= key is pressed, assignkey(=) parameter is used first
   } else if (enterKey) {
     enterKeySwitch(activeEl);
   } else if (opKey) { 
@@ -201,13 +208,13 @@ function enterKeySwitch(activeEl) {
       activeEl.getAttribute('class') === 'operate btn'
       ) { // when a operator/operate is focused, run enterkey as clicking the focused button
       const childSpan = activeEl.firstElementChild;
-      runOperation(childSpan.dataset.op); // check
+      runOperation(childSpan.dataset.op);
     } else if (activeEl.getAttribute('class') === 'clear btn') {
       clear();
     } else if (activeEl.getAttribute('class') === 'back btn') {
       backspace(database['active number'], database['active operand one'], database['active operand two'], database['active operator']);
     } else { // when no activeEL, execute runOperator with no parameter
-      runOperation();  //check
+      runOperation();
     }
 }
 
@@ -217,20 +224,23 @@ function clickBtn(e) {
   const opClick = document.querySelector(`span[data-op="${e.target.dataset.op}"]`);
   const assignClick = document.querySelector(`span[data-assigncode="${e.target.dataset.assigncode}"]`);
   const backClick = document.querySelector(`span[data-backcode="${e.target.dataset.backcode}"]`);
-  const clearClick = document.querySelector(`span[data-escapecode="${e.target.dataset.escapecode}"]`);
+  const clearClick = document.querySelector(`span[data-clearcode="${e.target.dataset.clearcode}"]`);
+  const clearEntryClick = document.querySelector(`span[data-clearentrycode="${e.target.dataset.clearentrycode}"]`);
   if (numClick) {
-    storeDigit(numClick.dataset.num); // check
+    storeDigit(numClick.dataset.num);
   } else if (symbolClick && database['decimal point'] === false) {
     database['decimal point'] = true;
     storeDigit(symbolClick.dataset.symbol);
   } else if (opClick) {
-    runOperation(opClick.dataset.op); // check
+    runOperation(opClick.dataset.op);
   } else if (assignClick) {
-    runOperation(); //check
+    runOperation();
   } else if (backClick) {
     backspace(database['active number'], database['active operand one'], database['active operator']);
   } else if (clearClick) {
     clear();
+  }else if (clearEntryClick) {
+    clearEntry();
   }
 }
 
