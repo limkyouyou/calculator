@@ -67,7 +67,7 @@ function isFirstNumZero(array, num) {
   }
 }
 
-function runOperator(selected) {
+function runOperation(selected) {
     if (previousOperator === '÷' && num2 === '0') {
       currentNum = [];
       alert("Non sequitur. There's no logic to division by zero.. \nMust analyze...ana..l..y..ze...");
@@ -140,7 +140,7 @@ function whichKey(e) {
 function withShiftKey(e) {
   const opKey = document.querySelector(`span[data-opcode="${e.keyCode}"]`);
   if (opKey) { // run function when opKey exists as to avoid error by running function with null parameter
-    runOperator(opKey.dataset.op);
+    runOperation(opKey.dataset.op);
   }
 }
 
@@ -158,11 +158,11 @@ function noShiftKey(e) {
     DecimalPoint = true;
     storeDisplay(symbolKey.dataset.symbol);
   } else if (assignKey) {
-    runOperator(); // when +/= key is pressed, assignkey(=) parameter is used first 
+    runOperation(); // when +/= key is pressed, assignkey(=) parameter is used first 
   } else if (enterKey) {
     enterKeySwitch(activeEl);
   } else if (opKey) { 
-    runOperator(opKey.dataset.op);
+    runOperation(opKey.dataset.op);
   } else if (backspaceKey) {
     backspace(currentNum, num1, num2, previousOperator);
   }
@@ -181,13 +181,13 @@ function enterKeySwitch(activeEl) {
       activeEl.getAttribute('class') === 'operate btn'
       ) { // when a operator/operate is focused, run enterkey as clicking the focused button
       const childSpan = activeEl.firstElementChild;
-      runOperator(childSpan.dataset.op);
+      runOperation(childSpan.dataset.op);
     } else if (activeEl.getAttribute('class') === 'clear btn') {
       clear();
     } else if (activeEl.getAttribute('class') === 'back btn') {
       backspace(currentNum, num1, num2, previousOperator);
     } else { // when no activeEL, execute runOperator with no parameter
-      runOperator();
+      runOperation();
     }
 }
 
@@ -204,9 +204,9 @@ function clickBtn(e) {
     DecimalPoint = true;
     storeDisplay(symbolClick.dataset.symbol);
   } else if (opClick) {
-    runOperator(opClick.dataset.op);
+    runOperation(opClick.dataset.op);
   } else if (assignClick) {
-    runOperator();
+    runOperation();
   } else if (backClick) {
     backspace();
   } else if (clearClick) {
