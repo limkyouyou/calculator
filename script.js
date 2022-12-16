@@ -14,19 +14,19 @@ const operationDisplay = document.querySelector('#display-operation');
 display.textContent = database['active number'].join('');
 
 function add(num1, num2) {
-  return (+(num1) + +(num2)).toString();
+  return (+(+(num1) + +(num2)).toFixed(2)).toString();
 }
 
 function subtract(num1, num2) {
-  return (+(num1) - +(num2)).toString();
+  return (+(+(num1) - +(num2)).toFixed(2)).toString();
 }
 
 function multiply(num1, num2) {
-  return (+(num1) * +(num2)).toString();
+  return (+(+(num1) * +(num2)).toFixed(2)).toString();
 }
 
 function divide(num1, num2) {
-  return (+(num1) / +(num2)).toString();
+  return (+(+(num1) / +(num2)).toFixed(2)).toString();
 }
 
 function operateLastObj() {
