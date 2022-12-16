@@ -64,10 +64,28 @@ function runOperation(selected) {
   if (tempOprtnRecord.length === 0) { // 2. if operation record is empty 
     database['operation record'].push(new CreateOprtnObj(tempActiveNum, selected)) // 3. create operation obj in operation record with active number and selected operator
     database['active operator'] = selected; // 4. Save the selected operator to the active operator in database
+    
+    const tempOperandOne = tempOprtnRecord[tempOprtnRecord.length - 1].operandOne;
+    const tempOperator = tempOprtnRecord[tempOprtnRecord.length - 1].operator
+    operationDisplay.textContent = `${tempOperandOne} ${tempOperator}`
+  
   } else if ('operandTwo' in tempOprtnRecord[tempOprtnRecord.length - 1] === false) { // 6. if the last item of operation record does not have operandTwo
     tempOprtnRecord[tempOprtnRecord.length - 1]['operandTwo'] = tempActiveNum; // 7. assign active number to operandTwo in last operation record last item
+    
+    const tempOperandOne = tempOprtnRecord[tempOprtnRecord.length - 1].operandOne;
+    const tempOperator = tempOprtnRecord[tempOprtnRecord.length - 1].operator
+    const tempOperandTwo = tempOprtnRecord[tempOprtnRecord.length - 1].operandTwo;
+    operationDisplay.textContent = `${tempOperandOne} ${tempOperator} ${tempOperandTwo} =`
+    
   } else if ('operandTwo' in tempOprtnRecord[tempOprtnRecord.length - 1] && selected) { // 9. if the last item of operation record have operandTwo and selected exist
     const tempSolution = operateLastObj() // 10. get solution from the last operation record item
+
+    display.textContent = tempSolution;
+    const tempOperandOne = tempOprtnRecord[tempOprtnRecord.length - 1].operandOne;
+    const tempOperator = tempOprtnRecord[tempOprtnRecord.length - 1].operator
+    const tempOperandTwo = tempOprtnRecord[tempOprtnRecord.length - 1].operandTwo;
+    operationDisplay.textContent = `${tempOperandOne} ${tempOperator} ${tempOperandTwo} =`
+
     database['operation record'].push(new CreateOprtnObj(tempSolution, selected)) // 11. Create new operation obj in operation record with the last solution as operandOne and selected operator
     database['active operator'] = selected; // 12. save the selected operator to the active operator in databases
     tempOprtnRecord[tempOprtnRecord.length - 1]['operandTwo'] = tempActiveNum; // 13. assign active number to operandTwo in the new last operation record's last item
@@ -76,6 +94,11 @@ function runOperation(selected) {
     const tempActiveOperator = database['active operator']
     database['operation record'].push(new CreateOprtnObj(tempSolution, tempActiveOperator)); // 17. save as previous but create new oprtnObj with solution and active operator
     tempOprtnRecord[tempOprtnRecord.length - 1]['operandTwo'] = tempActiveNum; // 18. assign active number to operandTwo in the new last operation record's last item
+
+    const tempOperandOne = tempOprtnRecord[tempOprtnRecord.length - 1].operandOne;
+    const tempOperator = tempOprtnRecord[tempOprtnRecord.length - 1].operator
+    const tempOperandTwo = tempOprtnRecord[tempOprtnRecord.length - 1].operandTwo;
+    operationDisplay.textContent = `${tempOperandOne} ${tempOperator} ${tempOperandTwo} =`
   }
   database['active number'] = []; // 5, 8, 14. empty active number for next input
 
