@@ -42,6 +42,9 @@ function operateLastObj() {
     return multiply(operandOne, operandTwo);
   } else if (operator === '÷' && operandTwo !== '0') {
     return divide(operandOne, operandTwo);
+  } else if (operator === '÷' && operandTwo === '0') {
+    alert("Non sequitur. There's no logic to division by zero.. \nMust analyze...ana..l..y..ze...");
+    clear();
   }
 }
 
@@ -94,7 +97,7 @@ function runOperation(selected) {
     database['active operator'] = selected;
     database['decimal point'] = false;
     displayOperation(database['active operand one'], database['active operator']);
-    display.textContent = tempSolution; // display active solution
+    display.textContent = tempSolution;
   } else if (activeOperandTwo && !selected) { 
     const activeOperator = database['active operator'];
     database['operation record'].push(new CreateOprtnObj(activeOperandOne, activeOperandTwo, activeOperator));
@@ -104,7 +107,7 @@ function runOperation(selected) {
     database['active operator'] = '';
     database['decimal point'] = false;
     displayOperation(activeOperandOne, activeOperator, activeOperandTwo);
-    display.textContent = tempSolution; // display active solution
+    display.textContent = tempSolution;
   }
   database['active number'] = [];
 }
@@ -112,7 +115,7 @@ function runOperation(selected) {
 function displayOperation(num1, operator, num2) {
   (!num2)
   ? operationDisplay.textContent = `${num1} ${operator}`
-  : operationDisplay.textContent = `${num1} ${operator} ${num2} =`
+  : operationDisplay.textContent = `${num1} ${operator} ${num2} =`;
 }
 
 function clear() {
@@ -127,18 +130,18 @@ function clear() {
 }
 
 function backspace(array, firstNum, secondNum, activeOp) {
-  isIncludeDecimal(array); // if decimal point is the deletion target , assign isDecimalPoint false
+  isIncludeDecimal(database['active number']); // if decimal point is the deletion target , assign decimal point false
   if (!secondNum && !activeOp) {
     array = firstNum.split('');
     array.splice(-1,1);
     firstNum = array.join('');
-    database['active operand one'] = firstNum
+    database['active operand one'] = firstNum;
   } else {
     array.splice(-1,1);
     secondNum = array.join('');
-    database['active operand two'] = secondNum
+    database['active operand two'] = secondNum;
   }
-  database['active number'] = array
+  database['active number'] = array;
   display.textContent = array.join('');
 }
 
@@ -149,11 +152,9 @@ function isIncludeDecimal(numArray) {
 }
 
 function whichKey(e) {
-  if (e.shiftKey) {
-    withShiftKey(e);
-  } else {
-    noShiftKey(e);
-  }
+  (e.shiftKey) 
+    ? withShiftKey(e)
+    : noShiftKey(e);
 }
 
 function withShiftKey(e) {
