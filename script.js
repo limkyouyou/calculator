@@ -356,6 +356,10 @@ function enterKeySwitch(activeEl) {
 
       backspace(database['active number'], database['active operand one'], database['active operand two'], database['active operator']);
 
+    } else if (activeEl.getAttribute('class') === 'history btn') {
+
+      toggleHistory();
+
     } else { // when no activeEL, execute runOperator with no parameter
 
       runOperation();
