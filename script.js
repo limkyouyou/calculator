@@ -142,6 +142,17 @@ function addLiveHistory() {
   }
 }
 
+function activateObj(item) {
+  
+  const tempOpRecord = database['operation record'];
+
+  database['active operand one'] = operateObj(tempOpRecord[item]);
+
+  displayOperation(tempOpRecord[item]['operandOne'], tempOpRecord[item]['operator'], tempOpRecord[item]['operandTwo']);
+  display.textContent = database['active operand one'];
+  
+}
+
 function clear() {
 
   database['active number'] = ['0'];
@@ -223,9 +234,12 @@ function addHistoryContent(array, arrayItem) {
 
   const historyBody = document.querySelector('#list-container');
 
+  const divContainer = document.createElement('div');
   const divOperation = document.createElement('div');
   const divSolution = document.createElement('div');
 
+  divContainer.classList.add(`item-container`);
+  divContainer.setAttribute('data-item', arrayItem);
   divOperation.classList.add(`history-operation`);
   divSolution.classList.add(`history-solution`);
 
@@ -234,8 +248,10 @@ function addHistoryContent(array, arrayItem) {
   divOperation.textContent = `${array[arrayItem]['operandOne']} ${array[arrayItem]['operator']} ${array[arrayItem]['operandTwo']} = `;
   divSolution.textContent = `${tempSolution}`;
 
-  historyBody.appendChild(divOperation);
-  historyBody.appendChild(divSolution);
+  historyBody.appendChild(divContainer);
+  divContainer.appendChild(divOperation);
+  divContainer.appendChild(divSolution);
+
 }
 
 function clearHistory(parentNode) {
@@ -356,6 +372,7 @@ function clickBtn(e) {
   const clearClick = document.querySelector(`span[data-clearcode="${e.target.dataset.clearcode}"]`);
   const clearEntryClick = document.querySelector(`span[data-clearentrycode="${e.target.dataset.clearentrycode}"]`);
   const historyClick = document.querySelector(`span[data-historycode="${e.target.dataset.historycode}"]`);
+  const historyItemClick = document.querySelector(`div[data-item="${e.target.parentNode.dataset.item}"]`);
 
   if (numClick) {
 
@@ -388,6 +405,11 @@ function clickBtn(e) {
   } else if (historyClick) {
     
     toggleHistory();
+
+  } else if (historyItemClick) {
+
+    activateObj(historyItemClick.dataset.item);
+
   }
 }
 
