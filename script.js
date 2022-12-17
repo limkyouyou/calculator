@@ -105,11 +105,8 @@ function runOperation(selected) {
     displayOperation(tempSolution, selected);
     display.textContent = tempSolution;
 
-    const historyBody = document.querySelector('#history'); //////////
-
-    if (historyBody.classList.contains('history-container')) {
-      //////////////////////////////////
-    }
+    addLiveHistory();
+    
   } else if (activeOperandTwo && !selected) { 
 
     database['operation record'].push(new CreateOprtnObj(activeOperandOne, activeOperandTwo, activeOperator));
@@ -122,6 +119,8 @@ function runOperation(selected) {
 
     displayOperation(activeOperandOne, activeOperator, activeOperandTwo);
     display.textContent = tempSolution;
+
+    addLiveHistory();
   }
 
   database['active number'] = [];
@@ -133,6 +132,14 @@ function displayOperation(num1, operator, num2) {
   ? operationDisplay.textContent = `${num1} ${operator}`
   : operationDisplay.textContent = `${num1} ${operator} ${num2} =`;
 
+}
+
+function addLiveHistory() {
+  const historyBody = document.querySelector('.history-container');
+
+  if (historyBody) {
+    addHistoryContent(database['operation record'], database['operation record'].length - 1);
+  }
 }
 
 function clear() {
@@ -179,42 +186,55 @@ function backspace(array, firstNum, secondNum, activeOp) {
 }
 
 function toggleHistory() {
+
+  const oprtnRecord = database['operation record'];
+
   const appBody = document.querySelector('#calc-container');
   const calculatorBody = document.querySelector('#calculator');
   const historyBody = document.querySelector('#history');
-  const oprtnRecord = database['operation record'];
+  
 
   appBody.classList.toggle('calc-container-history');
   calculatorBody.classList.toggle('calculator-history');
   historyBody.classList.toggle('history-container');
 
   if (historyBody.classList.contains('history-container')) {
-    const historyContainer = document.querySelector('.history-container');
+
     for (let i = 0; i < oprtnRecord.length; i++) {
-      const divOperation = document.createElement('div');
-      const divSolution = document.createElement('div');
 
-      divOperation.classList.add(`history-operation`);
-      divSolution.classList.add(`history-solution`);
-
-      const tempSolution = operateObj(oprtnRecord[i]);
-
-      divOperation.textContent = `${oprtnRecord[i]['operandOne']} ${oprtnRecord[i]['operator']} ${oprtnRecord[i]['operandTwo']} = `
-      divSolution.textContent = `${tempSolution}`
-
-      historyContainer.appendChild(divOperation);
-      historyContainer.appendChild(divSolution);
+      addHistoryContent(oprtnRecord, i);
     }
+
   } else {
+
     while (historyBody.hasChildNodes()) {
       historyBody.removeChild(historyBody.firstChild);
     }
   }
 }
 
+function addHistoryContent(array, arrayItem) {
+
+  const historyBody = document.querySelector('#history');
+
+  const divOperation = document.createElement('div');
+  const divSolution = document.createElement('div');
+
+  divOperation.classList.add(`history-operation`);
+  divSolution.classList.add(`history-solution`);
+
+  const tempSolution = operateObj(array[arrayItem]);
+
+  divOperation.textContent = `${array[arrayItem]['operandOne']} ${array[arrayItem]['operator']} ${array[arrayItem]['operandTwo']} = `;
+  divSolution.textContent = `${tempSolution}`;
+
+  historyBody.appendChild(divOperation);
+  historyBody.appendChild(divSolution);
+}
+
 function isDecimalPresent(array) {
 
-  return array.includes('.')
+  return array.includes('.');
 
 }
 
@@ -222,7 +242,7 @@ function isDecimalPresent(array) {
 function whichKey(e) {
 
   (e.shiftKey) 
-    ? withShiftKey(e)
+    ? withShiftKey(e);
     : noShiftKey(e);
 
 }
