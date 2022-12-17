@@ -152,6 +152,11 @@ function clear() {
   operationDisplay.textContent = '';
   display.textContent = database['active number'].join('');
 
+  const historyBody = document.querySelector('.history-container');
+
+  while (historyBody.hasChildNodes()) {
+    clearHistory(historyBody);
+  }
 }
 
 function clearEntry() {
