@@ -150,7 +150,7 @@ function activateObj(item) {
 
   displayOperation(tempOpRecord[item]['operandOne'], tempOpRecord[item]['operator'], tempOpRecord[item]['operandTwo']);
   display.textContent = database['active operand one'];
-  
+
 }
 
 function clear() {
@@ -372,7 +372,8 @@ function clickBtn(e) {
   const clearClick = document.querySelector(`span[data-clearcode="${e.target.dataset.clearcode}"]`);
   const clearEntryClick = document.querySelector(`span[data-clearentrycode="${e.target.dataset.clearentrycode}"]`);
   const historyClick = document.querySelector(`span[data-historycode="${e.target.dataset.historycode}"]`);
-  const historyItemClick = document.querySelector(`div[data-item="${e.target.parentNode.dataset.item}"]`);
+  const historyItemChildClick = document.querySelector(`div[data-item="${e.target.parentNode.dataset.item}"]`);
+  const historyItemParentClick = document.querySelector(`div[data-item="${e.target.dataset.item}"]`);
 
   if (numClick) {
 
@@ -406,9 +407,13 @@ function clickBtn(e) {
     
     toggleHistory();
 
-  } else if (historyItemClick) {
+  } else if (historyItemChildClick) {
 
-    activateObj(historyItemClick.dataset.item);
+    activateObj(historyItemChildClick.dataset.item);
+
+  } else if (historyItemParentClick) {
+
+    activateObj(historyItemParentClick.dataset.item);
 
   }
 }
