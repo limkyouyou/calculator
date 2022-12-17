@@ -242,7 +242,7 @@ function isDecimalPresent(array) {
 function whichKey(e) {
 
   (e.shiftKey) 
-    ? withShiftKey(e);
+    ? withShiftKey(e)
     : noShiftKey(e);
 
 }
