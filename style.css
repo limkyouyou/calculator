@@ -32,6 +32,49 @@ body {
   border-radius: 0 7px 7px 0;
 }
 
+.history-body {
+  width: 292px;
+  height: 600px;
+  margin: 10px 0;
+  padding: 15px 0px 15px 15px;
+  border-left: 2px solid #666565;
+  overflow: hidden scroll;
+}
+
+.history-body::-webkit-scrollbar {
+  width: 7px;
+  background-color: #282828;
+}
+
+.history-body::-webkit-scrollbar-thumb{
+  background-color: #494848;
+  border-radius: 7px;
+}
+
+.history-operation:first-child {
+  border: none;
+}
+
+.history-operation {
+  width: 240px;
+  margin: 10px 10px;
+  padding: 10px 0;
+  border-top: 1px solid #666565;
+  color: #b1aeae;
+  font-size: 3vh;
+  line-height: 3vh;
+  text-align: end;
+}
+
+.history-solution {
+  width: 240px;
+  margin: 10px 10px;
+  color: #e7e6e6;
+  font-size: 4.5vh;
+  line-height: 4.5vh;
+  text-align: end;
+}
+
 #calculator {
   display: flex;
   flex-direction: column;

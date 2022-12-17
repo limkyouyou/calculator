@@ -135,7 +135,7 @@ function displayOperation(num1, operator, num2) {
 }
 
 function addLiveHistory() {
-  const historyBody = document.querySelector('.history-container');
+  const historyBody = document.querySelector('.history-body');
 
   if (historyBody) {
     addHistoryContent(database['operation record'], database['operation record'].length - 1);
@@ -152,7 +152,7 @@ function clear() {
   operationDisplay.textContent = '';
   display.textContent = database['active number'].join('');
 
-  const historyBody = document.querySelector('.history-container');
+  const historyBody = document.querySelector('.history-body');
 
   while (historyBody.hasChildNodes()) {
     clearHistory(historyBody);
@@ -196,14 +196,15 @@ function toggleHistory() {
 
   const appBody = document.querySelector('#calc-container');
   const calculatorBody = document.querySelector('#calculator');
-  const historyBody = document.querySelector('#history');
+  const historyContainer = document.querySelector('#history');
+  const historyBody = document.querySelector('#list-container');
   
-
   appBody.classList.toggle('calc-container-history');
+  historyContainer.classList.toggle('history-container');
   calculatorBody.classList.toggle('calculator-history');
-  historyBody.classList.toggle('history-container');
+  historyBody.classList.toggle('history-body');
 
-  if (historyBody.classList.contains('history-container')) {
+  if (historyBody.classList.contains('history-body')) {
 
     for (let i = 0; i < oprtnRecord.length; i++) {
 
@@ -220,7 +221,7 @@ function toggleHistory() {
 
 function addHistoryContent(array, arrayItem) {
 
-  const historyBody = document.querySelector('#history');
+  const historyBody = document.querySelector('#list-container');
 
   const divOperation = document.createElement('div');
   const divSolution = document.createElement('div');
