@@ -13,7 +13,7 @@ body {
 }
 
 #web-container {
-  height: 100vh;
+  height: 98vh;
   display: flex;
   flex-direction: column;
 }
@@ -25,11 +25,11 @@ body {
   align-items: center;
 }
 
-#history-container {
-  width: 200px;
+.history-container {
+  width: 300px;
   height: 620px;
   background-color: #282828;
-  border-radius: 7px;
+  border-radius: 0 7px 7px 0;
 }
 
 #calculator {
@@ -40,6 +40,15 @@ body {
   background-color: #282828;
   border-radius: 7px;
   padding: 2px;
+}
+
+.calc-container-history {
+  position: relative;
+  left: 150px;
+}
+
+.calculator-history {
+  border-radius: 7px 0 0 7px !important;
 }
 
 #footer{

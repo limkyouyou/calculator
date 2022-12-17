@@ -5,13 +5,18 @@ const database = {
   'active operand two': '',
   'active operator': '',
   'operation record': [],
-  'decimal point': false,
 }
 
 const display = document.querySelector('#display');
 const operationDisplay = document.querySelector('#display-operation');
 
 display.textContent = database['active number'].join('');
+
+function CreateOprtnObj(operandOne, operandTwo, operator) {
+  this.operandOne = operandOne;
+  this.operandTwo = operandTwo;
+  this.operator = operator;
+}
 
 function add(num1, num2) {
   return (+(+(num1) + +(num2)).toFixed(2)).toString();
@@ -29,11 +34,10 @@ function divide(num1, num2) {
   return (+(+(num1) / +(num2)).toFixed(2)).toString();
 }
 
-function operateLastObj() {
-  const tempOprtnRecord = database['operation record'];
-  const operandOne = tempOprtnRecord[tempOprtnRecord.length - 1]['operandOne'];
-  const operandTwo = tempOprtnRecord[tempOprtnRecord.length - 1]['operandTwo'];
-  const operator = tempOprtnRecord[tempOprtnRecord.length - 1]['operator'];
+function operateObj(obj) {
+  const operandOne = obj['operandOne'];
+  const operandTwo = obj['operandTwo'];
+  const operator = obj['operator'];
   if (operator === '+') {
     return add(operandOne, operandTwo);
   } else if (operator === '−') {
@@ -47,14 +51,6 @@ function operateLastObj() {
     clear();
   }
 }
-
-
-function CreateOprtnObj(operandOne, operandTwo, operator) {
-  this.operandOne = operandOne;
-  this.operandTwo = operandTwo;
-  this.operator = operator;
-}
-
 
 function storeDigit(selected) {
   database['active number'] = isFirstDigit(database['active number'], selected);
@@ -87,25 +83,27 @@ function runOperation(selected) {
   if (activeOperandOne && !activeOperandTwo && selected) {
     database['active operator'] = selected;
     displayOperation(database['active operand one'], database['active operator']);
-    database['decimal point'] = false;
   } else if (activeOperandTwo && selected) { 
     const activeOperator = database['active operator'];
     database['operation record'].push(new CreateOprtnObj(activeOperandOne, activeOperandTwo, activeOperator));
-    const tempSolution = operateLastObj();
+    const tempSolution = operateObj(database['operation record'][database['operation record'].length - 1]);
     database['active operand one'] = tempSolution;
     database['active operand two'] = '';
     database['active operator'] = selected;
-    database['decimal point'] = false;
     displayOperation(database['active operand one'], database['active operator']);
     display.textContent = tempSolution;
+
+    const historyBody = document.querySelector('#history');
+    if (historyBody.classList.contains('history-container')) {
+      //////////////////////////////////
+    }
   } else if (activeOperandTwo && !selected) { 
     const activeOperator = database['active operator'];
     database['operation record'].push(new CreateOprtnObj(activeOperandOne, activeOperandTwo, activeOperator));
-    const tempSolution = operateLastObj();
+    const tempSolution = operateObj(database['operation record'][database['operation record'].length - 1]);
     database['active operand one'] = tempSolution;
     database['active operand two'] = '';
     database['active operator'] = '';
-    database['decimal point'] = false;
     displayOperation(activeOperandOne, activeOperator, activeOperandTwo);
     display.textContent = tempSolution;
   }
@@ -124,7 +122,6 @@ function clear() {
   database['active operand two'] = '';
   database['active operator'] = '';
   database['operation record'] = [];
-  database['decimal point'] = false;
   operationDisplay.textContent = '';
   display.textContent = database['active number'].join('');
 }
@@ -132,12 +129,10 @@ function clear() {
 function clearEntry() {
   database['active number'] = ['0'];
   database['active operand two'] = '';
-  database['decimal point'] = false;
   display.textContent = database['active number'].join('');
 }
 
 function backspace(array, firstNum, secondNum, activeOp) {
-  isIncludeDecimal(database['active number']); // if decimal point is the deletion target , assign decimal point false
   if (!secondNum && !activeOp) {
     array = firstNum.split('');
     array.splice(-1,1);
@@ -152,11 +147,44 @@ function backspace(array, firstNum, secondNum, activeOp) {
   display.textContent = array.join('');
 }
 
-function isIncludeDecimal(numArray) {
-  if (numArray[numArray.length - 1] === '.') {
-    database['decimal point'] = false;
+function toggleHistory() {
+  const appBody = document.querySelector('#calc-container');
+  const calculatorBody = document.querySelector('#calculator');
+  const historyBody = document.querySelector('#history');
+  const oprtnRecord = database['operation record'];
+
+  appBody.classList.toggle('calc-container-history');
+  calculatorBody.classList.toggle('calculator-history');
+  historyBody.classList.toggle('history-container');
+
+  if (historyBody.classList.contains('history-container')) {
+    const historyContainer = document.querySelector('.history-container');
+    for (let i = 0; i < oprtnRecord.length; i++) {
+      const divOperation = document.createElement('div');
+      const divSolution = document.createElement('div');
+
+      divOperation.classList.add(`history-operation`);
+      divSolution.classList.add(`history-solution`);
+
+      const tempSolution = operateObj(oprtnRecord[i]);
+
+      divOperation.textContent = `${oprtnRecord[i]['operandOne']} ${oprtnRecord[i]['operator']} ${oprtnRecord[i]['operandTwo']} = `
+      divSolution.textContent = `${tempSolution}`
+
+      historyContainer.appendChild(divOperation);
+      historyContainer.appendChild(divSolution);
+    }
+  } else {
+    while (historyBody.hasChildNodes()) {
+      historyBody.removeChild(historyBody.firstChild);
+    }
   }
 }
+
+function isDecimalPresent(array) {
+  return array.includes('.')
+}
+
 
 function whichKey(e) {
   (e.shiftKey) 
@@ -181,8 +209,7 @@ function noShiftKey(e) {
   const activeEl = document.activeElement; // when there is an active/focused element, assign it to a variable
   if (numKey) {
     storeDigit(numKey.dataset.num);
-  } else if (symbolKey && !database['decimal point']) {
-    database['decimal point'] = true;
+  } else if (symbolKey && !isDecimalPresent(database['active number'])) {
     storeDigit(symbolKey.dataset.symbol);
   } else if (assignKey) {
     runOperation(); // when +/= key is pressed, assignkey(=) parameter is used first
@@ -199,8 +226,7 @@ function enterKeySwitch(activeEl) {
     if (activeEl.getAttribute('class') === 'digit btn') { // when a digit is focused, run enterkey as clicking the focused button
       const childSpan = activeEl.firstElementChild;
       storeDigit(childSpan.dataset.num);
-    } else if (activeEl.getAttribute('class') === 'symbol btn') {
-      database['decimal point'] = true;
+    } else if (activeEl.getAttribute('class') === 'symbol btn' && !isDecimalPresent(database['active number'])) {
       const childSpan = activeEl.firstElementChild;
       storeDigit(childSpan.dataset.symbol);
     } else if (
@@ -211,6 +237,8 @@ function enterKeySwitch(activeEl) {
       runOperation(childSpan.dataset.op);
     } else if (activeEl.getAttribute('class') === 'clear btn') {
       clear();
+    } else if (activeEl.getAttribute('class') === 'clear-entry btn') {
+      clearEntry();
     } else if (activeEl.getAttribute('class') === 'back btn') {
       backspace(database['active number'], database['active operand one'], database['active operand two'], database['active operator']);
     } else { // when no activeEL, execute runOperator with no parameter
@@ -226,10 +254,10 @@ function clickBtn(e) {
   const backClick = document.querySelector(`span[data-backcode="${e.target.dataset.backcode}"]`);
   const clearClick = document.querySelector(`span[data-clearcode="${e.target.dataset.clearcode}"]`);
   const clearEntryClick = document.querySelector(`span[data-clearentrycode="${e.target.dataset.clearentrycode}"]`);
+  const historyClick = document.querySelector(`span[data-historycode="${e.target.dataset.historycode}"]`);
   if (numClick) {
     storeDigit(numClick.dataset.num);
-  } else if (symbolClick && database['decimal point'] === false) {
-    database['decimal point'] = true;
+  } else if (symbolClick && !isDecimalPresent(database['active number'])) {
     storeDigit(symbolClick.dataset.symbol);
   } else if (opClick) {
     runOperation(opClick.dataset.op);
@@ -239,8 +267,10 @@ function clickBtn(e) {
     backspace(database['active number'], database['active operand one'], database['active operator']);
   } else if (clearClick) {
     clear();
-  }else if (clearEntryClick) {
+  } else if (clearEntryClick) {
     clearEntry();
+  } else if (historyClick) {
+    toggleHistory();
   }
 }
 
