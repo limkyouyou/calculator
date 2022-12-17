@@ -208,7 +208,7 @@ function toggleHistory() {
   } else {
 
     while (historyBody.hasChildNodes()) {
-      historyBody.removeChild(historyBody.firstChild);
+      clearHistory(historyBody);
     }
   }
 }
@@ -230,6 +230,10 @@ function addHistoryContent(array, arrayItem) {
 
   historyBody.appendChild(divOperation);
   historyBody.appendChild(divSolution);
+}
+
+function clearHistory(parentNode) {
+  parentNode.removeChild(parentNode.firstChild);
 }
 
 function isDecimalPresent(array) {
