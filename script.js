@@ -106,11 +106,13 @@ function runOperation(selected) {
   const activeOperandTwo = database['active operand two'];
   const activeOperator = database['active operator'];
 
-  if (activeOperandOne && !activeOperandTwo && selected) {
+  if (activeOperandOne !== '-' && !activeOperandTwo && selected) {
 
     displayOperation(activeOperandOne, selected);
 
     database['active operator'] = selected;
+
+    database['active number'] = []; // active number is emptied only when correct operand and operator is accepted, not everytime an operator is selected
 
   } else if (activeOperandTwo && selected) {
 
@@ -126,6 +128,8 @@ function runOperation(selected) {
     displaySepSolution(tempSolution);
 
     addLiveHistory();
+
+    database['active number'] = [];
     
   } else if (activeOperandTwo && !selected) { 
 
@@ -141,9 +145,9 @@ function runOperation(selected) {
     displaySepSolution(tempSolution);
 
     addLiveHistory();
-  }
 
-  database['active number'] = [];
+    database['active number'] = [];
+  }
 }
 
 function displayOperation(num1, operator, num2) {
