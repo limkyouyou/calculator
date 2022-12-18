@@ -1,10 +1,16 @@
+
 @font-face {
-  font-family: 'salma';
+  font-family: 'OpenSans-Regular';
+  src: url(OpenSans-Regular.ttf);
+}
+
+@font-face {
+  font-family: 'salmapro';
   src: url(salmapro.otf);
 }
 
 * {
-  font-family: 'salma', sans-serif;
+  font-family: 'salmapro', sans-serif;
   box-sizing: border-box;
 }
 
@@ -63,6 +69,7 @@ body {
 .item-container {
   border-top: 1px solid #585858;
   width: 260px; /* 13.5vw */
+  padding-bottom: 5px;
 }
 
 .history-operation {
@@ -77,8 +84,8 @@ body {
 .history-solution {
   margin: 5px 10px;
   color: #e7e6e6;
-  font-size: 37px;
-  line-height: 37px;
+  font-size: 35px;
+  line-height: 35px;
   text-align: end;
 }
 
@@ -127,6 +134,7 @@ body {
 
 #title {
   color: #e7e6e6;
+  font-family: OpenSans-Regular;
   font-size: 16px;
   padding-bottom: 1px;
 }
