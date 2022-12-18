@@ -41,14 +41,23 @@ function operateObj(obj) {
   const operator = obj['operator'];
 
   if (operator === '+') {
+
     return add(operandOne, operandTwo);
+
   } else if (operator === '−') {
+
     return subtract(operandOne, operandTwo);
+
   } else if (operator === '×') {
+
     return multiply(operandOne, operandTwo);
+
   } else if (operator === '÷' && operandTwo !== '0') {
+
     return divide(operandOne, operandTwo);
+
   } else if (operator === '÷' && operandTwo === '0') {
+    
     alert("Non sequitur. There's no logic to division by zero.. \nMust analyze...ana..l..y..ze...");
     clear();
   }
@@ -68,16 +77,25 @@ function storeDigit(selected) {
 }
 
 function addNumIf(array, num) {
+
   if (array[0] === '0' && array.length === 1 && num !== '.') {
+
     array.splice(0, 1);
     array.push(num);
+
     return array;
+
   } else if (array.length === 0 && num === '.') {
+
     array = [0];
     array.push(num);
+
     return array;
+
   } else {
+
     array.push(num);
+
     return array;
   }
 }
@@ -167,8 +185,11 @@ function addCommaSeperator(string) {
   const reverseWholeNum = splitPoint[0].split('').reverse();
 
   for (let i = 0; i < reverseWholeNum.length; i++) {
+
     commaArray.unshift(reverseWholeNum[i]);
+
     if ((i + 1) % 3 === 0 && !(i === reverseWholeNum.length - 1)) {
+
       commaArray.unshift(',');
     }
   }
@@ -176,16 +197,21 @@ function addCommaSeperator(string) {
   const joinWholeNumber = commaArray.join('');
 
   if (splitPoint[1]) {
+
     return `${joinWholeNumber}.${splitPoint[1]}`;
+
   } else {
+
     return joinWholeNumber;
   }
 }
 
 function addLiveHistory() {
+
   const historyBody = document.querySelector('.history-body');
 
   if (historyBody) {
+
     addHistoryContent(database['operation record'], database['operation record'].length - 1);
   }
 }
@@ -310,7 +336,9 @@ function addHistoryContent(array, arrayItem) {
 }
 
 function clearHistory(parentNode) {
+
   parentNode.removeChild(parentNode.firstChild);
+
 }
 
 function isDecimalPresent(array) {
