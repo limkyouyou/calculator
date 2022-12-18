@@ -1,7 +1,7 @@
 
 const database = {
   'active number': ['0'],
-  'active operand one': '',
+  'active operand one': '0',
   'active operand two': '',
   'active operator': '',
   'operation record': [],
@@ -247,7 +247,10 @@ function clear() {
 function clearEntry() {
 
   database['active number'] = ['0'];
+  database['active operand one'] = database['active number'][0];
   database['active operand two'] = '';
+  database['active operator'] = '';
+  operationDisplay.textContent = '';
   display.textContent = database['active number'].join('');
 
 }
