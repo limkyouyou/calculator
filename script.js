@@ -69,7 +69,7 @@ function storeDigit(selected) {
 
   const joinActiveNum = database['active number'].join('');
 
-  displaySepSolution(joinActiveNum, selected);
+  displaySepNum(joinActiveNum, selected);
 
   (!database['active operator'])
     ? database['active operand one'] = database['active number'].join('')
@@ -78,7 +78,8 @@ function storeDigit(selected) {
 
 function addNumIf(array, num) {
 
-  if (array[0] === '0' && array.length === 1 && num !== '.') {
+  if (array[0] === '0' && array.length === 1 && num !== '.') { 
+    // when a digit is selected and not the decimal point, the first array item is removed only when zero was the only item in the array
 
     array.splice(0, 1);
     array.push(num);
@@ -86,6 +87,7 @@ function addNumIf(array, num) {
     return array;
 
   } else if (array.length === 0 && num === '.') {
+    // zero is added before decimal point when array was empty
 
     array = [0];
     array.push(num);
@@ -112,7 +114,8 @@ function runOperation(selected) {
 
     database['active operator'] = selected;
 
-    database['active number'] = []; // active number is emptied only when correct operand and operator is accepted, not everytime an operator is selected
+    database['active number'] = []; 
+    // empty active number is nested inside every condition incase when runOperator is executed but no condition is met
 
   } else if (activeOperandTwo && selected) {
 
@@ -125,7 +128,7 @@ function runOperation(selected) {
     database['active operator'] = selected;
 
     displayOperation(tempSolution, selected);
-    displaySepSolution(tempSolution);
+    displaySepNum(tempSolution);
 
     addLiveHistory();
 
@@ -142,7 +145,7 @@ function runOperation(selected) {
     database['active operator'] = '';
 
     displayOperation(activeOperandOne, activeOperator, activeOperandTwo);
-    displaySepSolution(tempSolution);
+    displaySepNum(tempSolution);
 
     addLiveHistory();
 
@@ -168,15 +171,15 @@ function displayOperation(num1, operator, num2) {
 
 }
 
-function displaySepSolution(num, point) {
+function displaySepNum(num, selected) {
 
   const tempCommaSolution = addCommaSeperator(num);
 
-  if (point === '.') {
+  if (selected === '.') { // if selected is a decimal point, it is added again after its removal during the execution of addCommaSeperator function
 
-    display.textContent = `${tempCommaSolution}${point}`;
+    display.textContent = `${tempCommaSolution}${selected}`;
 
-  } else if (point !== '.') {
+  } else {
 
     display.textContent = tempCommaSolution;
 
@@ -193,6 +196,7 @@ function addCommaSeperator(string) {
     commaArray.unshift(reverseWholeNum[i]);
 
     if ((i + 1) % 3 === 0 && !(i === reverseWholeNum.length - 1) && reverseWholeNum[i + 1] !== '-') {
+      // comma seperator is added only when item index is divisible by 3 but not if it is the last index and not when the preceeding item is '-'
 
       commaArray.unshift(',');
     }
@@ -227,7 +231,7 @@ function activateObj(item) {
   database['active operand one'] = operateObj(tempOpRecord[item]);
 
   displayOperation(tempOpRecord[item]['operandOne'], tempOpRecord[item]['operator'], tempOpRecord[item]['operandTwo']);
-  displaySepSolution(database['active operand one']);
+  displaySepNum(database['active operand one']);
 
 }
 
@@ -263,7 +267,7 @@ function backspace(array, firstNum, secondNum, activeOp) {
 
   if (!secondNum && !activeOp) {
 
-    array = firstNum.split(''); // when operandOne need deleted after selecting operator, active number is empty
+    array = firstNum.split(''); // array needs to be reassigned since it may be empty after passing the first condition of runOperation
     array.splice(-1,1);
     firstNum = array.join('');
 
@@ -281,7 +285,7 @@ function backspace(array, firstNum, secondNum, activeOp) {
 
   const tempJoinArray = array.join('');
 
-  displaySepSolution(tempJoinArray, array[array.length - 1]);
+  displaySepNum(tempJoinArray, array[array.length - 1]);
 
 }
 
@@ -367,7 +371,7 @@ function withShiftKey(e) {
 
   const opKey = document.querySelector(`span[data-opcode="${e.keyCode}"]`);
 
-  if (opKey) { // run function when opKey exists as to avoid error by running function with null parameter
+  if (opKey) { // run function only when opKey exists as to avoid error from running the function with null parameter
 
     runOperation(opKey.dataset.op);
   }
@@ -393,7 +397,7 @@ function noShiftKey(e) {
 
   } else if (assignKey) {
 
-    runOperation(); // when +/= key is pressed, assignkey(=) parameter is used first
+    runOperation(); // when +/= key is pressed, assignkey(=) parameter is accepted first and does not proceed to opKey condition
 
   } else if (enterKey) {
 
@@ -401,7 +405,7 @@ function noShiftKey(e) {
 
   } else if (opKey) { 
 
-    runOperation(opKey.dataset.op); // check
+    runOperation(opKey.dataset.op);
 
   } else if (backspaceKey) {
 
@@ -428,7 +432,7 @@ function enterKeySwitch(activeEl) {
       activeEl.getAttribute('class') === 'operator btn' ||
       activeEl.getAttribute('class') === 'operate btn'
 
-      ) { // when a operator/operate is focused, run enterkey as clicking the focused button
+      ) {
 
       const childSpan = activeEl.firstElementChild;
 
