@@ -188,7 +188,7 @@ function addCommaSeperator(string) {
 
     commaArray.unshift(reverseWholeNum[i]);
 
-    if ((i + 1) % 3 === 0 && !(i === reverseWholeNum.length - 1)) {
+    if ((i + 1) % 3 === 0 && !(i === reverseWholeNum.length - 1) && reverseWholeNum[i + 1] !== '-') {
 
       commaArray.unshift(',');
     }
