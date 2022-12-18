@@ -239,7 +239,7 @@ function clear() {
 
   const historyBody = document.querySelector('.history-body');
 
-  while (historyBody.hasChildNodes()) {
+  if (historyBody) {
     clearHistory(historyBody);
   }
 }
