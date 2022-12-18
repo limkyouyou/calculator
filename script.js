@@ -58,7 +58,9 @@ function storeDigit(selected) {
 
   database['active number'] = addNumIf(database['active number'], selected);
 
-  display.textContent = database['active number'].join('');
+  const joinActiveNum = database['active number'].join('');
+
+  displaySepSolution(joinActiveNum, selected);
 
   (!database['active operator'])
     ? database['active operand one'] = database['active number'].join('')
@@ -103,7 +105,7 @@ function runOperation(selected) {
     database['active operator'] = selected;
 
     displayOperation(tempSolution, selected);
-    display.textContent = tempSolution;
+    displaySepSolution(tempSolution);
 
     addLiveHistory();
     
@@ -118,7 +120,7 @@ function runOperation(selected) {
     database['active operator'] = '';
 
     displayOperation(activeOperandOne, activeOperator, activeOperandTwo);
-    display.textContent = tempSolution;
+    displaySepSolution(tempSolution);
 
     addLiveHistory();
   }
@@ -128,10 +130,56 @@ function runOperation(selected) {
 
 function displayOperation(num1, operator, num2) {
 
-  (!num2)
-  ? operationDisplay.textContent = `${num1} ${operator}`
-  : operationDisplay.textContent = `${num1} ${operator} ${num2} =`;
+  if (!num2) {
 
+    const tempCommaOperandOne = addCommaSeperator(num1);
+
+    operationDisplay.textContent = `${tempCommaOperandOne} ${operator}`
+
+  } else {
+
+    const tempCommaOperandOne = addCommaSeperator(num1);
+    const tempCommaOperandTwo = addCommaSeperator(num2);
+
+    operationDisplay.textContent = `${tempCommaOperandOne} ${operator} ${tempCommaOperandTwo} =`;
+  }
+
+}
+
+function displaySepSolution(num, point) {
+
+  const tempCommaSolution = addCommaSeperator(num);
+
+  if (point === '.') {
+
+    display.textContent = `${tempCommaSolution}${point}`;
+
+  } else if (point !== '.') {
+
+    display.textContent = tempCommaSolution;
+
+  }
+}
+
+function addCommaSeperator(string) {
+  const commaArray = [];
+  const splitPoint = string.split('.');
+  const reverseWholeNum = splitPoint[0].split('').reverse();
+
+  for (let i = 0; i < reverseWholeNum.length; i++) {
+    commaArray.unshift(reverseWholeNum[i]);
+    if ((i + 1) % 3 === 0 && !(i === reverseWholeNum.length - 1)) {
+      commaArray.unshift(',');
+    }
+  }
+
+  const joinWholeNumber = commaArray.join('');
+
+  if (splitPoint[1]) {
+    return `${joinWholeNumber}.${splitPoint[1]}`;
+  } else {
+    return joinWholeNumber;
+  }
 }
 
 function addLiveHistory() {
@@ -149,7 +197,7 @@ function activateObj(item) {
   database['active operand one'] = operateObj(tempOpRecord[item]);
 
   displayOperation(tempOpRecord[item]['operandOne'], tempOpRecord[item]['operator'], tempOpRecord[item]['operandTwo']);
-  display.textContent = database['active operand one'];
+  displaySepSolution(database['active operand one']);
 
 }
 
@@ -197,8 +245,11 @@ function backspace(array, firstNum, secondNum, activeOp) {
   }
 
   database['active number'] = array;
-  
-  display.textContent = array.join('');
+
+  const tempJoinArray = array.join('');
+
+  displaySepSolution(tempJoinArray, array[array.length - 1]);
+
 }
 
 function toggleHistory() {
@@ -245,8 +296,12 @@ function addHistoryContent(array, arrayItem) {
 
   const tempSolution = operateObj(array[arrayItem]);
 
-  divOperation.textContent = `${array[arrayItem]['operandOne']} ${array[arrayItem]['operator']} ${array[arrayItem]['operandTwo']} = `;
-  divSolution.textContent = `${tempSolution}`;
+  const tempCommaOperandOne = addCommaSeperator(array[arrayItem]['operandOne']);
+  const tempCommaOperandTwo = addCommaSeperator(array[arrayItem]['operandTwo']);
+  const tempCommaSolution = addCommaSeperator(tempSolution);
+
+  divOperation.textContent = `${tempCommaOperandOne} ${array[arrayItem]['operator']} ${tempCommaOperandTwo} = `;
+  divSolution.textContent = `${tempCommaSolution}`;
 
   historyBody.appendChild(divContainer);
   divContainer.appendChild(divOperation);
