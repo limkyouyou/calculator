@@ -221,7 +221,7 @@ button {
 .history > .btn-content,
 .operator > .btn-content,
 .clear > .btn-content,
-.back > .btn-content {
+.delete > .btn-content {
   background-color: #363636;
 }
 
@@ -229,7 +229,7 @@ button {
 .history:hover > .btn-content,
 .operator:hover > .btn-content,
 .clear:hover > .btn-content,
-.back:hover > .btn-content {
+.delete:hover > .btn-content {
   background-color: #494848;
 }
 
@@ -237,7 +237,7 @@ button {
 .history:active > .btn-content,
 .operator:active > .btn-content,
 .clear:active > .btn-content,
-.back:active > .btn-content {
+.delete:active > .btn-content {
   background-color: #262626;
 }
 

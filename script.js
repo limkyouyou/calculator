@@ -260,8 +260,13 @@ function clear() {
 
   const historyBody = document.querySelector('.history-body');
 
-  while (historyBody.hasChildNodes()) {
+  if (historyBody) {
+
+    while (historyBody.hasChildNodes()) {
+
     clearHistory(historyBody);
+    
+    }
   }
 }
 
@@ -390,7 +395,23 @@ const addClickEvent = arrayContents.forEach((content) => {
     content.addEventListener('click', () => {
       runOperation();
     });
-  }
+  } else if (getClassList.includes('clear-entry')) {
+    content.addEventListener('click', () => {
+      clearEntry();
+    });
+  } else if (getClassList.includes('clear')) {
+    content.addEventListener('click', () => {
+      clear();
+    });
+  } else if (getClassList.includes('delete')) {
+    content.addEventListener('click', () => {
+      backspace(database['active number'], database['active operand one'], database['active operator']);
+    });
+  } else if (getClassList.includes('history')) {
+    content.addEventListener('click', () => {
+      toggleHistory();
+    });
+  } 
 });
 
 // 
