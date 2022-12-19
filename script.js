@@ -347,7 +347,9 @@ function addHistoryContent(array, arrayItem) {
   divContainer.classList.add(`item-container`);
   divContainer.setAttribute('data-item', arrayItem);
   divOperation.classList.add(`history-operation`);
+  divOperation.setAttribute('data-item', arrayItem);
   divSolution.classList.add(`history-solution`);
+  divSolution.setAttribute('data-item', arrayItem);
 
   const tempSolution = operateObj(array[arrayItem]);
 
@@ -413,6 +415,18 @@ const addClickEvent = arrayContents.forEach((content) => {
     });
   } 
 });
+
+
+window.addEventListener('click', passLiveClick);
+
+function passLiveClick(e) {
+
+  if (e.target.dataset.item) {
+    
+    activateObj(e.target.dataset.item);
+  }
+
+}
 
 // 
 // function passWhichKey(e) {
