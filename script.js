@@ -380,11 +380,11 @@ const addClickEvent = arrayContents.forEach((content) => {
   const getClassList = Array.from(content.classList);
   if (getClassList.includes('num')) {
     content.addEventListener('click', () => {
-      storeDigit(content.textContent.replaceAll(/\s/g, ''));
+      storeDigit(content.textContent);
     });
   } else if (getClassList.includes('oprtor')) {
     content.addEventListener('click', () => {
-      runOperation(content.textContent.replaceAll(/\s/g, ''));
+      runOperation(content.textContent);
     });
   } else if (getClassList.includes('oprte')) {
     content.addEventListener('click', () => {
