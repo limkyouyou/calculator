@@ -65,20 +65,23 @@ function operateObj(obj) {
 
 function storeDigit(selected) {
 
-  database['active number'] = addNumIf(database['active number'], selected);
+  const isDecimalExist = checkDecimal(database['active number']);
 
-  const joinActiveNum = database['active number'].join('');
+  const activeNum = addNumIf(database['active number'], selected, isDecimalExist);
 
-  displaySepNum(joinActiveNum, selected);
+  database['active number'] = activeNum;
+
+  const joinActiveNum = activeNum.join('');
+
+  displaySepNum(joinActiveNum, selected, isDecimalExist);
 
   (!database['active operator'])
-    ? database['active operand one'] = database['active number'].join('')
-    : database['active operand two'] = database['active number'].join('');
+    ? database['active operand one'] = joinActiveNum
+    : database['active operand two'] = joinActiveNum;
+
 }
 
-function addNumIf(array, num) {
-
-  const isDecimalExist = checkDecimal(database['active number'])
+function addNumIf(array, num, decimal) {
 
   if (array[0] === '0' && array.length === 1 && num !== '.') { 
     // when a digit is selected and not the decimal point, the first array item is removed only when zero was the only item in the array
@@ -96,7 +99,7 @@ function addNumIf(array, num) {
 
     return array;
 
-  } else if (num === '.' && !isDecimalExist) {
+  } else if (num === '.' && !decimal) {
     // if num = '.' then check for existing decimal point
 
     array.push(num);
@@ -110,9 +113,10 @@ function addNumIf(array, num) {
     return array;
 
   } else {
-
+    console.log(array)
     return array;
   }
+
 }
 
 function runOperation(selected) {
@@ -139,12 +143,7 @@ function runOperation(selected) {
     database['active operand one'] = tempSolution;
     database['active operand two'] = '';
     database['active operator'] = selected;
-
-    displayOperation(tempSolution, selected);
-    displaySepNum(tempSolution);
-
-    addLiveHistory();
-
+    isDecimalExist
     database['active number'] = [];
     
   } else if (activeOperandTwo && !selected) { 
@@ -184,11 +183,11 @@ function displayOperation(num1, operator, num2) {
 
 }
 
-function displaySepNum(num, selected) {
+function displaySepNum(num, selected, decimal) {
 
   const tempCommaSolution = addCommaSeperator(num);
 
-  if (selected === '.') { // if selected is a decimal point, it is added again after its removal during the execution of addCommaSeperator function
+  if (selected === '.' && !decimal) { // if selected is a decimal point, it is added again after its removal during the execution of addCommaSeperator function
 
     display.textContent = `${tempCommaSolution}${selected}`;
 
@@ -424,6 +423,35 @@ function passLiveClick(e) {
   if (e.target.dataset.item) {
     
     activateObj(e.target.dataset.item);
+  }
+
+}
+
+window.addEventListener('keydown', passLiveKeyDown);
+
+function passLiveKeyDown(e) {
+
+  (e.shiftKey)
+
+     ? console.log('with shift')
+     //passWithShift(e)
+     : passNoShift(e);
+
+}
+
+function passNoShift(e) {
+
+  const liveKeyCode = e.keyCode;
+  const selectNode = document.querySelector(`span[data-code="${liveKeyCode}"]`);
+
+  if (liveKeyCode >= 48 && liveKeyCode <= 57 || liveKeyCode === 190) {
+    
+    storeDigit(selectNode.textContent);
+
+  } else if (liveKeyCode === 8) {
+
+    backspace(database['active number'], database['active operand one'], database['active operator']);
+
   }
 
 }
