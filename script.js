@@ -78,6 +78,8 @@ function storeDigit(selected) {
 
 function addNumIf(array, num) {
 
+  const isDecimalExist = checkDecimal(database['active number'])
+
   if (array[0] === '0' && array.length === 1 && num !== '.') { 
     // when a digit is selected and not the decimal point, the first array item is removed only when zero was the only item in the array
 
@@ -87,16 +89,27 @@ function addNumIf(array, num) {
     return array;
 
   } else if (array.length === 0 && num === '.') {
-    // zero is added before decimal point when array was empty
+    // add zero before decimal point when array was empty
 
     array = [0];
     array.push(num);
 
     return array;
 
-  } else {
+  } else if (num === '.' && !isDecimalExist) {
+    // if num = '.' then check for existing decimal point
 
     array.push(num);
+
+    return array;
+
+  } else if (num !== '.') {
+
+    array.push(num);
+
+    return array;
+
+  } else {
 
     return array;
   }
@@ -247,7 +260,7 @@ function clear() {
 
   const historyBody = document.querySelector('.history-body');
 
-  if (historyBody) {
+  while (historyBody.hasChildNodes()) {
     clearHistory(historyBody);
   }
 }
@@ -352,170 +365,333 @@ function clearHistory(parentNode) {
 
 }
 
-function isDecimalPresent(array) {
+function checkDecimal(array) {
 
   return array.includes('.');
 
 }
 
 
-function whichKey(e) {
+const selectContents = document.querySelectorAll('span');
 
-  (e.shiftKey) 
-    ? withShiftKey(e)
-    : noShiftKey(e);
+const arrayContents = Array.from(selectContents);
 
-}
-
-function withShiftKey(e) {
-
-  const opKey = document.querySelector(`span[data-opcode="${e.keyCode}"]`);
-
-  if (opKey) { // run function only when opKey exists as to avoid error from running the function with null parameter
-
-    runOperation(opKey.dataset.op);
-  }
-}
-
-function noShiftKey(e) {
-
-  const numKey = document.querySelector(`span[data-numcode="${e.keyCode}"]`);
-  const symbolKey = document.querySelector(`span[data-symbolcode="${e.keyCode}"]`);
-  const opKey = document.querySelector(`span[data-opcode="${e.keyCode}"]`);
-  const assignKey = document.querySelector(`span[data-assigncode="${e.keyCode}"]`);
-  const enterKey = document.querySelector(`span[data-entercode="${e.keyCode}"]`);
-  const backspaceKey = document.querySelector(`span[data-backcode="${e.keyCode}"]`);
-  const activeEl = document.activeElement; // when there is an active/focused element, assign it to a variable
-
-  if (numKey) {
-
-    storeDigit(numKey.dataset.num);
-
-  } else if (symbolKey && !isDecimalPresent(database['active number'])) {
-
-    storeDigit(symbolKey.dataset.symbol);
-
-  } else if (assignKey) {
-
-    runOperation(); // when +/= key is pressed, assignkey(=) parameter is accepted first and does not proceed to opKey condition
-
-  } else if (enterKey) {
-
-    enterKeySwitch(activeEl);
-
-  } else if (opKey) { 
-
-    runOperation(opKey.dataset.op);
-
-  } else if (backspaceKey) {
-
-    backspace(database['active number'], database['active operand one'], database['active operand two'], database['active operator']);
-  }
-}
-
-function enterKeySwitch(activeEl) {
-
-    if (activeEl.getAttribute('class') === 'digit btn') { // when a digit is focused, run enterkey as clicking the focused button
-
-      const childSpan = activeEl.firstElementChild;
-
-      storeDigit(childSpan.dataset.num);
-
-    } else if (activeEl.getAttribute('class') === 'symbol btn' && !isDecimalPresent(database['active number'])) {
-
-      const childSpan = activeEl.firstElementChild;
-
-      storeDigit(childSpan.dataset.symbol);
-
-    } else if (
-
-      activeEl.getAttribute('class') === 'operator btn' ||
-      activeEl.getAttribute('class') === 'operate btn'
-
-      ) {
-
-      const childSpan = activeEl.firstElementChild;
-
-      runOperation(childSpan.dataset.op);
-
-    } else if (activeEl.getAttribute('class') === 'clear btn') {
-
-      clear();
-
-    } else if (activeEl.getAttribute('class') === 'clear-entry btn') {
-
-      clearEntry();
-
-    } else if (activeEl.getAttribute('class') === 'back btn') {
-
-      backspace(database['active number'], database['active operand one'], database['active operand two'], database['active operator']);
-
-    } else if (activeEl.getAttribute('class') === 'history btn') {
-
-      toggleHistory();
-
-    } else { // when no activeEL, execute runOperator with no parameter
-
+const addClickEvent = arrayContents.forEach((content) => {
+  const getClassList = Array.from(content.classList);
+  if (getClassList.includes('num')) {
+    content.addEventListener('click', () => {
+      storeDigit(content.textContent.replaceAll(/\s/g, ''));
+    });
+  } else if (getClassList.includes('oprtor')) {
+    content.addEventListener('click', () => {
+      runOperation(content.textContent.replaceAll(/\s/g, ''));
+    });
+  } else if (getClassList.includes('oprte')) {
+    content.addEventListener('click', () => {
       runOperation();
-    }
-}
-
-function clickBtn(e) {
-
-  const numClick = document.querySelector(`span[data-num="${e.target.dataset.num}"]`);
-  const symbolClick = document.querySelector(`span[data-symbol="${e.target.dataset.symbol}"]`);
-  const opClick = document.querySelector(`span[data-op="${e.target.dataset.op}"]`);
-  const assignClick = document.querySelector(`span[data-assigncode="${e.target.dataset.assigncode}"]`);
-  const backClick = document.querySelector(`span[data-backcode="${e.target.dataset.backcode}"]`);
-  const clearClick = document.querySelector(`span[data-clearcode="${e.target.dataset.clearcode}"]`);
-  const clearEntryClick = document.querySelector(`span[data-clearentrycode="${e.target.dataset.clearentrycode}"]`);
-  const historyClick = document.querySelector(`span[data-historycode="${e.target.dataset.historycode}"]`);
-  const historyItemChildClick = document.querySelector(`div[data-item="${e.target.parentNode.dataset.item}"]`);
-  const historyItemParentClick = document.querySelector(`div[data-item="${e.target.dataset.item}"]`);
-
-  if (numClick) {
-
-    storeDigit(numClick.dataset.num);
-
-  } else if (symbolClick && !isDecimalPresent(database['active number'])) {
-
-    storeDigit(symbolClick.dataset.symbol);
-
-  } else if (opClick) {
-
-    runOperation(opClick.dataset.op);
-
-  } else if (assignClick) {
-
-    runOperation();
-
-  } else if (backClick) {
-
-    backspace(database['active number'], database['active operand one'], database['active operator']);
-
-  } else if (clearClick) {
-
-    clear();
-
-  } else if (clearEntryClick) {
-
-    clearEntry();
-
-  } else if (historyClick) {
-    
-    toggleHistory();
-
-  } else if (historyItemChildClick) {
-
-    activateObj(historyItemChildClick.dataset.item);
-
-  } else if (historyItemParentClick) {
-
-    activateObj(historyItemParentClick.dataset.item);
-
+    });
   }
-}
+});
 
-
-window.addEventListener('click', clickBtn);
-window.addEventListener('keydown', whichKey);
+// 
+// function passWhichKey(e) {
+// 
+//   (e.shiftKey) 
+//     ? passWithShiftKey(e)
+//     : passNoShiftKey(e);
+// 
+// }
+// 
+// function passWhichKeyUp(e) {
+// 
+//   (e.shiftKey) 
+//     ? passWithShiftKeyUp(e)
+//     : passNoShiftKeyUp(e);
+// 
+// }
+// 
+// function passWithShiftKey(e) {
+// 
+//   const opKey = document.querySelector(`span[data-opcode="${e.keyCode}"]`);
+// 
+//   if (opKey) { // run function only when opKey exists as to avoid error from running the function with null parameter
+// 
+//     runOperation(opKey.dataset.op);
+// 
+//     opKey.style.backgroundColor = '#262626';
+//   }
+// }
+// 
+// function passNoShiftKey(e) {
+// 
+//   const numKey = document.querySelector(`span[data-numcode="${e.keyCode}"]`);
+//   const symbolKey = document.querySelector(`span[data-symbolcode="${e.keyCode}"]`);
+//   const opKey = document.querySelector(`span[data-opcode="${e.keyCode}"]`);
+//   const assignKey = document.querySelector(`span[data-assigncode="${e.keyCode}"]`);
+//   const enterKey = document.querySelector(`span[data-entercode="${e.keyCode}"]`);
+//   const backspaceKey = document.querySelector(`span[data-backcode="${e.keyCode}"]`);
+//   const activeEl = document.activeElement; // when there is an active/focused element, assign it to a variable
+// 
+//   if (numKey) {
+// 
+//     storeDigit(numKey.dataset.num);
+// 
+//     numKey.style.backgroundColor = '#262626';
+// 
+//   } else if (symbolKey && !isDecimalPresent(database['active number'])) {
+// 
+//     storeDigit(symbolKey.dataset.symbol);
+// 
+//     symbolKey.style.backgroundColor = '#262626';
+// 
+//   } else if (symbolKey) {
+// 
+//     symbolKey.style.backgroundColor = '#262626';
+// 
+//   } else if (assignKey) {
+// 
+//     runOperation(); // when +/= key is pressed, assignkey(=) parameter is accepted first and does not proceed to opKey condition
+// 
+//     assignKey.style.backgroundColor = '#002c28';
+// 
+//   } else if (enterKey) {
+// 
+//     passEnterKey(activeEl);
+// 
+//   } else if (opKey) { 
+// 
+//     runOperation(opKey.dataset.op);
+// 
+//     opKey.style.backgroundColor = '#262626';
+// 
+//   } else if (backspaceKey) {
+// 
+//     backspace(database['active number'], database['active operand one'], database['active operand two'], database['active operator']);
+// 
+//     backspaceKey.style.backgroundColor = '#262626';
+//   }
+// }
+// 
+// function passEnterKey(activeEl) {
+// 
+//   const childSpan = activeEl.firstElementChild;
+// 
+//   if (activeEl.getAttribute('class') === 'digit btn') { // when a digit is focused, run enterkey as clicking the focused button
+// 
+//     storeDigit(childSpan.dataset.num);
+// 
+//     childSpan.style.backgroundColor = '#262626';
+//     
+//   } else if (activeEl.getAttribute('class') === 'symbol btn' && !isDecimalPresent(database['active number'])) {
+// 
+//     storeDigit(childSpan.dataset.symbol);
+// 
+//     childSpan.style.backgroundColor = '#262626';
+// 
+//   } else if (activeEl.getAttribute('class') === 'symbol btn') {
+// 
+//     childSpan.style.backgroundColor = '#262626';
+// 
+//   } else if (activeEl.getAttribute('class') === 'operator btn') {
+// 
+//     runOperation(childSpan.dataset.op);
+// 
+//     childSpan.style.backgroundColor = '#262626';
+// 
+//   } else if (activeEl.getAttribute('class') === 'operate btn') {
+// 
+//     runOperation();
+// 
+//     childSpan.style.backgroundColor = '#002c28';
+// 
+//   } else if (activeEl.getAttribute('class') === 'clear btn') {
+// 
+//     clear();
+// 
+//     childSpan.style.backgroundColor = '#262626';
+// 
+//   } else if (activeEl.getAttribute('class') === 'clear-entry btn') {
+// 
+//     clearEntry();
+// 
+//     childSpan.style.backgroundColor = '#262626';
+// 
+//   } else if (activeEl.getAttribute('class') === 'back btn') {
+// 
+//     backspace(database['active number'], database['active operand one'], database['active operand two'], database['active operator']);
+// 
+//     childSpan.style.backgroundColor = '#262626';
+// 
+//   } else if (activeEl.getAttribute('class') === 'history btn') {
+// 
+//     toggleHistory();
+// 
+//     childSpan.style.backgroundColor = '#262626';
+// 
+//   } else { // when no activeEL, execute runOperator with no parameter
+// 
+//     const assignKey = document.querySelector(`span[data-assigncode="187"]`);
+// 
+//     assignKey.style.backgroundColor = '#002c28';
+// 
+//     runOperation();
+//     
+//   }
+// }
+// 
+// function passEnterKeyUp(activeEl) {
+// 
+//   const childSpan = activeEl.firstElementChild;
+// 
+//   if (activeEl.getAttribute('class') === 'digit btn') {
+// 
+//     childSpan.style.backgroundColor = '#494848';
+//     
+//   } else if (activeEl.getAttribute('class') === 'symbol btn' && !isDecimalPresent(database['active number'])) {
+// 
+//     childSpan.style.backgroundColor = '#494848';
+// 
+//   } else if (activeEl.getAttribute('class') === 'symbol btn') {
+// 
+//     childSpan.style.backgroundColor = '#494848';
+// 
+//   } else if (activeEl.getAttribute('class') === 'operator btn') {
+// 
+//     childSpan.style.backgroundColor = '#363636';
+// 
+//   } else if (activeEl.getAttribute('class') === 'operate btn') {
+// 
+//     childSpan.style.backgroundColor = '#00564d';
+// 
+//   } else if (activeEl.getAttribute('class') === 'clear btn') {
+// 
+//     childSpan.style.backgroundColor = '#363636';
+// 
+//   } else if (activeEl.getAttribute('class') === 'clear-entry btn') {
+// 
+//     childSpan.style.backgroundColor = '#363636';
+// 
+//   } else if (activeEl.getAttribute('class') === 'back btn') {
+// 
+//     childSpan.style.backgroundColor = '#363636';
+// 
+//   } else if (activeEl.getAttribute('class') === 'history btn') {
+// 
+//     childSpan.style.backgroundColor = '#363636';
+// 
+//   } else {
+// 
+//     const assignKey = document.querySelector(`span[data-assigncode="187"]`);
+// 
+//     assignKey.style.backgroundColor = '#00564d';
+//     
+//   }
+// }
+// 
+// function passWithShiftKeyUp(e) {
+// 
+//   const opKey = document.querySelector(`span[data-opcode="${e.keyCode}"]`);
+// 
+//   if (opKey) {
+// 
+//     opKey.style.backgroundColor = '#363636';
+//   }
+// }
+// 
+// function passNoShiftKeyUp(e) {
+// 
+//   const numKey = document.querySelector(`span[data-numcode="${e.keyCode}"]`);
+//   const symbolKey = document.querySelector(`span[data-symbolcode="${e.keyCode}"]`);
+//   const assignKey = document.querySelector(`span[data-assigncode="${e.keyCode}"]`);
+//   const enterKey = document.querySelector(`span[data-entercode="${e.keyCode}"]`);
+//   const opKey = document.querySelector(`span[data-opcode="${e.keyCode}"]`);
+//   const backspaceKey = document.querySelector(`span[data-backcode="${e.keyCode}"]`);
+//   const activeEl = document.activeElement;
+// 
+//   if (numKey) {
+// 
+//     numKey.style.backgroundColor = '#494848';
+// 
+//   } else if (symbolKey) {
+// 
+//     symbolKey.style.backgroundColor = '#494848';
+// 
+//   } else if (assignKey) {
+// 
+//     assignKey.style.backgroundColor = '#00564d';
+// 
+//   } else if (enterKey) {
+// 
+//     passEnterKeyUp(activeEl);
+// 
+//   } else if (opKey) { 
+// 
+//     opKey.style.backgroundColor = '#363636';
+// 
+//   } else if (backspaceKey) {
+// 
+//     backspaceKey.style.backgroundColor = '#363636';
+// 
+//   } 
+// }
+// 
+// function passClickBtn(e) {
+// 
+//   const numClick = document.querySelector(`span[data-num="${e.target.dataset.num}"]`);
+//   const symbolClick = document.querySelector(`span[data-symbol="${e.target.dataset.symbol}"]`);
+//   const opClick = document.querySelector(`span[data-op="${e.target.dataset.op}"]`);
+//   const assignClick = document.querySelector(`span[data-assigncode="${e.target.dataset.assigncode}"]`);
+//   const backClick = document.querySelector(`span[data-backcode="${e.target.dataset.backcode}"]`);
+//   const clearClick = document.querySelector(`span[data-clearcode="${e.target.dataset.clearcode}"]`);
+//   const clearEntryClick = document.querySelector(`span[data-clearentrycode="${e.target.dataset.clearentrycode}"]`);
+//   const historyClick = document.querySelector(`span[data-historycode="${e.target.dataset.historycode}"]`);
+//   const historyItemChildClick = document.querySelector(`div[data-item="${e.target.parentNode.dataset.item}"]`);
+//   const historyItemParentClick = document.querySelector(`div[data-item="${e.target.dataset.item}"]`);
+// 
+//   if (numClick) {
+// 
+//     storeDigit(numClick.dataset.num);
+// 
+//   } else if (symbolClick && !isDecimalPresent(database['active number'])) {
+// 
+//     storeDigit(symbolClick.dataset.symbol);
+// 
+//   } else if (opClick) {
+// 
+//     runOperation(opClick.dataset.op);
+// 
+//   } else if (assignClick) {
+// 
+//     runOperation();
+// 
+//   } else if (backClick) {
+// 
+//     backspace(database['active number'], database['active operand one'], database['active operator']);
+// 
+//   } else if (clearClick) {
+// 
+//     clear();
+// 
+//   } else if (clearEntryClick) {
+// 
+//     clearEntry();
+// 
+//   } else if (historyClick) {
+//     
+//     toggleHistory();
+// 
+//   } else if (historyItemChildClick) {
+// 
+//     activateObj(historyItemChildClick.dataset.item);
+// 
+//   } else if (historyItemParentClick) {
+// 
+//     activateObj(historyItemParentClick.dataset.item);
+// 
+//   }
+// }
+// 
+// 
+// window.addEventListener('click', passClickBtn);
+// window.addEventListener('keydown', passWhichKey);
+// window.addEventListener('keyup', passWhichKeyUp);
