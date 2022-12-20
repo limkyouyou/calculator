@@ -123,7 +123,7 @@ function runOperation(selected) {
 
   if (activeOperandTwo === '0' && activeOperator === '÷') {
 
-    clear();
+    clearEntry();
     display.textContent = "Nonsense."
     
   } else if (activeOperandOne && activeOperandOne !== '-' && !activeOperandTwo && selected) {
