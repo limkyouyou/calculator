@@ -12,6 +12,9 @@ The interactive operation history list enables the user to recall their previous
 The focused button after pressing tab key is accessible by pressing enter key.
 
 
+
 The 'calculator icon' created by Freepik - Flaticon, link: https://www.flaticon.com/free-icons/math
+
 The 'OpenSans font' created by Steve Matteson - 1001 Fonts, link: https://www.1001fonts.com/open-sans-font.html
+
 The 'Salma Pro font' created by Alifinart - FontSpace, link: https://www.fontspace.com/salma-pro-font-f73552
