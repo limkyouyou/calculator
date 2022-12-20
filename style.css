@@ -79,6 +79,7 @@ body {
   font-size: 25px;
   line-height: 25px;
   text-align: end;
+  overflow-wrap: break-word;
 }
 
 .history-solution {
@@ -87,6 +88,7 @@ body {
   font-size: 35px;
   line-height: 35px;
   text-align: end;
+  overflow-wrap: break-word;
 }
 
 #calculator {
@@ -150,10 +152,10 @@ body {
 }
 
 #display-operation {
-
   color: #e7e6e6;
   font-size: 27px;
-  height: 27px;
+  height: 30px;
+  overflow:inherit
 }
 
 #display {
