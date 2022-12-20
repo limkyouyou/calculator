@@ -435,13 +435,13 @@ Array.from(selectContents).forEach((content) => {
     content.addEventListener('click', () => {
 
       toggleHistory();
-      
+
     });
   } 
 });
 
 
-window.addEventListener('click', passLiveClick);
+window.addEventListener('click', passLiveClick); // for the live history list
 
 function passLiveClick(e) {
 
@@ -453,17 +453,18 @@ function passLiveClick(e) {
 }
 
 window.addEventListener('keydown', passLiveKeyDown);
+window.addEventListener('keyup', passLiveKeyUp);
 
 function passLiveKeyDown(e) {
 
   (e.shiftKey)
 
-     ? passWithShift(e)
-     : passNoShift(e);
+     ? passDownWithShift(e)
+     : passDownNoShift(e);
 
 }
 
-function passWithShift(e) {
+function passDownWithShift(e) {
 
   const liveKeyCode = e.keyCode;
   const selectNode = document.querySelectorAll(`span[data-code="${liveKeyCode}"]`);
@@ -474,13 +475,14 @@ function passWithShift(e) {
 
     if (getClassList.includes('oprtor')) {
 
+      content.style.backgroundColor = '#262626';
       runOperation(content.textContent);
     }
   });
 
 }
 
-function passNoShift(e) {
+function passDownNoShift(e) {
 
   const liveKeyCode = e.keyCode;
   const selectNode = document.querySelector(`span[data-code="${liveKeyCode}"]`);
@@ -489,84 +491,150 @@ function passNoShift(e) {
 
   if (liveKeyCode >= 48 && liveKeyCode <= 57 || liveKeyCode === 190) {
     
+    selectNode.style.backgroundColor = '#262626';
     storeDigit(selectNode.textContent);
 
   } else if (liveKeyCode === 189 || liveKeyCode === 191) {
     
+    selectNode.style.backgroundColor = '#262626';
     runOperation(selectNode.textContent);
 
   } else if (liveKeyCode === 187) {
 
+    selectNode.style.backgroundColor = '#002c28';
     runOperation();
 
   } else if (liveKeyCode === 8) {
 
+    selectNode.style.backgroundColor = '#262626';
     backspace(database['active number'], database['active operand one'], database['active operator']);
 
   } else if (liveKeyCode === 13) {
 
-    passEnterKey(activeEl);
+    passEnterKeyDown(activeEl);
 
   }
 }
 
-function passEnterKey(activeEl) {
+function passEnterKeyDown(activeEl) {
 
   const getActiveElClass = activeEl.getAttribute('class');
   const childSpan = activeEl.firstElementChild;
 
   if (getActiveElClass === 'digit btn' || getActiveElClass === 'symbol btn') { // when a digit is focused, run enterkey as clicking the focused button
 
+    childSpan.style.backgroundColor = '#262626';
     storeDigit(childSpan.textContent);
-
-    //childSpan.style.backgroundColor = '#262626';
     
   } else if (getActiveElClass === 'operator btn') {
 
+    childSpan.style.backgroundColor = '#262626';
     runOperation(childSpan.textContent);
-
-    //childSpan.style.backgroundColor = '#262626';
 
   } else if (getActiveElClass === 'operate btn') {
 
+    childSpan.style.backgroundColor = '#002c28';
     runOperation();
-
-    //childSpan.style.backgroundColor = '#002c28';
 
   } else if (getActiveElClass === 'clear btn') {
 
+    childSpan.style.backgroundColor = '#262626';
     clear();
-
-    //childSpan.style.backgroundColor = '#262626';
 
   } else if (getActiveElClass === 'clear-entry btn') {
 
+    childSpan.style.backgroundColor = '#262626';
     clearEntry();
-
-    //childSpan.style.backgroundColor = '#262626';
 
   } else if (getActiveElClass === 'delete btn') {
 
+    childSpan.style.backgroundColor = '#262626';
     backspace(database['active number'], database['active operand one'], database['active operand two'], database['active operator']);
-
-    //childSpan.style.backgroundColor = '#262626';
 
   } else if (getActiveElClass === 'history btn') {
 
+    childSpan.style.backgroundColor = '#262626';
     toggleHistory();
-
-    //childSpan.style.backgroundColor = '#262626';
 
   } else { // when no activeEL, execute runOperator with no parameter
 
-    //const assignKey = document.querySelector(`span[data-assigncode="187"]`);
+    const assignKey = document.querySelector(`.oprte`);
 
-    //assignKey.style.backgroundColor = '#002c28';
-
+    assignKey.style.backgroundColor = '#002c28';
     runOperation();
     
   }
 }
+
+function passLiveKeyUp(e) {
+
+  const liveKeyCode = e.keyCode;
+  const selectNode = document.querySelectorAll(`span[data-code="${liveKeyCode}"]`);
+  const activeEl = document.activeElement;
+
+  Array.from(selectNode).forEach((content) => {
+
+    const getClassList = Array.from(content.classList);
+
+    if (getClassList.includes('num')) {
+
+      content.style.backgroundColor = '#494848';
+
+    } else if (
+      getClassList.includes('oprtor') 
+      || getClassList.includes('history')
+      || getClassList.includes('clear')
+      || getClassList.includes('clear-entry')
+      || getClassList.includes('delete')) {
+
+      content.style.backgroundColor = '#363636';
+
+    } else if (getClassList.includes('oprte')) {
+
+      content.style.backgroundColor = '#00564d';
+
+    } 
+  });
+
+  if (liveKeyCode === 13) {
+      
+    passEnterKeyUp(activeEl);
+
+  }
+}
+
+function passEnterKeyUp(activeEl) {
+
+  const getActiveElClass = activeEl.getAttribute('class');
+  const childSpan = activeEl.firstElementChild;
+
+  if (getActiveElClass === 'digit btn' || getActiveElClass === 'symbol btn') { // when a digit is focused, run enterkey as clicking the focused button
+
+    childSpan.style.backgroundColor = '#494848';
+    
+  } else if (
+    getActiveElClass === 'operator btn'
+    || getActiveElClass === 'clear btn'
+    || getActiveElClass === 'clear-entry btn'
+    || getActiveElClass === 'delete btn'
+    || getActiveElClass === 'history btn'
+    ) {
+
+    childSpan.style.backgroundColor = '#363636';
+
+  } else if (getActiveElClass === 'operate btn') {
+
+    childSpan.style.backgroundColor = '#00564d';
+
+  } else {
+
+    const assignKey = document.querySelector(`.oprte`);
+
+    assignKey.style.backgroundColor = '#00564d';
+    
+  }
+}
+
 
 // 
 // function passWhichKey(e) {
