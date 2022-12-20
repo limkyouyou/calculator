@@ -1,12 +1,12 @@
 
 @font-face {
   font-family: 'OpenSans-Regular';
-  src: url(/fonts/OpenSans-Regular.ttf);
+  src: url(fonts/OpenSans-Regular.ttf);
 }
 
 @font-face {
   font-family: 'salmapro';
-  src: url(/fonts/salmapro.otf);
+  src: url(fonts/salmapro.otf);
 }
 
 * {
