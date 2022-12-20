@@ -33,14 +33,14 @@ body {
 }
 
 .history-container {
-  width: 300px; /* 15.7vw */
+  width: 298px; /* 15.7vw */
   height: 620px;
   background-color: #282828;
   border-radius: 0 7px 7px 0;
 }
 
 .history-body {
-  width: 292px; /* 15.3vw */
+  width: 293px; /* 15.3vw */
   height: 600px;
   margin: 10px 0;
   padding: 15px 0px 15px 15px;
@@ -68,7 +68,7 @@ body {
 
 .item-container {
   border-top: 1px solid #585858;
-  width: 260px; /* 13.5vw */
+  width: 265px; /* 13.5vw */
   padding-bottom: 5px;
 }
 
