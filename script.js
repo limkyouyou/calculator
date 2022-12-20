@@ -73,7 +73,7 @@ function storeDigit(selected) {
 
   const joinActiveNum = activeNum.join('');
 
-  displaySepNum(joinActiveNum, selected, isDecimalExist);
+  displaySepNum(joinActiveNum);
 
   (!database['active operator'])
     ? database['active operand one'] = joinActiveNum
@@ -113,7 +113,7 @@ function addNumIf(array, num, decimal) {
     return array;
 
   } else {
-    console.log(array)
+
     return array;
   }
 
@@ -143,7 +143,12 @@ function runOperation(selected) {
     database['active operand one'] = tempSolution;
     database['active operand two'] = '';
     database['active operator'] = selected;
-    isDecimalExist
+
+    displayOperation(tempSolution, selected);
+    displaySepNum(tempSolution);
+
+    addLiveHistory();
+
     database['active number'] = [];
     
   } else if (activeOperandTwo && !selected) { 
@@ -183,22 +188,16 @@ function displayOperation(num1, operator, num2) {
 
 }
 
-function displaySepNum(num, selected, decimal) {
+function displaySepNum(num) {
 
   const tempCommaSolution = addCommaSeperator(num);
 
-  if (selected === '.' && !decimal) { // if selected is a decimal point, it is added again after its removal during the execution of addCommaSeperator function
+  display.textContent = tempCommaSolution;
 
-    display.textContent = `${tempCommaSolution}${selected}`;
-
-  } else {
-
-    display.textContent = tempCommaSolution;
-
-  }
 }
 
 function addCommaSeperator(string) {
+  const checkLastDecimal = string.split('');
   const commaArray = [];
   const splitPoint = string.split('.');
   const reverseWholeNum = splitPoint[0].split('').reverse();
@@ -220,9 +219,14 @@ function addCommaSeperator(string) {
 
     return `${joinWholeNumber}.${splitPoint[1]}`;
 
+  } else if (checkLastDecimal[checkLastDecimal.length - 1] === '.'){
+
+    return `${joinWholeNumber}.`;
+
   } else {
 
     return joinWholeNumber;
+
   }
 }
 
@@ -380,37 +384,58 @@ function checkDecimal(array) {
 
 const selectContents = document.querySelectorAll('span');
 
-const arrayContents = Array.from(selectContents);
+Array.from(selectContents).forEach((content) => {
 
-const addClickEvent = arrayContents.forEach((content) => {
   const getClassList = Array.from(content.classList);
+
   if (getClassList.includes('num')) {
+
     content.addEventListener('click', () => {
+
       storeDigit(content.textContent);
+
     });
   } else if (getClassList.includes('oprtor')) {
+
     content.addEventListener('click', () => {
+
       runOperation(content.textContent);
+
     });
   } else if (getClassList.includes('oprte')) {
+
     content.addEventListener('click', () => {
+
       runOperation();
+
     });
   } else if (getClassList.includes('clear-entry')) {
+
     content.addEventListener('click', () => {
+
       clearEntry();
+
     });
   } else if (getClassList.includes('clear')) {
+
     content.addEventListener('click', () => {
+
       clear();
+
     });
   } else if (getClassList.includes('delete')) {
+
     content.addEventListener('click', () => {
+
       backspace(database['active number'], database['active operand one'], database['active operator']);
+
     });
   } else if (getClassList.includes('history')) {
+
     content.addEventListener('click', () => {
+
       toggleHistory();
+      
     });
   } 
 });
@@ -433,9 +458,25 @@ function passLiveKeyDown(e) {
 
   (e.shiftKey)
 
-     ? console.log('with shift')
-     //passWithShift(e)
+     ? passWithShift(e)
      : passNoShift(e);
+
+}
+
+function passWithShift(e) {
+
+  const liveKeyCode = e.keyCode;
+  const selectNode = document.querySelectorAll(`span[data-code="${liveKeyCode}"]`);
+
+  Array.from(selectNode).forEach((content) => {
+
+    const getClassList = Array.from(content.classList);
+
+    if (getClassList.includes('oprtor')) {
+
+      runOperation(content.textContent);
+    }
+  });
 
 }
 
@@ -444,16 +485,87 @@ function passNoShift(e) {
   const liveKeyCode = e.keyCode;
   const selectNode = document.querySelector(`span[data-code="${liveKeyCode}"]`);
 
+  const activeEl = document.activeElement; // when there is an active/focused element, assign it to a variable
+
   if (liveKeyCode >= 48 && liveKeyCode <= 57 || liveKeyCode === 190) {
     
     storeDigit(selectNode.textContent);
+
+  } else if (liveKeyCode === 189 || liveKeyCode === 191) {
+    
+    runOperation(selectNode.textContent);
+
+  } else if (liveKeyCode === 187) {
+
+    runOperation();
 
   } else if (liveKeyCode === 8) {
 
     backspace(database['active number'], database['active operand one'], database['active operator']);
 
-  }
+  } else if (liveKeyCode === 13) {
 
+    passEnterKey(activeEl);
+
+  }
+}
+
+function passEnterKey(activeEl) {
+
+  const getActiveElClass = activeEl.getAttribute('class');
+  const childSpan = activeEl.firstElementChild;
+
+  if (getActiveElClass === 'digit btn' || getActiveElClass === 'symbol btn') { // when a digit is focused, run enterkey as clicking the focused button
+
+    storeDigit(childSpan.textContent);
+
+    //childSpan.style.backgroundColor = '#262626';
+    
+  } else if (getActiveElClass === 'operator btn') {
+
+    runOperation(childSpan.textContent);
+
+    //childSpan.style.backgroundColor = '#262626';
+
+  } else if (getActiveElClass === 'operate btn') {
+
+    runOperation();
+
+    //childSpan.style.backgroundColor = '#002c28';
+
+  } else if (getActiveElClass === 'clear btn') {
+
+    clear();
+
+    //childSpan.style.backgroundColor = '#262626';
+
+  } else if (getActiveElClass === 'clear-entry btn') {
+
+    clearEntry();
+
+    //childSpan.style.backgroundColor = '#262626';
+
+  } else if (getActiveElClass === 'delete btn') {
+
+    backspace(database['active number'], database['active operand one'], database['active operand two'], database['active operator']);
+
+    //childSpan.style.backgroundColor = '#262626';
+
+  } else if (getActiveElClass === 'history btn') {
+
+    toggleHistory();
+
+    //childSpan.style.backgroundColor = '#262626';
+
+  } else { // when no activeEL, execute runOperator with no parameter
+
+    //const assignKey = document.querySelector(`span[data-assigncode="187"]`);
+
+    //assignKey.style.backgroundColor = '#002c28';
+
+    runOperation();
+    
+  }
 }
 
 // 
@@ -539,53 +651,53 @@ function passNoShift(e) {
 // 
 //   const childSpan = activeEl.firstElementChild;
 // 
-//   if (activeEl.getAttribute('class') === 'digit btn') { // when a digit is focused, run enterkey as clicking the focused button
+//   if (getActiveElClass === 'digit btn') { // when a digit is focused, run enterkey as clicking the focused button
 // 
 //     storeDigit(childSpan.dataset.num);
 // 
 //     childSpan.style.backgroundColor = '#262626';
 //     
-//   } else if (activeEl.getAttribute('class') === 'symbol btn' && !isDecimalPresent(database['active number'])) {
+//   } else if (getActiveElClass === 'symbol btn' && !isDecimalPresent(database['active number'])) {
 // 
 //     storeDigit(childSpan.dataset.symbol);
 // 
 //     childSpan.style.backgroundColor = '#262626';
 // 
-//   } else if (activeEl.getAttribute('class') === 'symbol btn') {
+//   } else if (getActiveElClass === 'symbol btn') {
 // 
 //     childSpan.style.backgroundColor = '#262626';
 // 
-//   } else if (activeEl.getAttribute('class') === 'operator btn') {
+//   } else if (getActiveElClass === 'operator btn') {
 // 
 //     runOperation(childSpan.dataset.op);
 // 
 //     childSpan.style.backgroundColor = '#262626';
 // 
-//   } else if (activeEl.getAttribute('class') === 'operate btn') {
+//   } else if (getActiveElClass === 'operate btn') {
 // 
 //     runOperation();
 // 
 //     childSpan.style.backgroundColor = '#002c28';
 // 
-//   } else if (activeEl.getAttribute('class') === 'clear btn') {
+//   } else if (getActiveElClass === 'clear btn') {
 // 
 //     clear();
 // 
 //     childSpan.style.backgroundColor = '#262626';
 // 
-//   } else if (activeEl.getAttribute('class') === 'clear-entry btn') {
+//   } else if (getActiveElClass === 'clear-entry btn') {
 // 
 //     clearEntry();
 // 
 //     childSpan.style.backgroundColor = '#262626';
 // 
-//   } else if (activeEl.getAttribute('class') === 'back btn') {
+//   } else if (getActiveElClass === 'back btn') {
 // 
 //     backspace(database['active number'], database['active operand one'], database['active operand two'], database['active operator']);
 // 
 //     childSpan.style.backgroundColor = '#262626';
 // 
-//   } else if (activeEl.getAttribute('class') === 'history btn') {
+//   } else if (getActiveElClass === 'history btn') {
 // 
 //     toggleHistory();
 // 
@@ -606,39 +718,39 @@ function passNoShift(e) {
 // 
 //   const childSpan = activeEl.firstElementChild;
 // 
-//   if (activeEl.getAttribute('class') === 'digit btn') {
+//   if (getActiveElClass === 'digit btn') {
 // 
 //     childSpan.style.backgroundColor = '#494848';
 //     
-//   } else if (activeEl.getAttribute('class') === 'symbol btn' && !isDecimalPresent(database['active number'])) {
+//   } else if (getActiveElClass === 'symbol btn' && !isDecimalPresent(database['active number'])) {
 // 
 //     childSpan.style.backgroundColor = '#494848';
 // 
-//   } else if (activeEl.getAttribute('class') === 'symbol btn') {
+//   } else if (getActiveElClass === 'symbol btn') {
 // 
 //     childSpan.style.backgroundColor = '#494848';
 // 
-//   } else if (activeEl.getAttribute('class') === 'operator btn') {
+//   } else if (getActiveElClass === 'operator btn') {
 // 
 //     childSpan.style.backgroundColor = '#363636';
 // 
-//   } else if (activeEl.getAttribute('class') === 'operate btn') {
+//   } else if (getActiveElClass === 'operate btn') {
 // 
 //     childSpan.style.backgroundColor = '#00564d';
 // 
-//   } else if (activeEl.getAttribute('class') === 'clear btn') {
+//   } else if (getActiveElClass === 'clear btn') {
 // 
 //     childSpan.style.backgroundColor = '#363636';
 // 
-//   } else if (activeEl.getAttribute('class') === 'clear-entry btn') {
+//   } else if (getActiveElClass === 'clear-entry btn') {
 // 
 //     childSpan.style.backgroundColor = '#363636';
 // 
-//   } else if (activeEl.getAttribute('class') === 'back btn') {
+//   } else if (getActiveElClass === 'back btn') {
 // 
 //     childSpan.style.backgroundColor = '#363636';
 // 
-//   } else if (activeEl.getAttribute('class') === 'history btn') {
+//   } else if (getActiveElClass === 'history btn') {
 // 
 //     childSpan.style.backgroundColor = '#363636';
 // 
