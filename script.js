@@ -337,6 +337,7 @@ function toggleHistory() {
       clearHistory(historyBody);
     }
   }
+
 }
 
 function addHistoryContent(array, arrayItem) {
@@ -367,6 +368,21 @@ function addHistoryContent(array, arrayItem) {
   divContainer.appendChild(divOperation);
   divContainer.appendChild(divSolution);
 
+  divContainer.addEventListener('mouseover', () => {
+
+    divContainer.style.backgroundColor = '#363636';
+    divContainer.style.borderTopLeftRadius = '8px';
+    divContainer.style.borderTopRightRadius = '8px';
+
+  })
+
+  divContainer.addEventListener('mouseleave', () => {
+
+    divContainer.style.backgroundColor = '';
+    divContainer.style.borderTopLeftRadius = '';
+    divContainer.style.borderTopRightRadius = '';
+
+  })
 }
 
 function clearHistory(parentNode) {
