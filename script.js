@@ -72,8 +72,8 @@ function storeDigit(selected) {
   displaySepNum(joinActiveNum);
 
   (!database['active operator'])
-    ? database['active operand one'] = joinActiveNum
-    : database['active operand two'] = joinActiveNum;
+    ? database['active operand one'] = (+(joinActiveNum)).toString() // gets rid of decimal point if it's the last character
+    : database['active operand two'] = (+(joinActiveNum)).toString();
 
 }
 
@@ -293,14 +293,14 @@ function backspace(array, firstNum, secondNum, activeOp) {
     array.splice(-1,1);
     firstNum = array.join('');
 
-    database['active operand one'] = firstNum;
+    database['active operand one'] = (+(firstNum)).toString();
 
   } else {
 
     array.splice(-1,1);
     secondNum = array.join('');
 
-    database['active operand two'] = secondNum;
+    database['active operand two'] = (+(secondNum)).toString();
   }
 
   database['active number'] = array;
