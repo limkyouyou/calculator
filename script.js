@@ -56,10 +56,6 @@ function operateObj(obj) {
 
     return divide(operandOne, operandTwo);
 
-  } else if (operator === '÷' && operandTwo === '0') {
-    
-    alert("Non sequitur. There's no logic to division by zero.. \nMust analyze...ana..l..y..ze...");
-    clear();
   }
 }
 
@@ -125,7 +121,12 @@ function runOperation(selected) {
   const activeOperandTwo = database['active operand two'];
   const activeOperator = database['active operator'];
 
-  if (activeOperandOne !== '-' && !activeOperandTwo && selected) {
+  if (activeOperandTwo === '0' && activeOperator === '÷') {
+
+    clear();
+    display.textContent = "Gibberish."
+    
+  } else if (activeOperandOne && activeOperandOne !== '-' && !activeOperandTwo && selected) {
 
     displayOperation(activeOperandOne, selected);
 
