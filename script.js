@@ -161,16 +161,20 @@ function runOperation(selected) {
 
 function displayOperation(num1, operator, num2) {
 
+  const tempNum1 = (+(num1)).toString(); //omits decimal point as the last character
+
   if (!num2) {
 
-    const tempCommaOperandOne = (+(addCommaSeperator(num1))).toString(); // omits decimal point if its the last character
+    const tempCommaOperandOne = addCommaSeperator(tempNum1);
 
     operationDisplay.textContent = `${tempCommaOperandOne} ${operator}`
 
   } else {
 
-    const tempCommaOperandOne = (+(addCommaSeperator(num1))).toString();
-    const tempCommaOperandTwo = (+(addCommaSeperator(num2))).toString();
+    const tempNum2 = (+(num2)).toString();
+
+    const tempCommaOperandOne = addCommaSeperator(tempNum1);
+    const tempCommaOperandTwo = addCommaSeperator(tempNum2);
 
     operationDisplay.textContent = `${tempCommaOperandOne} ${operator} ${tempCommaOperandTwo} =`;
   }
@@ -345,9 +349,11 @@ function addHistoryContent(array, arrayItem) {
   divSolution.setAttribute('data-item', arrayItem);
 
   const tempSolution = operateObj(array[arrayItem]);
+  const tempNum1 = (+(array[arrayItem]['operandOne'])).toString();
+  const tempNum2 = (+(array[arrayItem]['operandTwo'])).toString();
 
-  const tempCommaOperandOne = addCommaSeperator(array[arrayItem]['operandOne']);
-  const tempCommaOperandTwo = addCommaSeperator(array[arrayItem]['operandTwo']);
+  const tempCommaOperandOne = addCommaSeperator(tempNum1);
+  const tempCommaOperandTwo = addCommaSeperator(tempNum2);
   const tempCommaSolution = addCommaSeperator(tempSolution);
 
   divOperation.textContent = `${tempCommaOperandOne} ${array[arrayItem]['operator']} ${tempCommaOperandTwo} = `;
