@@ -40,7 +40,6 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
 }
 
 #calc-container {
@@ -49,7 +48,6 @@ body {
   justify-content: center;
   align-items: center;
   width: 400px;
-  border: 1px solid red;
 }
 
 .history-container {
@@ -136,7 +134,6 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 20px;
-  border: 1px solid blue;
 }
 
 #footer-container {
