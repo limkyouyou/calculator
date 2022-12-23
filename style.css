@@ -14,6 +14,13 @@
   box-sizing: border-box;
 }
 
+@media only screen and (max-width: 1000px) {
+  /* For mobile phones: */
+  [id*="calc-container"] {
+    width: 100%;
+  }
+}
+
 body {
   margin: 0;
 }
