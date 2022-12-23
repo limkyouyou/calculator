@@ -392,7 +392,7 @@ function NodesInterface(node, mainClass, text, keyCode, parentClass) {
   this.mainClass = mainClass;
   this.text = text;
   this.keyCode = keyCode;
-  this.parentClass = parentClass
+  this.parentClass = parentClass;
 
   if (this.mainClass.includes('num')) {
 
@@ -412,7 +412,7 @@ function NodesInterface(node, mainClass, text, keyCode, parentClass) {
 
     this.node.addEventListener('mousedown', () => {
 
-      const isDecimalExist = checkDecimal(database['active number'])
+      const isDecimalExist = checkDecimal(database['active number']);
 
       if (!isDecimalExist) {
 
@@ -490,7 +490,7 @@ Array.from(selectContents).forEach((content) => {
   
   database['button nodes'].push(new NodesInterface(content, content.className, content.textContent, content.dataset.code, content.parentElement.className))
 
-})
+});
 
 window.addEventListener('click', passLiveClick); // for the live history list
 
@@ -521,7 +521,7 @@ function passDownWithShift(e) {
 
     if (item.keyCode === e.keyCode.toString() && item.mainClass.includes('oprtor')) {
 
-      item.node.classList.add(item.activeClass)
+      item.node.classList.add(item.activeClass);
       item.perform(item.text);
 
     } 
@@ -545,7 +545,7 @@ function passNoFocus(e) {
       || e.keyCode === 191 && item.keyCode === e.keyCode.toString()
       ) {
       
-      item.node.classList.add(item.activeClass)
+      item.node.classList.add(item.activeClass);
       item.perform(item.text);
 
     } else if (item.mainClass.includes('symbol') && item.keyCode === e.keyCode.toString()) {
@@ -561,12 +561,12 @@ function passNoFocus(e) {
 
     } else if (item.keyCode === e.keyCode.toString() && item.mainClass.includes('oprte')) {
 
-      item.node.classList.add(item.activeClass)
+      item.node.classList.add(item.activeClass);
       item.perform();
 
     } else if (item.keyCode === e.keyCode.toString() && item.mainClass.includes('delete')) {
 
-      item.node.classList.add(item.activeClass)
+      item.node.classList.add(item.activeClass);
       item.perform(database['active number'], database['active operand one'], database['active operator']);
 
     }
@@ -592,7 +592,7 @@ function runActiveEl(activeElText) {
       ) {
       
       item.node.classList.add(item.activeClass);
-      item.perform(item.text)
+      item.perform(item.text);
 
     } else if (item.text === activeElText && item.mainClass.includes('symbol')) {
     
@@ -619,15 +619,11 @@ function runActiveEl(activeElText) {
   });
 }
 
-function passLiveKeyUp(e) {
-
-  const activeElText = matchActiveEl();
+function passLiveKeyUp() {
 
   database['button nodes'].forEach((item) => {
 
-    if (e.keyCode !== 13 && item.keyCode === e.keyCode.toString()
-      || e.keyCode === 13 && item.text === activeElText
-      ) {
+    if (item.node.className.includes(item.activeClass)) {
 
       item.node.classList.remove(item.activeClass);
 
@@ -641,8 +637,6 @@ function matchActiveEl() {
   const getActiveEl = document.activeElement;
 
   const getActiveElClass = getActiveEl.getAttribute('class');
-
-  database['button nodes'].map((item) => item.parentClass)
   
   if (database['button nodes'].map((item) => item.parentClass).includes(getActiveElClass)) {
 
