@@ -216,7 +216,8 @@ button {
 }
 
 .digit:active > .btn-content,
-.symbol:active > .btn-content {
+.symbol:active > .btn-content,
+.num-active {
   background-color: #262626 !important;
 }
 
@@ -240,7 +241,8 @@ button {
 .history:active > .btn-content,
 .operator:active > .btn-content,
 .clear:active > .btn-content,
-.delete:active > .btn-content {
+.delete:active > .btn-content,
+.function-active {
   background-color: #262626 !important;
 }
 
@@ -252,6 +254,7 @@ button {
   background-color: #00443d !important;
 }
 
-.operate:active > .btn-content {
+.operate:active > .btn-content,
+.oprte-active {
   background-color: #002c28 !important;
 }

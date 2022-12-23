@@ -5,6 +5,7 @@ const database = {
   'active operand two': '',
   'active operator': '',
   'operation record': [],
+  'button nodes': [],
 }
 
 const display = document.querySelector('#display');
@@ -61,9 +62,7 @@ function operateObj(obj) {
 
 function storeDigit(selected) {
 
-  const isDecimalExist = checkDecimal(database['active number']);
-
-  const activeNum = addNumIf(database['active number'], selected, isDecimalExist);
+  const activeNum = addNumIf(database['active number'], selected);
 
   database['active number'] = activeNum;
 
@@ -72,12 +71,12 @@ function storeDigit(selected) {
   displaySepNum(joinActiveNum);
 
   (!database['active operator'])
-    ? database['active operand one'] = (+(joinActiveNum)).toString() // gets rid of decimal point if it's the last character
-    : database['active operand two'] = (+(joinActiveNum)).toString();
+    ? database['active operand one'] = joinActiveNum
+    : database['active operand two'] = joinActiveNum;
 
 }
 
-function addNumIf(array, num, decimal) {
+function addNumIf(array, num) {
 
   if (array[0] === '0' && array.length === 1 && num !== '.') { 
     // when a digit is selected and not the decimal point, the first array item is removed only when zero was the only item in the array
@@ -95,20 +94,9 @@ function addNumIf(array, num, decimal) {
 
     return array;
 
-  } else if (num === '.' && !decimal) {
-    // if num = '.' then check for existing decimal point
-
-    array.push(num);
-
-    return array;
-
-  } else if (num !== '.') {
-
-    array.push(num);
-
-    return array;
-
   } else {
+
+    array.push(num);
 
     return array;
   }
@@ -175,14 +163,14 @@ function displayOperation(num1, operator, num2) {
 
   if (!num2) {
 
-    const tempCommaOperandOne = addCommaSeperator(num1);
+    const tempCommaOperandOne = (+(addCommaSeperator(num1))).toString(); // omits decimal point if its the last character
 
     operationDisplay.textContent = `${tempCommaOperandOne} ${operator}`
 
   } else {
 
-    const tempCommaOperandOne = addCommaSeperator(num1);
-    const tempCommaOperandTwo = addCommaSeperator(num2);
+    const tempCommaOperandOne = (+(addCommaSeperator(num1))).toString();
+    const tempCommaOperandTwo = (+(addCommaSeperator(num2))).toString();
 
     operationDisplay.textContent = `${tempCommaOperandOne} ${operator} ${tempCommaOperandTwo} =`;
   }
@@ -293,14 +281,14 @@ function backspace(array, firstNum, secondNum, activeOp) {
     array.splice(-1,1);
     firstNum = array.join('');
 
-    database['active operand one'] = (+(firstNum)).toString();
+    database['active operand one'] = firstNum;
 
   } else {
 
     array.splice(-1,1);
     secondNum = array.join('');
 
-    database['active operand two'] = (+(secondNum)).toString();
+    database['active operand two'] = secondNum;
   }
 
   database['active number'] = array;
@@ -399,64 +387,110 @@ function checkDecimal(array) {
 }
 
 
+function NodesInterface(node, mainClass, text, keyCode, parentClass) {
+  this.node = node;
+  this.mainClass = mainClass;
+  this.text = text;
+  this.keyCode = keyCode;
+  this.parentClass = parentClass
+
+  if (this.mainClass.includes('num')) {
+
+    this.activeClass = 'num-active';
+
+    this.perform = storeDigit;
+
+    this.node.addEventListener('mousedown', () => {
+      this.perform(this.text);
+    });
+
+  } else if (this.mainClass.includes('symbol')) {
+
+    this.activeClass = 'num-active';
+
+    this.perform = storeDigit;
+
+    this.node.addEventListener('mousedown', () => {
+
+      const isDecimalExist = checkDecimal(database['active number'])
+
+      if (!isDecimalExist) {
+
+        this.perform(this.text);
+
+      }
+    });
+
+  } else if (this.mainClass.includes('oprtor')) {
+
+    this.activeClass = 'function-active';
+
+    this.perform = runOperation;
+
+    this.node.addEventListener('mousedown', () => {
+      this.perform(this.text);
+    });
+
+  } else if (this.mainClass.includes('oprte')) {
+
+    this.activeClass = 'oprte-active';
+
+    this.perform = runOperation;
+
+    this.node.addEventListener('mousedown', () => {
+      this.perform();
+    });
+
+  } else if (this.mainClass.includes('clear-entry')) {
+
+    this.activeClass = 'function-active';
+
+    this.perform = clearEntry;
+
+    this.node.addEventListener('mousedown', () => {
+      this.perform();
+    });
+
+  } else if (this.mainClass.includes('clear')) {
+
+    this.activeClass = 'function-active';
+
+    this.perform = clear;
+
+    this.node.addEventListener('mousedown', () => {
+      this.perform();
+    });
+
+  } else if (this.mainClass.includes('delete')) {
+
+    this.activeClass = 'function-active';
+
+    this.perform = backspace;
+
+    this.node.addEventListener('mousedown', () => {
+      this.perform(database['active number'], database['active operand one'], database['active operator']);
+    });
+
+  } else if (this.mainClass.includes('history')) {
+
+    this.activeClass = 'function-active';
+
+    this.perform = toggleHistory;
+
+    this.node.addEventListener('mousedown', () => {
+      this.perform();
+    });
+
+  }
+}
+
 const selectContents = document.querySelectorAll('span');
 
 Array.from(selectContents).forEach((content) => {
+  
+  database['button nodes'].push(new NodesInterface(content, content.className, content.textContent, content.dataset.code, content.parentElement.className))
 
-  const getClassList = Array.from(content.classList);
-
-  if (getClassList.includes('num')) {
-
-    content.addEventListener('click', () => {
-
-      storeDigit(content.textContent);
-
-    });
-  } else if (getClassList.includes('oprtor')) {
-
-    content.addEventListener('click', () => {
-
-      runOperation(content.textContent);
-
-    });
-  } else if (getClassList.includes('oprte')) {
-
-    content.addEventListener('click', () => {
-
-      runOperation();
-
-    });
-  } else if (getClassList.includes('clear-entry')) {
-
-    content.addEventListener('click', () => {
-
-      clearEntry();
-
-    });
-  } else if (getClassList.includes('clear')) {
-
-    content.addEventListener('click', () => {
-
-      clear();
-
-    });
-  } else if (getClassList.includes('delete')) {
-
-    content.addEventListener('click', () => {
-
-      backspace(database['active number'], database['active operand one'], database['active operator']);
-
-    });
-  } else if (getClassList.includes('history')) {
-
-    content.addEventListener('click', () => {
-
-      toggleHistory();
-
-    });
-  } 
-});
-
+})
 
 window.addEventListener('click', passLiveClick); // for the live history list
 
@@ -472,182 +506,150 @@ function passLiveClick(e) {
 window.addEventListener('keydown', passLiveKeyDown);
 window.addEventListener('keyup', passLiveKeyUp);
 
-function passLiveKeyDown(e) {
-
-  (e.shiftKey)
-
-     ? passDownWithShift(e)
-     : passDownNoShift(e);
-
-}
+ function passLiveKeyDown(e) {
+ 
+   (e.shiftKey)
+ 
+      ? passDownWithShift(e)
+      : passEnterKeyDown(e);
+ 
+ }
 
 function passDownWithShift(e) {
 
-  const liveKeyCode = e.keyCode;
-  const selectNode = document.querySelectorAll(`span[data-code="${liveKeyCode}"]`);
+   database['button nodes'].forEach((item) => {
 
-  Array.from(selectNode).forEach((content) => {
+    if (item.keyCode === e.keyCode.toString() && item.mainClass.includes('oprtor')) {
 
-    const getClassList = Array.from(content.classList);
+      item.node.classList.add(item.activeClass)
+      item.perform(item.text);
 
-    if (getClassList.includes('oprtor')) {
+    } 
+   });
 
-      content.style.backgroundColor = '#262626';
-      runOperation(content.textContent);
+}
+
+function passEnterKeyDown(e) {
+  
+  (e.keyCode !== 13)
+  ? passNoFocus(e)
+  : passActiveEl();
+}
+
+function passNoFocus(e) {
+
+  database['button nodes'].forEach((item => {
+
+    if ( item.mainClass.includes('num') && item.keyCode === e.keyCode.toString()
+      || e.keyCode === 189 && item.keyCode === e.keyCode.toString()
+      || e.keyCode === 191 && item.keyCode === e.keyCode.toString()
+      ) {
+      
+      item.node.classList.add(item.activeClass)
+      item.perform(item.text);
+
+    } else if (item.mainClass.includes('symbol') && item.keyCode === e.keyCode.toString()) {
+
+      const isDecimalExist = checkDecimal(database['active number']);
+
+      item.node.classList.add(item.activeClass);
+      if (!isDecimalExist) {
+
+        item.perform(item.text);
+
+      }
+
+    } else if (item.keyCode === e.keyCode.toString() && item.mainClass.includes('oprte')) {
+
+      item.node.classList.add(item.activeClass)
+      item.perform();
+
+    } else if (item.keyCode === e.keyCode.toString() && item.mainClass.includes('delete')) {
+
+      item.node.classList.add(item.activeClass)
+      item.perform(database['active number'], database['active operand one'], database['active operator']);
+
+    }
+  }));
+
+}
+
+function passActiveEl() {
+
+  const activeElText = matchActiveEl();
+  
+  (activeElText)
+    ? runActiveEl(activeElText)
+    : runOperation();
+}
+
+function runActiveEl(activeElText) {
+
+  database['button nodes'].forEach((item) => {
+
+    if ( item.text === activeElText && item.mainClass.includes('num') 
+      || item.text === activeElText && item.mainClass.includes('oprtor')
+      ) {
+      
+      item.node.classList.add(item.activeClass);
+      item.perform(item.text)
+
+    } else if (item.text === activeElText && item.mainClass.includes('symbol')) {
+    
+      const isDecimalExist = checkDecimal(database['active number']);
+    
+      item.node.classList.add(item.activeClass);
+      if (!isDecimalExist) {
+      
+        item.perform(item.text);
+      
+      }
+    
+    } else if (item.text === activeElText && item.mainClass.includes('delete')) {
+    
+      item.node.classList.add(item.activeClass);
+      item.perform(database['active number'], database['active operand one'], database['active operator']);
+    
+    } else if (item.text === activeElText) {
+    
+      item.node.classList.add(item.activeClass);
+      item.perform();
+    
+    }
+  });
+}
+
+function passLiveKeyUp(e) {
+
+  const activeElText = matchActiveEl();
+
+  database['button nodes'].forEach((item) => {
+
+    if (e.keyCode !== 13 && item.keyCode === e.keyCode.toString()
+      || e.keyCode === 13 && item.text === activeElText
+      ) {
+
+      item.node.classList.remove(item.activeClass);
+
     }
   });
 
 }
 
-function passDownNoShift(e) {
+function matchActiveEl() {
 
-  const liveKeyCode = e.keyCode;
-  const selectNode = document.querySelector(`span[data-code="${liveKeyCode}"]`);
+  const getActiveEl = document.activeElement;
 
-  const activeEl = document.activeElement; // when there is an active/focused element, assign it to a variable
+  const getActiveElClass = getActiveEl.getAttribute('class');
 
-  if (liveKeyCode >= 48 && liveKeyCode <= 57 || liveKeyCode === 190) {
-    
-    selectNode.style.backgroundColor = '#262626';
-    storeDigit(selectNode.textContent);
+  database['button nodes'].map((item) => item.parentClass)
+  
+  if (database['button nodes'].map((item) => item.parentClass).includes(getActiveElClass)) {
 
-  } else if (liveKeyCode === 189 || liveKeyCode === 191) {
-    
-    selectNode.style.backgroundColor = '#262626';
-    runOperation(selectNode.textContent);
-
-  } else if (liveKeyCode === 187) {
-
-    selectNode.style.backgroundColor = '#002c28';
-    runOperation();
-
-  } else if (liveKeyCode === 8) {
-
-    selectNode.style.backgroundColor = '#262626';
-    backspace(database['active number'], database['active operand one'], database['active operator']);
-
-  } else if (liveKeyCode === 13) {
-
-    passEnterKeyDown(activeEl);
-
-  }
-}
-
-function passEnterKeyDown(activeEl) {
-
-  const getActiveElClass = activeEl.getAttribute('class');
-  const childSpan = activeEl.firstElementChild;
-
-  if (getActiveElClass === 'digit btn' || getActiveElClass === 'symbol btn') { // when a digit is focused, run enterkey as clicking the focused button
-
-    childSpan.style.backgroundColor = '#262626';
-    storeDigit(childSpan.textContent);
-    
-  } else if (getActiveElClass === 'operator btn') {
-
-    childSpan.style.backgroundColor = '#262626';
-    runOperation(childSpan.textContent);
-
-  } else if (getActiveElClass === 'operate btn') {
-
-    childSpan.style.backgroundColor = '#002c28';
-    runOperation();
-
-  } else if (getActiveElClass === 'clear btn') {
-
-    childSpan.style.backgroundColor = '#262626';
-    clear();
-
-  } else if (getActiveElClass === 'clear-entry btn') {
-
-    childSpan.style.backgroundColor = '#262626';
-    clearEntry();
-
-  } else if (getActiveElClass === 'delete btn') {
-
-    childSpan.style.backgroundColor = '#262626';
-    backspace(database['active number'], database['active operand one'], database['active operand two'], database['active operator']);
-
-  } else if (getActiveElClass === 'history btn') {
-
-    childSpan.style.backgroundColor = '#262626';
-    toggleHistory();
-
-  } else { // when no activeEL, execute runOperator with no parameter
-
-    const assignKey = document.querySelector(`.oprte`);
-
-    assignKey.style.backgroundColor = '#002c28';
-    runOperation();
-    
-  }
-}
-
-function passLiveKeyUp(e) {
-
-  const liveKeyCode = e.keyCode;
-  const selectNode = document.querySelectorAll(`span[data-code="${liveKeyCode}"]`);
-  const activeEl = document.activeElement;
-
-  Array.from(selectNode).forEach((content) => {
-
-    const getClassList = Array.from(content.classList);
-
-    if (getClassList.includes('num')) {
-
-      content.style.backgroundColor = '#494848';
-
-    } else if (
-      getClassList.includes('oprtor') 
-      || getClassList.includes('history')
-      || getClassList.includes('clear')
-      || getClassList.includes('clear-entry')
-      || getClassList.includes('delete')) {
-
-      content.style.backgroundColor = '#363636';
-
-    } else if (getClassList.includes('oprte')) {
-
-      content.style.backgroundColor = '#00564d';
-
-    } 
-  });
-
-  if (liveKeyCode === 13) {
-      
-    passEnterKeyUp(activeEl);
-
-  }
-}
-
-function passEnterKeyUp(activeEl) {
-
-  const getActiveElClass = activeEl.getAttribute('class');
-  const childSpan = activeEl.firstElementChild;
-
-  if (getActiveElClass === 'digit btn' || getActiveElClass === 'symbol btn') { // when a digit is focused, run enterkey as clicking the focused button
-
-    childSpan.style.backgroundColor = '#494848';
-    
-  } else if (
-    getActiveElClass === 'operator btn'
-    || getActiveElClass === 'clear btn'
-    || getActiveElClass === 'clear-entry btn'
-    || getActiveElClass === 'delete btn'
-    || getActiveElClass === 'history btn'
-    ) {
-
-    childSpan.style.backgroundColor = '#363636';
-
-  } else if (getActiveElClass === 'operate btn') {
-
-    childSpan.style.backgroundColor = '#00564d';
+    return getActiveEl.firstElementChild.textContent;
 
   } else {
 
-    const assignKey = document.querySelector(`.oprte`);
-
-    assignKey.style.backgroundColor = '#00564d';
-    
+    return false;
   }
 }
