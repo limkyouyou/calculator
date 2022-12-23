@@ -525,7 +525,7 @@ function passDownWithShift(e) {
 
    database['button nodes'].forEach((item) => {
 
-    if (item.keyCode === e.keyCode.toString() && item.mainClass.includes('oprtor')) {
+    if (item.keyCode === e.key && item.mainClass.includes('oprtor')) {
 
       item.node.classList.add(item.activeClass);
       item.perform(item.text);
@@ -536,8 +536,8 @@ function passDownWithShift(e) {
 }
 
 function passEnterKeyDown(e) {
-  
-  (e.keyCode !== 13)
+
+  (e.key !== 'Enter')
   ? passNoFocus(e)
   : passActiveEl();
 }
@@ -546,15 +546,15 @@ function passNoFocus(e) {
 
   database['button nodes'].forEach((item => {
 
-    if ( item.mainClass.includes('num') && item.keyCode === e.keyCode.toString()
-      || e.keyCode === 189 && item.keyCode === e.keyCode.toString()
-      || e.keyCode === 191 && item.keyCode === e.keyCode.toString()
+    if ( item.mainClass.includes('num') && item.keyCode === e.key
+      || e.key === '-' && item.keyCode === e.key
+      || e.key === '/' && item.keyCode === e.key
       ) {
       
       item.node.classList.add(item.activeClass);
       item.perform(item.text);
 
-    } else if (item.mainClass.includes('symbol') && item.keyCode === e.keyCode.toString()) {
+    } else if (item.mainClass.includes('symbol') && item.keyCode === e.key) {
 
       const isDecimalExist = checkDecimal(database['active number']);
 
@@ -565,12 +565,12 @@ function passNoFocus(e) {
 
       }
 
-    } else if (item.keyCode === e.keyCode.toString() && item.mainClass.includes('oprte')) {
+    } else if (item.keyCode === e.key && item.mainClass.includes('oprte')) {
 
       item.node.classList.add(item.activeClass);
       item.perform();
 
-    } else if (item.keyCode === e.keyCode.toString() && item.mainClass.includes('delete')) {
+    } else if (item.keyCode === e.key && item.mainClass.includes('delete')) {
 
       item.node.classList.add(item.activeClass);
       item.perform(database['active number'], database['active operand one'], database['active operator']);
