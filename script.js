@@ -333,6 +333,8 @@ function addLiveHistory() {
   if (historyBody) {
 
     addHistoryContent(database['operation record'], database['operation record'].length - 1);
+
+    historyBody.scrollTop = historyBody.scrollHeight;
   }
 }
 
@@ -419,6 +421,8 @@ function toggleHistory() {
   calculatorBody.classList.toggle('calculator-history');
   historyBody.classList.toggle('history-body');
 
+  //historyBody.scrollTop(historyBody.scrollHeight);
+
   if (historyBody.classList.contains('history-body')) {
 
     for (let i = 0; i < oprtnRecord.length; i++) {
@@ -433,6 +437,8 @@ function toggleHistory() {
       clearHistory(historyBody);
     }
   }
+
+  historyBody.scrollTop = historyBody.scrollHeight;
 
 }
 
