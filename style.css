@@ -186,20 +186,6 @@ body {
   overflow: scroll hidden;
 }
 
-@-moz-document url-prefix() {
-  #display {
-    scrollbar-width: none;
-  }
-
-  #display-operation {
-    scrollbar-width: none;
-  }
-
-  .history-body {
-    scrollbar-width: 7px;
-  }
-}
-
 #display::-webkit-scrollbar {
   height: 0;
 }
