@@ -194,6 +194,10 @@ body {
   #display-operation {
     scrollbar-width: none;
   }
+
+  .history-body {
+    scrollbar-width: 7px;
+  }
 }
 
 #display::-webkit-scrollbar {
