@@ -593,7 +593,7 @@ function runActiveEl(activeElText) {
       item.node.classList.add(item.activeClass);
       item.perform(item.text);
 
-    } else if (item.text === activeElText && item.mainClass.includes('oprte')) {
+    } else if (item.text === activeElText) {
     
       item.node.classList.add(item.activeClass);
       item.perform();
