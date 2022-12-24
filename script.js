@@ -11,6 +11,7 @@ const database = {
 const display = document.querySelector('#display');
 const operationDisplay = document.querySelector('#display-operation');
 const selectContents = document.querySelectorAll('span');
+const listContainer = document.querySelector('#list-container');
 
 Array.from(selectContents).forEach((content) => {
   
@@ -418,16 +419,13 @@ function toggleHistory() {
   const appBody = document.querySelector('#calc-container');
   const calculatorBody = document.querySelector('#calculator');
   const historyContainer = document.querySelector('#history');
-  const historyBody = document.querySelector('#list-container');
   
   appBody.classList.toggle('calc-container-history');
   historyContainer.classList.toggle('history-container');
   calculatorBody.classList.toggle('calculator-history');
-  historyBody.classList.toggle('history-body');
+  listContainer.classList.toggle('history-body');
 
-  //historyBody.scrollTop(historyBody.scrollHeight);
-
-  if (historyBody.classList.contains('history-body')) {
+  if (listContainer.classList.contains('history-body')) {
 
     for (let i = 0; i < oprtnRecord.length; i++) {
 
@@ -436,19 +434,17 @@ function toggleHistory() {
 
   } else {
 
-    while (historyBody.hasChildNodes()) {
+    while (listContainer.hasChildNodes()) {
 
-      clearHistory(historyBody);
+      clearHistory(listContainer);
     }
   }
 
-  historyBody.scrollTop = historyBody.scrollHeight;
+  listContainer.scrollTop = listContainer.scrollHeight;
 
 }
 
 function addHistoryContent(array, arrayItem) {
-
-  const listContainer = document.querySelector('#list-container');
 
   const divContainer = document.createElement('div');
   const divOperation = document.createElement('div');
