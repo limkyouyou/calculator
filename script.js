@@ -13,6 +13,17 @@ const operationDisplay = document.querySelector('#display-operation');
 const selectContents = document.querySelectorAll('span');
 const listContainer = document.querySelector('#list-container');
 
+const displayArray = [display, operationDisplay];
+
+displayArray.forEach((content) => {
+
+  content.addEventListener('wheel', (action) => {
+    
+    action.preventDefault();
+    content.scrollLeft += action.deltaY;
+  });
+});
+
 Array.from(selectContents).forEach((content) => {
   
   database['button nodes'].push(new NodesInterface(content, content.className, content.textContent, content.dataset.code, content.parentElement.className))
