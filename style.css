@@ -276,3 +276,9 @@ button {
 .oprte-active {
   background-color: #002c28 !important;
 }
+
+.item-container:hover {
+  background-color: #363636;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}

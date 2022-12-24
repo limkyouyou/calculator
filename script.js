@@ -10,6 +10,13 @@ const database = {
 
 const display = document.querySelector('#display');
 const operationDisplay = document.querySelector('#display-operation');
+const selectContents = document.querySelectorAll('span');
+
+Array.from(selectContents).forEach((content) => {
+  
+  database['button nodes'].push(new NodesInterface(content, content.className, content.textContent, content.dataset.code, content.parentElement.className))
+
+});
 
 display.textContent = database['active number'].join('');
 
@@ -17,6 +24,103 @@ function CreateOprtnObj(operandOne, operandTwo, operator) {
   this.operandOne = operandOne;
   this.operandTwo = operandTwo;
   this.operator = operator;
+}
+
+function NodesInterface(node, mainClass, text, keyCode, parentClass) {
+  this.node = node;
+  this.mainClass = mainClass;
+  this.text = text;
+  this.keyCode = keyCode;
+  this.parentClass = parentClass;
+
+  if (this.mainClass.includes('num')) {
+
+    this.activeClass = 'num-active';
+
+    this.perform = storeDigit;
+
+    this.node.addEventListener('mousedown', () => {
+      this.perform(this.text);
+    });
+
+  } else if (this.mainClass.includes('symbol')) {
+
+    this.activeClass = 'num-active';
+
+    this.perform = storeDigit;
+
+    this.node.addEventListener('mousedown', () => {
+
+      const isDecimalExist = checkDecimal(database['active number']);
+
+      if (!isDecimalExist) {
+
+        this.perform(this.text);
+
+      }
+    });
+
+  } else if (this.mainClass.includes('oprtor')) {
+
+    this.activeClass = 'function-active';
+
+    this.perform = runOperation;
+
+    this.node.addEventListener('mousedown', () => {
+      this.perform(this.text);
+    });
+
+  } else if (this.mainClass.includes('oprte')) {
+
+    this.activeClass = 'oprte-active';
+
+    this.perform = runOperation;
+
+    this.node.addEventListener('mousedown', () => {
+      this.perform();
+    });
+
+  } else if (this.mainClass.includes('clear-entry')) {
+
+    this.activeClass = 'function-active';
+
+    this.perform = clearEntry;
+
+    this.node.addEventListener('mousedown', () => {
+      this.perform();
+    });
+
+  } else if (this.mainClass.includes('clear')) {
+
+    this.activeClass = 'function-active';
+
+    this.perform = clear;
+
+    this.node.addEventListener('mousedown', () => {
+      this.perform();
+    });
+
+  } else if (this.mainClass.includes('delete')) {
+
+    this.activeClass = 'function-active';
+
+    this.perform = backspace;
+
+    this.node.addEventListener('mousedown', () => {
+      this.perform(database['active number'], database['active operand one'], database['active operator']);
+    });
+
+  } else if (this.mainClass.includes('history')) {
+
+    this.activeClass = 'function-active';
+
+    this.perform = toggleHistory;
+
+    this.node.addEventListener('mousedown', () => {
+      this.perform();
+    });
+
+  }
 }
 
 function add(num1, num2) {
@@ -79,15 +183,14 @@ function storeDigit(selected) {
 function addNumIf(array, num) {
 
   if (array[0] === '0' && array.length === 1 && num !== '.') { 
-    // when a digit is selected and not the decimal point, the first array item is removed only when zero was the only item in the array
-
+    // when a digit is selected the placeholder digit zero is removed
     array.splice(0, 1);
     array.push(num);
 
     return array;
 
   } else if (array.length === 0 && num === '.') {
-    // add zero before decimal point when array was empty
+    // add zero before decimal point when array is empty
 
     array = [0];
     array.push(num);
@@ -277,29 +380,28 @@ function clearEntry() {
 
 }
 
-function backspace(array, firstNum, secondNum, activeOp) {
+function backspace(activeArray, firstNum, operator) {
 
-  if (!secondNum && !activeOp) {
+  if (!operator) {
 
-    array = firstNum.split(''); // array needs to be reassigned since it may be empty after passing the first condition of runOperation
-    array.splice(-1,1);
-    firstNum = array.join('');
+    activeArray = firstNum.split(''); // array needs to be reassigned since it may be empty after passing the second condition of runOperation
+    activeArray.splice(-1,1);
 
-    database['active operand one'] = firstNum;
+    const tempNum = activeArray.join('');
+    database['active operand one'] = tempNum;
 
   } else {
 
-    array.splice(-1,1);
-    secondNum = array.join('');
+    activeArray.splice(-1,1);
 
-    database['active operand two'] = secondNum;
+    const tempNum = activeArray.join('');
+    database['active operand two'] = tempNum;
   }
 
-  database['active number'] = array;
+  database['active number'] = activeArray;
 
-  const tempJoinArray = array.join('');
-
-  displaySepNum(tempJoinArray, array[array.length - 1]);
+  const tempJoinArray = activeArray.join('');
+  displaySepNum(tempJoinArray);
 
 }
 
@@ -327,6 +429,7 @@ function toggleHistory() {
   } else {
 
     while (historyBody.hasChildNodes()) {
+
       clearHistory(historyBody);
     }
   }
@@ -335,7 +438,7 @@ function toggleHistory() {
 
 function addHistoryContent(array, arrayItem) {
 
-  const historyBody = document.querySelector('#list-container');
+  const listContainer = document.querySelector('#list-container');
 
   const divContainer = document.createElement('div');
   const divOperation = document.createElement('div');
@@ -359,25 +462,10 @@ function addHistoryContent(array, arrayItem) {
   divOperation.textContent = `${tempCommaOperandOne} ${array[arrayItem]['operator']} ${tempCommaOperandTwo} = `;
   divSolution.textContent = `${tempCommaSolution}`;
 
-  historyBody.appendChild(divContainer);
+  listContainer.appendChild(divContainer);
   divContainer.appendChild(divOperation);
   divContainer.appendChild(divSolution);
 
-  divContainer.addEventListener('mouseover', () => {
-
-    divContainer.style.backgroundColor = '#363636';
-    divContainer.style.borderTopLeftRadius = '8px';
-    divContainer.style.borderTopRightRadius = '8px';
-
-  })
-
-  divContainer.addEventListener('mouseleave', () => {
-
-    divContainer.style.backgroundColor = '';
-    divContainer.style.borderTopLeftRadius = '';
-    divContainer.style.borderTopRightRadius = '';
-
-  })
 }
 
 function clearHistory(parentNode) {
@@ -391,112 +479,6 @@ function checkDecimal(array) {
   return array.includes('.');
 
 }
-
-
-function NodesInterface(node, mainClass, text, keyCode, parentClass) {
-  this.node = node;
-  this.mainClass = mainClass;
-  this.text = text;
-  this.keyCode = keyCode;
-  this.parentClass = parentClass;
-
-  if (this.mainClass.includes('num')) {
-
-    this.activeClass = 'num-active';
-
-    this.perform = storeDigit;
-
-    this.node.addEventListener('mousedown', () => {
-      this.perform(this.text);
-    });
-
-  } else if (this.mainClass.includes('symbol')) {
-
-    this.activeClass = 'num-active';
-
-    this.perform = storeDigit;
-
-    this.node.addEventListener('mousedown', () => {
-
-      const isDecimalExist = checkDecimal(database['active number']);
-
-      if (!isDecimalExist) {
-
-        this.perform(this.text);
-
-      }
-    });
-
-  } else if (this.mainClass.includes('oprtor')) {
-
-    this.activeClass = 'function-active';
-
-    this.perform = runOperation;
-
-    this.node.addEventListener('mousedown', () => {
-      this.perform(this.text);
-    });
-
-  } else if (this.mainClass.includes('oprte')) {
-
-    this.activeClass = 'oprte-active';
-
-    this.perform = runOperation;
-
-    this.node.addEventListener('mousedown', () => {
-      this.perform();
-    });
-
-  } else if (this.mainClass.includes('clear-entry')) {
-
-    this.activeClass = 'function-active';
-
-    this.perform = clearEntry;
-
-    this.node.addEventListener('mousedown', () => {
-      this.perform();
-    });
-
-  } else if (this.mainClass.includes('clear')) {
-
-    this.activeClass = 'function-active';
-
-    this.perform = clear;
-
-    this.node.addEventListener('mousedown', () => {
-      this.perform();
-    });
-
-  } else if (this.mainClass.includes('delete')) {
-
-    this.activeClass = 'function-active';
-
-    this.perform = backspace;
-
-    this.node.addEventListener('mousedown', () => {
-      this.perform(database['active number'], database['active operand one'], database['active operator']);
-    });
-
-  } else if (this.mainClass.includes('history')) {
-
-    this.activeClass = 'function-active';
-
-    this.perform = toggleHistory;
-
-    this.node.addEventListener('mousedown', () => {
-      this.perform();
-    });
-
-  }
-}
-
-const selectContents = document.querySelectorAll('span');
-
-Array.from(selectContents).forEach((content) => {
-  
-  database['button nodes'].push(new NodesInterface(content, content.className, content.textContent, content.dataset.code, content.parentElement.className))
-
-});
 
 window.addEventListener('click', passLiveClick); // for the live history list
 
@@ -539,31 +521,22 @@ function passEnterKeyDown(e) {
 
   (e.key !== 'Enter')
   ? passNoFocus(e)
-  : passActiveEl();
+  : passFocus();
 }
 
 function passNoFocus(e) {
 
+  const isDecimalExist = checkDecimal(database['active number']);
+
   database['button nodes'].forEach((item => {
 
-    if ( item.mainClass.includes('num') && item.keyCode === e.key
-      || e.key === '-' && item.keyCode === e.key
-      || e.key === '/' && item.keyCode === e.key
+    if ( item.keyCode === e.key && item.mainClass.includes('num') || 
+      item.keyCode === e.key && item.mainClass.includes('oprtor') ||
+      item.keyCode === e.key && item.mainClass.includes('symbol') && !isDecimalExist
       ) {
       
       item.node.classList.add(item.activeClass);
       item.perform(item.text);
-
-    } else if (item.mainClass.includes('symbol') && item.keyCode === e.key) {
-
-      const isDecimalExist = checkDecimal(database['active number']);
-
-      item.node.classList.add(item.activeClass);
-      if (!isDecimalExist) {
-
-        item.perform(item.text);
-
-      }
 
     } else if (item.keyCode === e.key && item.mainClass.includes('oprte')) {
 
@@ -580,7 +553,7 @@ function passNoFocus(e) {
 
 }
 
-function passActiveEl() {
+function passFocus() {
 
   const activeElText = matchActiveEl();
   
@@ -591,37 +564,29 @@ function passActiveEl() {
 
 function runActiveEl(activeElText) {
 
+  const isDecimalExist = checkDecimal(database['active number']);
+
   database['button nodes'].forEach((item) => {
 
-    if ( item.text === activeElText && item.mainClass.includes('num') 
-      || item.text === activeElText && item.mainClass.includes('oprtor')
+    if ( item.text === activeElText && item.mainClass.includes('num') || 
+      item.text === activeElText && item.mainClass.includes('oprtor') ||
+      item.text === activeElText && item.mainClass.includes('symbol') && !isDecimalExist
       ) {
       
       item.node.classList.add(item.activeClass);
       item.perform(item.text);
 
-    } else if (item.text === activeElText && item.mainClass.includes('symbol')) {
-    
-      const isDecimalExist = checkDecimal(database['active number']);
+    } else if (item.text === activeElText && item.mainClass.includes('oprte')) {
     
       item.node.classList.add(item.activeClass);
-      if (!isDecimalExist) {
-      
-        item.perform(item.text);
-      
-      }
+      item.perform();
     
     } else if (item.text === activeElText && item.mainClass.includes('delete')) {
     
       item.node.classList.add(item.activeClass);
       item.perform(database['active number'], database['active operand one'], database['active operator']);
     
-    } else if (item.text === activeElText) {
-    
-      item.node.classList.add(item.activeClass);
-      item.perform();
-    
-    }
+    } 
   });
 }
 
