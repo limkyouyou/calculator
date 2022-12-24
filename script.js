@@ -593,17 +593,17 @@ function runActiveEl(activeElText) {
       item.node.classList.add(item.activeClass);
       item.perform(item.text);
 
-    } else if (item.text === activeElText) {
-    
-      item.node.classList.add(item.activeClass);
-      item.perform();
-    
     } else if (item.text === activeElText && item.mainClass.includes('delete')) {
     
       item.node.classList.add(item.activeClass);
       item.perform(database['active number'], database['active operand one'], database['active operator']);
     
-    } 
+    } else if (item.text === activeElText) {
+    
+      item.node.classList.add(item.activeClass);
+      item.perform();
+    
+    }
   });
 }
 
