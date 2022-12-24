@@ -178,6 +178,8 @@ function storeDigit(selected) {
     ? database['active operand one'] = joinActiveNum
     : database['active operand two'] = joinActiveNum;
 
+  display.scrollLeft = display.scrollWidth;
+
 }
 
 function addNumIf(array, num) {
@@ -280,6 +282,8 @@ function displayOperation(num1, operator, num2) {
     const tempCommaOperandTwo = addCommaSeperator(tempNum2);
 
     operationDisplay.textContent = `${tempCommaOperandOne} ${operator} ${tempCommaOperandTwo} =`;
+
+    operationDisplay.scrollLeft = operationDisplay.scrollWidth;
   }
 
 }

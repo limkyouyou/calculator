@@ -162,8 +162,6 @@ body {
 #display-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  overflow: clip;
   height: 110px;
   margin-left: 11px; /* When display overflows and clips, it leaves less margin than the right side */
   margin-right: 8px;
@@ -172,8 +170,11 @@ body {
 #display-operation {
   color: #e7e6e6;
   font-size: 27px;
+  line-height: 27px;
   height: 30px;
-  overflow: inherit;
+  text-align: end;
+  overflow: scroll hidden;
+  white-space: nowrap;
 }
 
 #display {
@@ -181,6 +182,26 @@ body {
   line-height: 70px;
   color: #e7e6e6;
   padding-top: 5px;
+  text-align: end;
+  overflow: scroll hidden;
+}
+
+@-moz-document url-prefix() {
+  #display {
+    scrollbar-width: none;
+  }
+
+  #display-operation {
+    scrollbar-width: none;
+  }
+}
+
+#display::-webkit-scrollbar {
+  height: 0;
+}
+
+#display-operation::-webkit-scrollbar {
+  height: 0;
 }
 
 #buttons-container {
