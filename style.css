@@ -81,7 +81,7 @@ body {
 }
 
 .item-container:first-child {
-  border: none;
+  border-top: 1px solid #282828;
 }
 
 .item-container {
@@ -279,6 +279,15 @@ button {
 
 .item-container:hover {
   background-color: #363636;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  border-top: 1px solid #585858;
+  border-bottom: 1px solid #585858;
+  border-radius: 8px;
+}
+
+.item-container:hover + .item-container {
+  border: none;
+}
+
+.item-container:active {
+  background-color: #262626;
 }
