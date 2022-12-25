@@ -194,6 +194,18 @@ body {
   height: 0;
 }
 
+/** Mozilla Firefox */
+@-moz-document url-prefix() {
+  #display {
+    scrollbar-width: none;
+  }
+
+  #display-operation {
+    scrollbar-width: none;
+  }
+}
+
+
 #buttons-container {
   flex: 1;
   display: grid;
