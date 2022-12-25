@@ -196,10 +196,7 @@ body {
 
 /** Mozilla Firefox */
 @-moz-document url-prefix() {
-  #display {
-    scrollbar-width: none;
-  }
-
+  #display,
   #display-operation {
     scrollbar-width: none;
   }
